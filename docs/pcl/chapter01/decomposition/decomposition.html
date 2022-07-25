@@ -1,0 +1,1469 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>03-点云拓扑结构 * - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#03-" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                03-点云拓扑结构 *
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        03-点云拓扑结构 *
+      </label>
+    
+    <a href="./" title="03-点云拓扑结构 *" class="md-nav__link md-nav__link--active">
+      03-点云拓扑结构 *
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#k-d-tree" class="md-nav__link">
+    点云分解之k-d Tree *
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    原理概述
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    树的分割
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    最近邻搜索
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    代码示例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#octree" class="md-nav__link">
+    点云分解之octree八叉树
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    原理概述
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码示例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pcl_octree_viewer" class="md-nav__link">
+    pcl_octree_viewer工具
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#k-d-tree" class="md-nav__link">
+    点云分解之k-d Tree *
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    原理概述
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    树的分割
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    最近邻搜索
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    代码示例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#octree" class="md-nav__link">
+    点云分解之octree八叉树
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    原理概述
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码示例
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pcl_octree_viewer" class="md-nav__link">
+    pcl_octree_viewer工具
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="03-">03-点云拓扑结构<a class="headerlink" href="#03-" title="Permanent link">&para;</a></h1>
+<ul>
+<li>点云拓扑之k-d Tree </li>
+<li>点云拓扑之OCTrees 八叉树</li>
+</ul>
+<h2 id="k-d-tree">点云分解之k-d Tree *<a class="headerlink" href="#k-d-tree" title="Permanent link">&para;</a></h2>
+<p>通过3D相机（雷达、激光扫描、立体相机）获取到的点云，一般数据量较大，分布不均匀，数据主要表征了目标物表面的大量点的集合，这些离散的点如果希望实现基于邻域关系的<strong>快速查找比对功能</strong>，就必须对这些离散的点之间建立拓扑关系。常见的空间索引一般是自上而下逐级划分空间的各种索引结构，包括BSP树，k-d tree、KDB tree、R tree、CELL tree、八叉树等。有了这些关系，我们就可以实现点云的<em>降采样，计算特征向量，点云匹配，点云拆分</em>等功能。</p>
+<h3 id="_1">原理概述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h3>
+<p><strong>k-d tree（ k-dimensional tree）</strong>是计算机科学中用于在k维空间中一些点建立关系的数据结构。它是一个包含特定约束的二叉搜索树。k-d tree对于<strong>范围搜索和最近邻居搜索</strong>非常有用。我们通常只处理三维空间的点云，因此我们所有的k-d树都是三维空间的。 </p>
+<p>k-d树的每个级别都使用垂直于相应轴的超平面沿特定维度拆分所有子级。在树的根部，所有子项都将根据第一维进行拆分（即，如果第一维坐标小于根，则它将位于左子树中，如果大于根，则显然位于右边的子树）。树中向下的每个级别都在下一个维度上划分，其他所有元素都用尽后，将返回到第一个维度。他们构建k-d树的最有效方法是使用一种分区方法，例如快速排序所用的一种方法，将中值点放置在根上，所有具有较小一维值的东西都放置在根部，而右侧则更大。然后，在左右两个子树上都重复此过程，直到要分区的最后一棵树仅由一个元素组成。</p>
+<h4 id="_2">树的分割<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h4>
+<p><strong>选轴点策略一：</strong>按照x-y-z-x-y-z...顺序向下分割</p>
+<ul>
+<li>2D的kd-tree划分方式</li>
+</ul>
+<p><img alt="Example of a 2-d k-d tree" src="../assets/2d_kdtree.png" /></p>
+<ul>
+<li>当一个点根据k-d tree查找最近点的过程（这是个动图）</li>
+</ul>
+<p><img alt="img" src="../assets/nn_kdtree.gif" /></p>
+<p><img alt="分割图示" src="../assets/k-d_tree1.png" /></p>
+<p><strong>选轴点策略二：取方差变化最大维度的中位数</strong></p>
+<p>对于所有描述子数据（特征矢量），统计他们在每个维度上的数据方差，挑选出方差中最大值，对应的维就是下一个要分割的维度。数据方差大说明沿该坐标轴方向上数据点分散的比较开。这个方向上，进行数据分割可以获得最好的平衡。数据点集位于正中间的那个数据点被选为轴点。</p>
+<p><img alt="image-20200525065813048" src="../assets/image-20200525065813048.png" /></p>
+<p>但是问题来了，理论上空间均匀分布的点，但是一些特殊的情况中，还是会出现问题，比如</p>
+<p><img alt="img" src="../assets/20141126105128296.jpg" /></p>
+<p>这样就会出现很多长条的分割，对于KDTree来说是很不利的。</p>
+<p><strong>选点策略三：数据范围最大纬度的中位数</strong></p>
+<p>为了避免这种情况，需要修改一下算法，纬度的选择的依据为数据范围最大的那一维作为分割纬度，之后也是选中这个纬度的中间点作为轴点，然后进行分割，分割出来的结果是：</p>
+<p><img alt="img" src="../assets/20141126112100024.jpg" /></p>
+<p>这种结果显然对于最邻近搜索是非常友好的。</p>
+<h4 id="_3">最近邻搜索<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p><strong>查找案例1：</strong></p>
+<p><img alt="image-20200509173127403" src="../assets/image-20200509173127403.png" /></p>
+<p>红色点为要查询的点<span><span class="MathJax_Preview">(2.1, 2.9)</span><script type="math/tex">(2.1, 2.9)</script></span>，通过二叉搜索，根据x=2.1 &lt; 7，得到节点<span><span class="MathJax_Preview">(5,4)</span><script type="math/tex">(5,4)</script></span>，根据y=2.9 &lt; 4，得到节点<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>，则在k-d tree中找到离其最近的叶子节点<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>，这个叶子节点未必是最近的，理论上如果存在最近的点，这个店应该在圆形范围内。</p>
+<p>上图我们通过肉眼可见，圆形区域内的确没有其他更近的点了，但是对于计算机来说，这个肉眼观察的过程是不存在的，需要用更严密的方式进行验证或检查操作，故而必须进行<strong>回溯</strong>操作。来验证当前的确是最近的点、如果不是，我们要找到真正最近的点。</p>
+<p>于是我们通过下边的案例去进行回溯操作。</p>
+<p><strong>查找案例2：</strong></p>
+<p><img alt="image-20200509174011599" src="../assets/image-20200509174011599.png" /></p>
+<p>红色点为要查询的点<span><span class="MathJax_Preview">(2,5)</span><script type="math/tex">(2,5)</script></span>，通过二叉搜索，其搜索路径为<span><span class="MathJax_Preview">&lt;(7,2),(5,4),(4,7)&gt;</span><script type="math/tex"><(7,2),(5,4),(4,7)></script></span>，得到最近的临近叶子节点<span><span class="MathJax_Preview">(4,7)</span><script type="math/tex">(4,7)</script></span>，计算两者距离为2.828。无论这个值大小如何，我们直接向上回溯计算与<span><span class="MathJax_Preview">(5,4)</span><script type="math/tex">(5,4)</script></span>的距离为3.162，此时我们以红点<span><span class="MathJax_Preview">(2,5)</span><script type="math/tex">(2,5)</script></span>为圆心，2.828为半径做圆形，发现此圆形会与<span><span class="MathJax_Preview">y=4</span><script type="math/tex">y=4</script></span>超平面交割，则需要进入<span><span class="MathJax_Preview">(5,4)</span><script type="math/tex">(5,4)</script></span>的左子空间继续查找。</p>
+<p>此时需要将<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>节点加入到搜索路径变为<span><span class="MathJax_Preview">&lt;(7,2),(2,3)&gt;</span><script type="math/tex"><(7,2),(2,3)></script></span>，之前的两个已被回溯消掉，此时计算红点到<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>的距离2比到<span><span class="MathJax_Preview">(5,4)</span><script type="math/tex">(5,4)</script></span>的距离更近，故将最近临点更新为<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>，最近距离更新为5。，然后以红点<span><span class="MathJax_Preview">(2,5)</span><script type="math/tex">(2,5)</script></span>为圆心，2为半径做圆形，发现其不和<span><span class="MathJax_Preview">x=7</span><script type="math/tex">x=7</script></span>超平面交割。则此路径搜索完毕，最近临点为<span><span class="MathJax_Preview">(2,3)</span><script type="math/tex">(2,3)</script></span>，最近距离为2。</p>
+<p><img alt="image-20200509174205155" src="../assets/image-20200509174205155.png" /></p>
+<ul>
+<li>
+<p>3D划分k-d tree</p>
+<p><img alt="_images/3dtree.png" src="../assets/3dtree.png" /></p>
+<p><img alt="_images/kdtree_mug.jpg" src="../assets/kdtree_mug.jpg" /></p>
+</li>
+</ul>
+<h3 id="_4">代码示例<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>以下案例通过两种方式进行邻域搜索</p>
+<ul>
+<li>方式一：指定搜索最近的K个邻居</li>
+<li>方式二：通过指定半径搜索邻居</li>
+</ul>
+<p><code>kd_tree.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/point_cloud.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/kdtree/kdtree_flann.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
+<span class="c1">//#include &lt;pcl/search/kdtree.h&gt;</span>
+<span class="c1">//#include &lt;pcl/search/impl/search.hpp&gt;</span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/cloud_viewer.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 用系统时间初始化随机种子</span>
+    <span class="n">srand</span><span class="p">(</span><span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+
+    <span class="c1">// 生成点云数据1000个</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// 1 表示点云为无序点云</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">*</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">);</span>
+
+    <span class="c1">// 给点云填充数据 0 - 1023</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 创建KdTree的实现类KdTreeFLANN (Fast Library for Approximate Nearest Neighbor)</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">KdTreeFLANN</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">kdtree</span><span class="p">;</span>
+    <span class="c1">// pcl::search::KdTree&lt;pcl::PointXYZ&gt; kdtree;</span>
+    <span class="c1">// 设置搜索空间，把cloud作为输入</span>
+    <span class="n">kdtree</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+
+    <span class="c1">// 初始化一个随机的点，作为查询点</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">searchPoint</span><span class="p">;</span>
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+
+    <span class="c1">// K nearest neighbor search</span>
+    <span class="c1">// 方式一：搜索K个最近邻居</span>
+
+    <span class="c1">// 创建K和两个向量来保存搜索到的数据</span>
+    <span class="c1">// K = 10 表示搜索10个临近点</span>
+    <span class="c1">// pointIdxNKNSearch        保存搜索到的临近点的索引</span>
+    <span class="c1">// pointNKNSquaredDistance  保存对应临近点的距离的平方</span>
+    <span class="kt">int</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pointIdxNKNSearch</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">pointNKNSquaredDistance</span><span class="p">(</span><span class="n">K</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;K nearest neighbor search at (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;) with K=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">K</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">kdtree</span><span class="p">.</span><span class="n">nearestKSearch</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pointIdxNKNSearch</span><span class="p">,</span> <span class="n">pointNKNSquaredDistance</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointIdxNKNSearch</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; (距离平方: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pointNKNSquaredDistance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Neighbors within radius search</span>
+    <span class="c1">// 方式二：通过指定半径搜索</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pointIdxRadiusSearch</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">;</span>
+
+    <span class="c1">// 创建一个随机[0,256)的半径值</span>
+    <span class="kt">float</span> <span class="n">radius</span> <span class="o">=</span> <span class="mf">256.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Neighbors within radius search at (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;) with radius=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">radius</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">kdtree</span><span class="p">.</span><span class="n">radiusSearch</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">pointIdxRadiusSearch</span><span class="p">,</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointIdxRadiusSearch</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; (距离平方:: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;PCL Viewer&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="s">&quot;cloud&quot;</span><span class="p">);</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">originPoint</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// 添加从原点到搜索点的线段</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">originPoint</span><span class="p">,</span> <span class="n">searchPoint</span><span class="p">);</span>
+    <span class="c1">// 添加一个以搜索点为圆心，搜索半径为半径的球体</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addSphere</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="s">&quot;sphere&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// 添加一个放到200倍后的坐标系</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addCoordinateSystem</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>实现效果：</li>
+</ul>
+<p><img alt="" src="../assets/k-d_tree_search.png" /></p>
+<h3 id="_5">输出结果<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>K nearest neighbor search at (834.26 469.506 42.1248) with K=10
+    811.675 503.8 11.0198 (距离平方: 2653.71)
+    831.143 528.575 49.1108 (距离平方: 3547.73)
+    895.526 474.046 15.4881 (距离平方: 4483.69)
+    800.533 404.722 17.5067 (距离平方: 5940.43)
+    883.627 521.055 80.4733 (距离平方: 6565.14)
+    812.125 504.955 118.511 (距离平方: 7581.4)
+    945.496 505.443 62.8462 (距离平方: 14094.3)
+    768.686 368.386 8.52981 (距离平方: 15653.6)
+    946.231 536.488 38.1303 (距离平方: 17040.2)
+    716.405 516.283 75.6063 (距离平方: 17198.9)
+Neighbors within radius search at (834.26 469.506 42.1248) with radius=89.2612
+    811.675 503.8 11.0198 (距离平方:: 2653.71)
+    831.143 528.575 49.1108 (距离平方:: 3547.73)
+    895.526 474.046 15.4881 (距离平方:: 4483.69)
+    800.533 404.722 17.5067 (距离平方:: 5940.43)
+    883.627 521.055 80.4733 (距离平方:: 6565.14)
+    812.125 504.955 118.511 (距离平方:: 7581.4)
+</code></pre></div>
+
+<h2 id="octree">点云分解之octree八叉树<a class="headerlink" href="#octree" title="Permanent link">&para;</a></h2>
+<p>建立空间索引在点云数据处理中已被广泛应用，常见空间索引一般是自顶向下逐级划分空间的各种空间索引结构，比较有代表性的包括 BSP 树、KD 树、KDB 树、 R树、R+树、CELL 树、四叉树和八叉树等索引结构，而在这些结构中 KD 树和八叉树在 3D点云数据排列中应用较为广泛。 PCL 对八叉树的数据结构建立和索引方法进行了实现，以方便在此基础上对点云进行处理操作 。</p>
+<h3 id="_6">原理概述<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/octree.png" /></p>
+<p>八叉树（Octree）的定义是：若不为空树的话，树中任一节点的子节点恰好只会有八个，或零个，也就是子节点不会有0与8以外的数目。那么，这要用来做什么？想象一个<a href="https://baike.baidu.com/item/立方体">立方体</a>，我们最少可以切成多少个相同等分的小立方体？答案就是8个。再想象我们有一个房间，房间里某个角落藏着一枚金币，我们想很快的把金币找出来，聪明的你会怎么做？我们可以把房间当成一个立方体，先切成八个小立方体，然后排除掉没有放任何东西的小立方体，再把有可能藏金币的小立方体继续切八等份….如此下去，平均在<span><span class="MathJax_Preview">log_8(n)</span><script type="math/tex">log_8(n)</script></span> （n表示房间内的所有物体数）的时间内就可找到金币。因此，八叉树就是用在3D空间中的场景管理，可以很快地知道物体在3D场景中的位置，或侦测与其它物体是否有碰撞以及是否在可视范围内。</p>
+<div class="admonition info">
+<p class="admonition-title">体素</p>
+<p>这里引入了一个概念：<code>Voxel</code>翻译为体积元素，简称体素。描述了一个预设的最小单位的正方体</p>
+</div>
+<p>pcl的octree库提供了从点云数据创建具有层次的数据结构的方法。这样就可以对点数据集进行空间分区，下采样和搜索操作。每个八叉树节点有八个子节点或没有子节点。根节点描述了一个包围所有点的3维包容盒子。</p>
+<p>pcl_octree实现提供了有效的最近邻居搜索（邻域搜索）API，例如“ 体素（Voxel）邻居搜索”，“ K最近邻居搜索”和“半径搜索邻居”。叶子节点类也提供其他功能，例如空间“占用率”和“每个体素（Voxel）的点密度”检查；序列化和反序列化功能可将八叉树结构有效地编码为二进制格式；此外，内存池实现减少了昂贵的内存分配和释放操作，以便快速创建八叉树。</p>
+<p>下图说明了最低树级别的八叉树节点的体素边界框。八叉树体素围绕着兔子表面的每个3D点。红点代表点数据。该图像是使用octree_viewer创建的（<code>visualization/tools/octree_viewer</code>）。</p>
+<p><img alt="" src="../assets/octree_bunny.png" /></p>
+<h3 id="_7">代码示例<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><code>octree.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/point_cloud.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/octree/octree_search.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;ctime&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/cloud_viewer.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">srand</span><span class="p">((</span><span class="kt">unsigned</span> <span class="kt">int</span><span class="p">)</span> <span class="n">time</span><span class="p">(</span><span class="nb">NULL</span><span class="p">));</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+
+    <span class="c1">// Generate pointcloud data</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">*</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">);</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="p">}</span>
+
+<span class="c1">//    float resolution = 0.01f;</span>
+    <span class="c1">// 设置分辨率为128</span>
+    <span class="kt">float</span> <span class="n">resolution</span> <span class="o">=</span> <span class="mf">128.0f</span><span class="p">;</span>
+    <span class="c1">// resolution该参数描述了octree叶子leaf节点的最小体素尺寸。</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">octree</span><span class="o">::</span><span class="n">OctreePointCloudSearch</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">octree</span><span class="p">(</span><span class="n">resolution</span><span class="p">);</span>
+    <span class="c1">// 设置输入点云</span>
+    <span class="n">octree</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="c1">// 通过点云构建octree</span>
+    <span class="n">octree</span><span class="p">.</span><span class="n">addPointsFromInputCloud</span><span class="p">();</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">searchPoint</span><span class="p">;</span>
+
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1024.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+
+    <span class="c1">// Neighbors within voxel search</span>
+    <span class="c1">// 方式一：“体素近邻搜索”,它把查询点所在的体素中其他点的索引作为查询结果返回,</span>
+    <span class="c1">// 结果以点索引向量的形式保存,因此搜索点和搜索结果之间的距离取决于八叉树的分辨率参数</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pointIdxVec</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">octree</span><span class="p">.</span><span class="n">voxelSearch</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">pointIdxVec</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Neighbors within voxel search at (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointIdxVec</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxVec</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxVec</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxVec</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// K nearest neighbor search</span>
+    <span class="c1">// 方式二：K 近邻搜索,本例中K被设置成10, &quot;K 近邻搜索”方法把搜索结果写到两个分开的向量中,</span>
+    <span class="c1">// 第一个pointIdxNKNSearch 包含搜索结果〈结果点的索引的向量〉</span>
+    <span class="c1">// 第二个pointNKNSquaredDistance 保存相应的搜索点和近邻之间的距离平方。</span>
+    <span class="kt">int</span> <span class="n">K</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pointIdxNKNSearch</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">pointNKNSquaredDistance</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;K nearest neighbor search at (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;) with K=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">K</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">octree</span><span class="p">.</span><span class="n">nearestKSearch</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">pointIdxNKNSearch</span><span class="p">,</span> <span class="n">pointNKNSquaredDistance</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointIdxNKNSearch</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxNKNSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; (squared distance: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pointNKNSquaredDistance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Neighbors within radius search</span>
+    <span class="c1">// 方式三：半径内近邻搜索</span>
+    <span class="c1">// “半径内近邻搜索”原理和“K 近邻搜索”类似,它的搜索结果被写入两个分开的向量中,</span>
+    <span class="c1">// 这两个向量分别存储结果点的索引和对应的距离平方</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pointIdxRadiusSearch</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">;</span>
+
+    <span class="kt">float</span> <span class="n">radius</span> <span class="o">=</span> <span class="mf">256.0f</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Neighbors within radius search at (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">x</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">y</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">searchPoint</span><span class="p">.</span><span class="n">z</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;) with radius=&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">radius</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">octree</span><span class="p">.</span><span class="n">radiusSearch</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">pointIdxRadiusSearch</span><span class="p">,</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">pointIdxRadiusSearch</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">pointIdxRadiusSearch</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span>
+                      <span class="o">&lt;&lt;</span> <span class="s">&quot; (squared distance: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pointRadiusSquaredDistance</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;PCL Viewer&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="s">&quot;cloud&quot;</span><span class="p">);</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">originPoint</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">);</span>
+    <span class="c1">// 添加从原点到搜索点的线段</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addLine</span><span class="p">(</span><span class="n">originPoint</span><span class="p">,</span> <span class="n">searchPoint</span><span class="p">);</span>
+    <span class="c1">// 添加一个以搜索点为圆心，搜索半径为半径的球体</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addSphere</span><span class="p">(</span><span class="n">searchPoint</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="s">&quot;sphere&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// 添加一个放到200倍后的坐标系</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addCoordinateSystem</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>实现效果</li>
+</ul>
+<p><img alt="" src="../assets/octree_demo.png" /></p>
+<h3 id="_8">输出结果<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Neighbors within voxel search at (728.352 1014.11 497.288)
+    729.309 1011.36 507.391
+    721.727 991.49 509.558
+    716.92 964.8 509.156
+K nearest neighbor search at (728.352 1014.11 497.288) with K=10
+    729.309 1011.36 507.391 (squared distance: 110.546)
+    721.727 991.49 509.558 (squared distance: 706.013)
+    716.92 964.8 509.156 (squared distance: 2702.8)
+    781.837 1019.12 509.644 (squared distance: 3038.46)
+    734.146 947.255 527.363 (squared distance: 5407.46)
+    836.586 959.091 485.1 (squared distance: 14890.1)
+    689.258 915.96 432.53 (squared distance: 15355)
+    614.725 975.407 534.96 (squared distance: 15828.2)
+    692 1004.47 645.421 (squared distance: 23357.9)
+    755.147 949.876 359.909 (squared distance: 23716.8)
+Neighbors within radius search at (728.352 1014.11 497.288) with radius=149.97
+    689.258 915.96 432.53 (squared distance: 15355)
+    729.309 1011.36 507.391 (squared distance: 110.546)
+    721.727 991.49 509.558 (squared distance: 706.013)
+    716.92 964.8 509.156 (squared distance: 2702.8)
+    614.725 975.407 534.96 (squared distance: 15828.2)
+    734.146 947.255 527.363 (squared distance: 5407.46)
+    836.586 959.091 485.1 (squared distance: 14890.1)
+    781.837 1019.12 509.644 (squared distance: 3038.46)
+</code></pre></div>
+
+<h3 id="pcl_octree_viewer">pcl_octree_viewer工具<a class="headerlink" href="#pcl_octree_viewer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>a -&gt; 增加显示深度（减小体素大小）</li>
+<li>z -&gt; 降低显示深度 （增加体素大小）</li>
+<li>v -&gt; 隐藏或显示octree立方体</li>
+<li>b -&gt; 隐藏或显示体素中心店</li>
+<li>n -&gt; 隐藏或显示原始点云</li>
+<li>q -&gt; 退出</li>
+</ul>
+<p><img alt="" src="../assets/octree_viewer.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../io/" title="02-点云输入输出 *" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                02-点云输入输出 *
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../chapter02/" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                学习目标
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

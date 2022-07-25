@@ -1,0 +1,1480 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 Python基础">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>六、面向对象 - 黑马机器人—Python</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="黑马机器人—Python" aria-label="黑马机器人—Python" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              黑马机器人—Python
+            </span>
+            <span class="md-header-nav__topic">
+              
+                六、面向对象
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="黑马机器人—Python" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—Python
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      day01-Python基础
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        day01-Python基础
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/01_intro/" title="一、Python简介" class="md-nav__link">
+      一、Python简介
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/02_env/" title="二、Python开发环境搭建" class="md-nav__link">
+      二、Python开发环境搭建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/03_command/" title="三、程序注释" class="md-nav__link">
+      三、程序注释
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/04_var_type/" title="四、变量和数据类型" class="md-nav__link">
+      四、变量和数据类型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/05_console_io/" title="五、输入和输出函数" class="md-nav__link">
+      五、输入和输出函数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/06_operator/" title="六、其它运算符" class="md-nav__link">
+      六、其它运算符
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/07_if/" title="七、条件控制语句if" class="md-nav__link">
+      七、条件控制语句if
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/08_exercise/" title="八、综合应用-石头剪刀布" class="md-nav__link">
+      八、综合应用-石头剪刀布
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      day02-循环和列表
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        day02-循环和列表
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/01_while/" title="一、while循环" class="md-nav__link">
+      一、while循环
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/02_multi/" title="二、循环练习-九九乘法表" class="md-nav__link">
+      二、循环练习-九九乘法表
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/03_for_range/" title="三、for循环和range" class="md-nav__link">
+      三、for循环和range
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/04_exercise/" title="四、for循环练习" class="md-nav__link">
+      四、for循环练习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/05_list/" title="五、列表" class="md-nav__link">
+      五、列表
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      day03-元组和函数
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        day03-元组和函数
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/01_exercise/" title="一、列表练习" class="md-nav__link">
+      一、列表练习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/02_tuple/" title="二、元组" class="md-nav__link">
+      二、元组
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/03_function/" title="三、函数" class="md-nav__link">
+      三、函数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/04_module/" title="四、模块" class="md-nav__link">
+      四、模块
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/05_heima_card/" title="五、黑马名片管理系统" class="md-nav__link">
+      五、黑马名片管理系统
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      day04-PyQt
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        day04-PyQt
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/01_intro/" title="一、PyQt简介" class="md-nav__link">
+      一、PyQt简介
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/02_env/" title="二、PyQt环境搭建" class="md-nav__link">
+      二、PyQt环境搭建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/03_window/" title="三、PyQt窗口处理" class="md-nav__link">
+      三、PyQt窗口处理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/04_text_img/" title="四、文本和图片" class="md-nav__link">
+      四、文本和图片
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/05_input/" title="五、输入框" class="md-nav__link">
+      五、输入框
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/06_btn/" title="六、按钮控件" class="md-nav__link">
+      六、按钮控件
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/07_signal_slot/" title="七、信号和槽" class="md-nav__link">
+      七、信号和槽
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/08_layout/" title="八、布局" class="md-nav__link">
+      八、布局
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/09_dialog/" title="九、对话框控件" class="md-nav__link">
+      九、对话框控件
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/10_box/" title="十、单选框和复选框" class="md-nav__link">
+      十、单选框和复选框
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      day05-高级变量和公共语法
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        day05-高级变量和公共语法
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/01_set/" title="一、集合" class="md-nav__link">
+      一、集合
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/02_str/" title="二、字符串" class="md-nav__link">
+      二、字符串
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/03_dict/" title="三、字典" class="md-nav__link">
+      三、字典
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/04_exercise/" title="四、高级变量练习" class="md-nav__link">
+      四、高级变量练习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/05_common/" title="五、高级变量类型的公共语法" class="md-nav__link">
+      五、高级变量类型的公共语法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/06_slice/" title="六、切片" class="md-nav__link">
+      六、切片
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/07_exercise/" title="七、高级变量练习" class="md-nav__link">
+      七、高级变量练习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/08_inferential/" title="八、推导式" class="md-nav__link">
+      八、推导式
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
+    
+    <label class="md-nav__link" for="nav-6">
+      day06-特殊参数/文件IO/面向对象
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        day06-特殊参数/文件IO/面向对象
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01_default_param/" title="一、默认参数和关键字参数" class="md-nav__link">
+      一、默认参数和关键字参数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02_var_param/" title="二、可变参数" class="md-nav__link">
+      二、可变参数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03_recursive/" title="三、递归函数" class="md-nav__link">
+      三、递归函数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04_io/" title="四、文件I/O" class="md-nav__link">
+      四、文件I/O
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05_exercise/" title="五、文件I/O练习" class="md-nav__link">
+      五、文件I/O练习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        六、面向对象
+      </label>
+    
+    <a href="./" title="六、面向对象" class="md-nav__link md-nav__link--active">
+      六、面向对象
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 面向对象和面向过程思想
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 类和对象
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 类的组成
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    方法的定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    成员属性
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      day07-面向对象
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        day07-面向对象
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/01_func/" title="一、特殊方法和参数" class="md-nav__link">
+      一、特殊方法和参数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/02_phone/" title="二、面向对象手机案例" class="md-nav__link">
+      二、面向对象手机案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/03_furniture/" title="三、搬家具案例" class="md-nav__link">
+      三、搬家具案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/04_private/" title="四、私有化" class="md-nav__link">
+      四、私有化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/05_object_feature/" title="五、面向对象三大特征" class="md-nav__link">
+      五、面向对象三大特征
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/06_counter_strike/" title="六、反恐精英" class="md-nav__link">
+      六、反恐精英
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      day08-模块和包/异常
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        day08-模块和包/异常
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/01_module_package/" title="一、模块和包" class="md-nav__link">
+      一、模块和包
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/02_inner_module/" title="二、系统的内置模块" class="md-nav__link">
+      二、系统的内置模块
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/03_exception/" title="三、异常" class="md-nav__link">
+      三、异常
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      day09-飞机大战
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        day09-飞机大战
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day09/01_pygame/" title="一、pygame" class="md-nav__link">
+      一、pygame
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day09/02_plane_game/" title="二、飞机大战" class="md-nav__link">
+      二、飞机大战
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10">
+    
+    <label class="md-nav__link" for="nav-10">
+      day10-贪吃蛇
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-10">
+        day10-贪吃蛇
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day10/snake/" title="贪吃蛇" class="md-nav__link">
+      贪吃蛇
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 面向对象和面向过程思想
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 类和对象
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 类的组成
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    方法的定义
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    成员属性
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">六、面向对象<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+<h2 id="1">1. 面向对象和面向过程思想<a class="headerlink" href="#1" title="Permanent link">#</a></h2>
+<blockquote>
+<p><strong>面向对象</strong>和<strong>面向过程</strong>都是一种编程思想,就是解决问题的思路</p>
+</blockquote>
+<ul>
+<li>面向对象:OOP(Object Oriented Programming)</li>
+</ul>
+<p>常见的面向对象语言包括:java c++ go python koltin</p>
+<ul>
+<li>面向过程:POP(Process Oriented Programming)</li>
+</ul>
+<p>面向过程语言代表是c语言</p>
+<blockquote>
+<p>我们看同一个问题,面向过程和面向对象是怎么解决的?</p>
+<p>中午想吃西红柿炒鸡蛋怎么办呢?</p>
+</blockquote>
+<p><strong>面向过程思想</strong></p>
+<p><img alt="" src="../img/1.png" /></p>
+<blockquote>
+<p>面向过程解决问题必须要知道完成这个功能每一步的操作</p>
+</blockquote>
+<ul>
+<li>面向过程思想,强调的是<strong>过程(动作)</strong></li>
+<li>而完成这个功能我们充当的角色是<strong>执行者</strong>的角色</li>
+</ul>
+<p><strong>面向对象思想</strong></p>
+<blockquote>
+<p>同样是中午想吃西红柿炒鸡蛋,</p>
+<p>直接到饿了么上下个单,老板就把西红柿炒鸡蛋做好送过来了</p>
+<p>餐馆老板具备做西红柿炒鸡蛋的功能,直接调用他的功能即可,不需要知道具体的流程</p>
+</blockquote>
+<ul>
+<li>面向对象思想:不再关注具体的过程</li>
+<li>功能里面充当的角色是<strong>指挥者</strong>的角色</li>
+</ul>
+<p><strong>面向过程和面向对象的总结</strong></p>
+<p>面向对象,强调的是<strong>对象(实体)</strong></p>
+<p>面向对象是一种思想,更加符合人的思维习惯</p>
+<p>面向对象使复杂的问题简单化了</p>
+<p>面向对象的出现,让曾经在过程中的<strong>执行者</strong>,编程了对象中的<strong>指挥者</strong></p>
+<h2 id="2">2. 类和对象<a class="headerlink" href="#2" title="Permanent link">#</a></h2>
+<blockquote>
+<p>类和对象是面向对象非常重要的概念</p>
+</blockquote>
+<ul>
+<li>类是描述了一种类型(相当于图纸)</li>
+<li>对象是这个类型的具体实现(相当于图纸具体实现)</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>思考:
+狗和旺财,哪个是类,哪个是对象?
+</code></pre></div>
+</td></tr></table>
+
+<blockquote>
+<p>狗是一个类型,属于类</p>
+<p>旺财是狗的实现,属于对象</p>
+</blockquote>
+<p><strong>定义类和创建对象</strong></p>
+<blockquote>
+<p>类的定义格式:</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">类名</span><span class="p">:</span>
+    <span class="k">pass</span>
+</code></pre></div>
+</td></tr></table>
+
+<blockquote>
+<p>创建对象</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>对象名 = 类名()
+</code></pre></div>
+</td></tr></table>
+
+<blockquote>
+<p>代码演示:</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># 定义类</span>
+<span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="c1"># 创建对象</span>
+<span class="n">p1</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h2 id="3">3. 类的组成<a class="headerlink" href="#3" title="Permanent link">#</a></h2>
+<blockquote>
+<p>类可以描述世间万物</p>
+<p>类都需要有类名,也应该具备一些<strong>静态属性</strong>和<strong>动态的行为</strong></p>
+</blockquote>
+<ul>
+<li>类的关键字:class</li>
+<li>类的名称:类名</li>
+<li>类的属性:一组数据</li>
+<li>类的方法:允许进行操作的方法(行为)</li>
+</ul>
+<blockquote>
+<p>人Person类应该具备什么属性和行为呢?</p>
+<p>属性:姓名(name) 、年纪(age)</p>
+<p>方法:跑(run)、说话(say)</p>
+</blockquote>
+<h3 id="_2">方法的定义<a class="headerlink" href="#_2" title="Permanent link">#</a></h3>
+<blockquote>
+<p>成员方法的定义格式为:</p>
+<p>def 函数名(self)</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="c1"># 定义成员方法sayHello</span>
+    <span class="k">def</span> <span class="nf">sayHello</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;hello&#39;</span><span class="p">)</span>
+    <span class="c1"># 定义成员方法run</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;跑&#39;</span><span class="p">)</span>
+
+<span class="c1"># 创建对象</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">()</span>
+<span class="c1"># 调用成员方法</span>
+<span class="n">p</span><span class="o">.</span><span class="n">sayHello</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<blockquote>
+<p>注意:</p>
+<p>成员方法有都有参数self,调用的时候不需要传递self</p>
+</blockquote>
+<h3 id="_3">成员属性<a class="headerlink" href="#_3" title="Permanent link">#</a></h3>
+<blockquote>
+<p>成员属性的定义需要在__init__方法下定义</p>
+<p>格式:</p>
+<p>def __init__(self):</p>
+<p>​     self.属性 = 属性值</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">Person</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">name</span><span class="p">,</span><span class="n">age</span><span class="p">):</span>
+        <span class="c1"># 成员属性</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span>
+
+<span class="c1"># 创建对象</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">Person</span><span class="p">(</span><span class="s1">&#39;张三&#39;</span><span class="p">,</span><span class="mi">30</span><span class="p">)</span>
+<span class="c1"># 访问成员属性</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">age</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../05_exercise/" title="五、文件I/O练习" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                五、文件I/O练习
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../day07/01_func/" title="一、特殊方法和参数" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                一、特殊方法和参数
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1192 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>04-关键点Keypoints - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#03-keypoints" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                04-关键点Keypoints
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        04-关键点Keypoints
+      </label>
+    
+    <a href="./" title="04-关键点Keypoints" class="md-nav__link md-nav__link--active">
+      04-关键点Keypoints
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    关键点概念及算法
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    关键点概念及算法
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="03-keypoints">03-关键点Keypoints<a class="headerlink" href="#03-keypoints" title="Permanent link">&para;</a></h1>
+<p>关键点也称为兴趣点，它是 2D 图像或 3D 点云或曲面模型上,可以通过检测标准来获取的具有<strong>稳定性、区别性</strong>的点集。从技术上来说,关键点的数量比原始点云或图像的数据量少很多，其与局部特征描述子结合组成关键点描述子。常用来构成原始数据的紧凑表示 ，具有代表性与描述性，从而加快后续识别、追踪等对数据的处理速度 。 </p>
+<p>固而，关键点提取就成为 2D 与 3D 信息处理中不可或缺的关键技术 。</p>
+<h2 id="_1">关键点概念及算法<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>NARF（Normal Aligned Radial Feature）关键点是为了从深度图像中识别物体而提出的，关键点探测的重要一步是减少特征提取时的搜索空间，把重点放在重要的结构上，对 NARF 关键点提取过程有以下要求：</p>
+<ul>
+<li>提取的过程必须考虑边缘以及物体表面变化信息</li>
+<li>即使换了不同的视角，关键点的位置必须稳定的可以被重复探测</li>
+<li>关键点所在的位置必须有稳定的支持区域，可以计算描述子和估计唯一的法向量。</li>
+</ul>
+<p>为了满足上述要求，可以通过以下探测步骤来进行关键点提取：</p>
+<ol>
+<li>遍历每个深度图像点，通过寻找在近邻区域有深度突变的位置进行边缘检测；</li>
+<li>历每个深度图像点，根据近邻区域的表面变化决定一测度表面变化的系数，以及变化的主方向；</li>
+<li>根据第2步找到的主方向计算兴趣值，表征该方向与其他方向的不同，以及该处表面的变化情况，即该点有多稳定；</li>
+<li>对兴趣值进行平滑过滤；</li>
+<li>进行无最大值压缩找到最终的关键点，即为 NARF 关键点。</li>
+</ol>
+<h2 id="_2">代码实现<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><code>narf_keypoint_extraction.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cm">/* \author Bastian Steder */</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;boost/thread/thread.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/range_image/range_image.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/range_image_visualizer.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/range_image_border_extractor.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/keypoints/narf_keypoint.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/console/parse.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">PointType</span><span class="p">;</span>
+
+<span class="c1">// --------------------</span>
+<span class="c1">// -----Parameters-----</span>
+<span class="c1">// --------------------</span>
+<span class="kt">float</span> <span class="n">angular_resolution</span> <span class="o">=</span> <span class="mf">0.5f</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">support_size</span> <span class="o">=</span> <span class="mf">0.2f</span><span class="p">;</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span><span class="o">::</span><span class="n">CoordinateFrame</span> <span class="n">coordinate_frame</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span><span class="o">::</span><span class="n">CAMERA_FRAME</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">setUnseenToMaxRange</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="c1">// --------------</span>
+<span class="c1">// -----Help-----</span>
+<span class="c1">// --------------</span>
+<span class="kt">void</span>
+<span class="nf">printUsage</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">progName</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">Usage: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">progName</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; [options] &lt;scene.pcd&gt;</span><span class="se">\n\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;Options:</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-------------------------------------------</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-r &lt;float&gt;   angular resolution in degrees (default &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">angular_resolution</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-c &lt;int&gt;     coordinate frame (default &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">coordinate_frame</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-m           Treat all unseen points as maximum range readings</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-s &lt;float&gt;   support size for the interest points (diameter of the used sphere - &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;default &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">support_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;)</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;-h           this help</span><span class="se">\n</span><span class="s">&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">//void </span>
+<span class="c1">//setViewerPose (pcl::visualization::PCLVisualizer&amp; viewer, const Eigen::Affine3f&amp; viewer_pose)</span>
+<span class="c1">//{</span>
+<span class="c1">//Eigen::Vector3f pos_vector = viewer_pose * Eigen::Vector3f (0, 0, 0);</span>
+<span class="c1">//Eigen::Vector3f look_at_vector = viewer_pose.rotation () * Eigen::Vector3f (0, 0, 1) + pos_vector;</span>
+<span class="c1">//Eigen::Vector3f up_vector = viewer_pose.rotation () * Eigen::Vector3f (0, -1, 0);</span>
+<span class="c1">//viewer.setCameraPosition (pos_vector[0], pos_vector[1], pos_vector[2],</span>
+<span class="c1">//look_at_vector[0], look_at_vector[1], look_at_vector[2],</span>
+<span class="c1">//up_vector[0], up_vector[1], up_vector[2]);</span>
+<span class="c1">//}</span>
+
+<span class="c1">// --------------</span>
+<span class="c1">// -----Main-----</span>
+<span class="c1">// --------------</span>
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// --------------------------------------</span>
+    <span class="c1">// -----Parse Command Line Arguments-----</span>
+    <span class="c1">// --------------------------------------</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">find_argument</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;-h&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printUsage</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">find_argument</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;-m&quot;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">setUnseenToMaxRange</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Setting unseen values in range image to maximum range readings.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">tmp_coordinate_frame</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;-c&quot;</span><span class="p">,</span> <span class="n">tmp_coordinate_frame</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">coordinate_frame</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span><span class="o">::</span><span class="n">CoordinateFrame</span><span class="p">(</span><span class="n">tmp_coordinate_frame</span><span class="p">);</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Using coordinate frame &quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">coordinate_frame</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;-s&quot;</span><span class="p">,</span> <span class="n">support_size</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Setting support size to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">support_size</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">parse</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;-r&quot;</span><span class="p">,</span> <span class="n">angular_resolution</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Setting angular resolution to &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">angular_resolution</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;deg.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="n">angular_resolution</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">::</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">angular_resolution</span><span class="p">);</span>
+
+    <span class="c1">// ------------------------------------------------------------------</span>
+    <span class="c1">// -----Read pcd file or create example point cloud if not given-----</span>
+    <span class="c1">// ------------------------------------------------------------------</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">point_cloud_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointType</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">point_cloud</span> <span class="o">=</span> <span class="o">*</span><span class="n">point_cloud_ptr</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointWithViewpoint</span><span class="o">&gt;</span> <span class="n">far_ranges</span><span class="p">;</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span> <span class="n">scene_sensor_pose</span><span class="p">(</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="o">::</span><span class="n">Identity</span> <span class="p">());</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">pcd_filename_indices</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">parse_file_extension_argument</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span> <span class="s">&quot;pcd&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">pcd_filename_indices</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">filename</span> <span class="o">=</span> <span class="n">argv</span><span class="p">[</span><span class="n">pcd_filename_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]];</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">point_cloud</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Was not able to open file </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s">.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+            <span class="n">printUsage</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+            <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="n">scene_sensor_pose</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="p">(</span><span class="n">Eigen</span><span class="o">::</span><span class="n">Translation3f</span><span class="p">(</span><span class="n">point_cloud</span><span class="p">.</span><span class="n">sensor_origin_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                                 <span class="n">point_cloud</span><span class="p">.</span><span class="n">sensor_origin_</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                                 <span class="n">point_cloud</span><span class="p">.</span><span class="n">sensor_origin_</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span> <span class="o">*</span>
+                            <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="p">(</span><span class="n">point_cloud</span><span class="p">.</span><span class="n">sensor_orientation_</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">far_ranges_filename</span> <span class="o">=</span> <span class="n">pcl</span><span class="o">::</span><span class="n">getFilenameWithoutExtension</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="o">+</span> <span class="s">&quot;_far_ranges.pcd&quot;</span><span class="p">;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="n">far_ranges_filename</span><span class="p">.</span><span class="n">c_str</span><span class="p">(),</span> <span class="n">far_ranges</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Far ranges file </span><span class="se">\&quot;</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">far_ranges_filename</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\&quot;</span><span class="s"> does not exists.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">setUnseenToMaxRange</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">No *.pcd file given =&gt; Generating example point cloud.</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">;</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mf">0.5f</span><span class="p">;</span> <span class="n">x</span> <span class="o">+=</span> <span class="mf">0.01f</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">float</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.5f</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="mf">0.5f</span><span class="p">;</span> <span class="n">y</span> <span class="o">+=</span> <span class="mf">0.01f</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">PointType</span> <span class="n">point</span><span class="p">;</span>
+                <span class="n">point</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+                <span class="n">point</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+                <span class="n">point</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">2.0f</span> <span class="o">-</span> <span class="n">y</span><span class="p">;</span>
+                <span class="n">point_cloud</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">point</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="n">point_cloud</span><span class="p">.</span><span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">point_cloud</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">point_cloud</span><span class="p">.</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// -----------------------------------------------</span>
+    <span class="c1">// -----Create RangeImage from the PointCloud-----</span>
+    <span class="c1">// -----------------------------------------------</span>
+    <span class="kt">float</span> <span class="n">noise_level</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="n">min_range</span> <span class="o">=</span> <span class="mf">0.0f</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">border_size</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span><span class="o">&gt;</span> <span class="n">range_image_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">RangeImage</span> <span class="o">&amp;</span><span class="n">range_image</span> <span class="o">=</span> <span class="o">*</span><span class="n">range_image_ptr</span><span class="p">;</span>
+    <span class="n">range_image</span><span class="p">.</span><span class="n">createFromPointCloud</span><span class="p">(</span><span class="n">point_cloud</span><span class="p">,</span> <span class="n">angular_resolution</span><span class="p">,</span>
+                                     <span class="n">pcl</span><span class="o">::</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">360.0f</span><span class="p">),</span> <span class="n">pcl</span><span class="o">::</span><span class="n">deg2rad</span><span class="p">(</span><span class="mf">180.0f</span><span class="p">),</span>
+                                     <span class="n">scene_sensor_pose</span><span class="p">,</span> <span class="n">coordinate_frame</span><span class="p">,</span> <span class="n">noise_level</span><span class="p">,</span> <span class="n">min_range</span><span class="p">,</span> <span class="n">border_size</span><span class="p">);</span>
+    <span class="n">range_image</span><span class="p">.</span><span class="n">integrateFarRanges</span><span class="p">(</span><span class="n">far_ranges</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">setUnseenToMaxRange</span><span class="p">)</span>
+        <span class="n">range_image</span><span class="p">.</span><span class="n">setUnseenToMaxRange</span><span class="p">();</span>
+
+    <span class="c1">// --------------------------------------------</span>
+    <span class="c1">// -----Open 3D viewer and add point cloud-----</span>
+    <span class="c1">// --------------------------------------------</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;3D Viewer&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointWithRange</span><span class="o">&gt;</span> <span class="n">range_image_color_handler</span><span class="p">(</span><span class="n">range_image_ptr</span><span class="p">,</span>
+                                                                                                    <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="p">(</span><span class="n">range_image_ptr</span><span class="p">,</span> <span class="n">range_image_color_handler</span><span class="p">,</span> <span class="s">&quot;range image&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;range image&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addCoordinateSystem</span> <span class="p">(</span><span class="mf">1.0f</span><span class="p">,</span> <span class="s">&quot;global&quot;</span><span class="p">);</span>
+    <span class="c1">//PointCloudColorHandlerCustom&lt;PointType&gt; point_cloud_color_handler (point_cloud_ptr, 150, 150, 150);</span>
+    <span class="c1">//viewer.addPointCloud (point_cloud_ptr, point_cloud_color_handler, &quot;original point cloud&quot;);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">initCameraParameters</span><span class="p">();</span>
+    <span class="c1">//setViewerPose (viewer, range_image.getTransformationToWorldSystem ());</span>
+
+    <span class="c1">// --------------------------</span>
+    <span class="c1">// -----Show range image-----</span>
+    <span class="c1">// --------------------------</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">RangeImageVisualizer</span> <span class="n">range_image_widget</span><span class="p">(</span><span class="s">&quot;Range image&quot;</span><span class="p">);</span>
+    <span class="n">range_image_widget</span><span class="p">.</span><span class="n">showRangeImage</span><span class="p">(</span><span class="n">range_image</span><span class="p">);</span>
+
+    <span class="c1">// --------------------------------</span>
+    <span class="c1">// -----Extract NARF keypoints-----</span>
+    <span class="c1">// --------------------------------</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">RangeImageBorderExtractor</span> <span class="n">range_image_border_extractor</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">NarfKeypoint</span> <span class="n">narf_keypoint_detector</span><span class="p">(</span><span class="o">&amp;</span><span class="n">range_image_border_extractor</span><span class="p">);</span>
+    <span class="n">narf_keypoint_detector</span><span class="p">.</span><span class="n">setRangeImage</span><span class="p">(</span><span class="o">&amp;</span><span class="n">range_image</span><span class="p">);</span>
+    <span class="n">narf_keypoint_detector</span><span class="p">.</span><span class="n">getParameters</span><span class="p">().</span><span class="n">support_size</span> <span class="o">=</span> <span class="n">support_size</span><span class="p">;</span>
+    <span class="c1">//narf_keypoint_detector.getParameters ().add_points_on_straight_edges = true;</span>
+    <span class="c1">//narf_keypoint_detector.getParameters ().distance_for_additional_points = 0.5;</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">keypoint_indices</span><span class="p">;</span>
+    <span class="n">narf_keypoint_detector</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="n">keypoint_indices</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Found &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">keypoint_indices</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; key points.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+
+    <span class="c1">// ----------------------------------------------</span>
+    <span class="c1">// -----Show keypoints in range image widget-----</span>
+    <span class="c1">// ----------------------------------------------</span>
+    <span class="c1">//for (size_t i=0; i&lt;keypoint_indices.points.size (); ++i)</span>
+    <span class="c1">//range_image_widget.markPoint (keypoint_indices.points[i]%range_image.width,</span>
+    <span class="c1">//keypoint_indices.points[i]/range_image.width);</span>
+
+    <span class="c1">// -------------------------------------</span>
+    <span class="c1">// -----Show keypoints in 3D viewer-----</span>
+    <span class="c1">// -------------------------------------</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">keypoints_ptr</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">keypoints</span> <span class="o">=</span> <span class="o">*</span><span class="n">keypoints_ptr</span><span class="p">;</span>
+    <span class="n">keypoints</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">keypoint_indices</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">());</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">keypoint_indices</span><span class="p">.</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">keypoints</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getVector3fMap</span><span class="p">()</span> <span class="o">=</span> <span class="n">range_image</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">keypoint_indices</span><span class="p">.</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">getVector3fMap</span><span class="p">();</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">keypoints_color_handler</span><span class="p">(</span><span class="n">keypoints_ptr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">keypoints_ptr</span><span class="p">,</span> <span class="n">keypoints_color_handler</span><span class="p">,</span> <span class="s">&quot;keypoints&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="s">&quot;keypoints&quot;</span><span class="p">);</span>
+
+    <span class="c1">//--------------------</span>
+    <span class="c1">// -----Main loop-----</span>
+    <span class="c1">//--------------------</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">range_image_widget</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>  <span class="c1">// process GUI events</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>
+        <span class="n">pcl_sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="_3">输出结果<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>Found 49 key points.
+</code></pre></div>
+
+<h2 id="_4">实现效果<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../assets/narf_keypoint.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../range_image/" title="03-深度图RangeImage" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                03-深度图RangeImage
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                05-随机采样一致性算法RANSAC *
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

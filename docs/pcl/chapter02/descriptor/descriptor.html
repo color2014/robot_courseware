@@ -1,0 +1,1207 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>08-特征检测与描述子 * - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#3d" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                08-特征检测与描述子 *
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        08-特征检测与描述子 *
+      </label>
+    
+    <a href="./" title="08-特征检测与描述子 *" class="md-nav__link md-nav__link--active">
+      08-特征检测与描述子 *
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pfh" class="md-nav__link">
+    PFH点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpfh" class="md-nav__link">
+    FPFH快速点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vfh" class="md-nav__link">
+    VFH视点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#narf" class="md-nav__link">
+    NARF特征点描述子
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pfh" class="md-nav__link">
+    PFH点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fpfh" class="md-nav__link">
+    FPFH快速点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vfh" class="md-nav__link">
+    VFH视点特征直方图描述子
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#narf" class="md-nav__link">
+    NARF特征点描述子
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="3d">3D特征描述子<a class="headerlink" href="#3d" title="Permanent link">&para;</a></h1>
+<p>特征描述子 Feature Descriptor</p>
+<ul>
+<li>是每个特征点独特的身份认证</li>
+<li>同一空间点在不同视角的特征点具有高度相似的描述子</li>
+<li>不同特征点的描述子差异性尽量大</li>
+<li>通常描述子是一个具有固定长度的向量</li>
+</ul>
+<p>描述子可以分为以下几种类型：基于不变性的描述子、基于直方图的描述子、二进制描述子</p>
+<p>PCL主要实现了：</p>
+<p>NARF特征点描述子、PFH（FPFH）点特征直方图描述子、RoPs 特征、VFH视点特征直方图描述子、GASD全局对齐的空间分布描述子、基于惯性矩和偏心率的描述子</p>
+<h2 id="pfh">PFH点特征直方图描述子<a class="headerlink" href="#pfh" title="Permanent link">&para;</a></h2>
+<p>表面法线和曲率估计是某个点周围的几何特征的基本表示方法。虽然计算起来比较容易，但是能够提供的信息并不多。因为他们只是用很少的几个参数值近似地表示一个点的k邻域几何特征。大部分场景下都会有很多相同或相似的特征值，故而只采用点特征就会少了很多全局的特征信息。</p>
+<p>我们可以通过<strong>点特征直方图（Point Feature Histograms， PFH）</strong>来采集全局的特征信息。</p>
+<p><strong>理论基础</strong></p>
+<p>PFH通过参数化查询点与邻域点之间的空间差异信息，形成一个多维直方图对点的k邻域的几何特征进行描述。直方图所在的高维超空间为特征的表示提供了一个可度量的信息空间，使点云对应的6DOF（<strong>degree of freedom</strong>自由度）姿态来说具有不变性，并且在不同的采样密度或邻域噪音等级下具有鲁棒性。</p>
+<p><img alt="img" src="../assets/v2-e48cf18ac9bd33071f24855d525c81fc_720w.jpg" /></p>
+<p>在VR的应用中也分为3DoF和6DoF：</p>
+<p><img alt="" src="../assets/vr-dof.jpg" /></p>
+<p>PFH表示法是基于点与其k邻域之间的关系以及他们所构成的法线而建立的。他考虑了法线之间的关系，并较好的获取了样品表面的变化情况，进而描述了样本的几何特征。下图表示的是查询点<span><span class="MathJax_Preview">P_q</span><script type="math/tex">P_q</script></span>的PFH计算影响区域。</p>
+<p><span><span class="MathJax_Preview">P_q</span><script type="math/tex">P_q</script></span>为中间的红色点，虚线圆内是半径为r的所有邻域点。他们相互连接在一个网络中。PFH描述子是通过<strong>计算邻域内所有两点之间的关系</strong>而得到的直方图。</p>
+<p><img alt="" src="../assets/pfh_diagram.png" /></p>
+<p>为了计算两个点<span><span class="MathJax_Preview">P_s</span><script type="math/tex">P_s</script></span>和<span><span class="MathJax_Preview">P_t</span><script type="math/tex">P_t</script></span>以及他们对应法线<span><span class="MathJax_Preview">\vec n_s</span><script type="math/tex">\vec n_s</script></span>和<span><span class="MathJax_Preview">\vec n_t</span><script type="math/tex">\vec n_t</script></span>之间的关系，我们在其中一个点上定义一个固定的局部坐标系（本例为<span><span class="MathJax_Preview">P_s</span><script type="math/tex">P_s</script></span>点）。</p>
+<p><img alt="image-20200516201810352" src="../assets/image-20200516201810352.png" /></p>
+<p>坐标系<span><span class="MathJax_Preview">uvw</span><script type="math/tex">uvw</script></span>的定义算法：</p>
+<div>
+<div class="MathJax_Preview">
+\left\{\begin{array}{l}u=n_{s} \\ v=u \times \frac{\left(P_{t}-P_{s}\right)}{\left\|P_{t}-P_{s}\right\|_{2}} \\ w=u \times v\end{array}\right.
+</div>
+<script type="math/tex; mode=display">
+\left\{\begin{array}{l}u=n_{s} \\ v=u \times \frac{\left(P_{t}-P_{s}\right)}{\left\|P_{t}-P_{s}\right\|_{2}} \\ w=u \times v\end{array}\right.
+</script>
+</div>
+<p>使用上图中的<span><span class="MathJax_Preview">uvw</span><script type="math/tex">uvw</script></span>坐标系，我们可以用一组角度来表示法线<span><span class="MathJax_Preview">\vec n_s</span><script type="math/tex">\vec n_s</script></span>和<span><span class="MathJax_Preview">\vec n_t</span><script type="math/tex">\vec n_t</script></span>之间的关系（偏差）：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{aligned} 
+\theta &amp;=\arctan \left(\mathrm{w} \cdot \boldsymbol{n}_{t}, \mathrm{u} \cdot \boldsymbol{n}_{t}\right) \\
+\alpha &amp;=\mathrm{v} \cdot \boldsymbol{n}_{t} \\ 
+\phi &amp;=\mathrm{u} \cdot \frac{\left(P_{t}-P_{s}\right)}{d} \\ 
+\end{aligned}
+</div>
+<script type="math/tex; mode=display">
+\begin{aligned} 
+\theta &=\arctan \left(\mathrm{w} \cdot \boldsymbol{n}_{t}, \mathrm{u} \cdot \boldsymbol{n}_{t}\right) \\
+\alpha &=\mathrm{v} \cdot \boldsymbol{n}_{t} \\ 
+\phi &=\mathrm{u} \cdot \frac{\left(P_{t}-P_{s}\right)}{d} \\ 
+\end{aligned}
+</script>
+</div>
+<p>这里<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>表示<span><span class="MathJax_Preview">P_{t},P_{s}</span><script type="math/tex">P_{t},P_{s}</script></span>之间的欧氏距离，即 <span><span class="MathJax_Preview">d={\left\|P_{t}-P_{s}\right\|_{2}}</span><script type="math/tex">d={\left\|P_{t}-P_{s}\right\|_{2}}</script></span> ，通过计算k邻域内的每一对点的 <span><span class="MathJax_Preview">&lt;\alpha, \phi, \theta,d&gt;</span><script type="math/tex"><\alpha, \phi, \theta,d></script></span> 四个值，就可以把之前两个点和其法向量相关的12个参数（两个点的xyz坐标和法向量）减少到4个。为每个点估算PFH四元组，可以使用以下代码：</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/features/pfh_tools.h&gt;</span><span class="cp"></span>
+<span class="cm">/** \brief 计算点对的PFH特征的4个特征元素值，包含3个角度值和一个两点间的距离值</span>
+<span class="cm">    * \param[in] p1 the first XYZ point 第一个点的xyz坐标</span>
+<span class="cm">    * \param[in] n1 the first surface normal 第一个点所在区域的表面法向量</span>
+<span class="cm">    * \param[in] p2 the second XYZ point 第二个点的xyz坐标</span>
+<span class="cm">    * \param[in] n2 the second surface normal 第二个点所在区域的表面法向量</span>
+<span class="cm">  * \param[out] f1 第一个角度特征值 Θ (angle between the projection of nq_idx and u)</span>
+<span class="cm">  * \param[out] f2 第二个角度特征值 α (angle between nq_idx and v)</span>
+<span class="cm">  * \param[out] f3 第三个角度特征值 Φ (angle between np_idx and |p_idx - q_idx|)</span>
+<span class="cm">  * \param[out] f4 两点间的欧式距离 d (p_idx - q_idx)</span>
+<span class="cm">  */</span>
+<span class="n">computePairFeatures</span> <span class="p">(</span><span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="o">&amp;</span><span class="n">p1</span><span class="p">,</span> <span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="o">&amp;</span><span class="n">n1</span><span class="p">,</span> 
+                     <span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="o">&amp;</span><span class="n">p2</span><span class="p">,</span> <span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector4f</span> <span class="o">&amp;</span><span class="n">n2</span><span class="p">,</span> 
+                     <span class="kt">float</span> <span class="o">&amp;</span><span class="n">f1</span><span class="p">,</span> <span class="kt">float</span> <span class="o">&amp;</span><span class="n">f2</span><span class="p">,</span> <span class="kt">float</span> <span class="o">&amp;</span><span class="n">f3</span><span class="p">,</span> <span class="kt">float</span> <span class="o">&amp;</span><span class="n">f4</span><span class="p">);</span>
+</code></pre></div>
+
+<p><strong>直方图的统计方式：</strong></p>
+<ol>
+<li>将<span><span class="MathJax_Preview">&lt;\alpha, \phi, \theta,d&gt;</span><script type="math/tex"><\alpha, \phi, \theta,d></script></span>中的每个特征值范围划分为b个子区间（默认为5，这个数值可以自行计算并设置），则4个特征共有<span><span class="MathJax_Preview">b^4</span><script type="math/tex">b^4</script></span>个区间。</li>
+<li>统计对应特征值落在每个子区间的点的数目，由于<span><span class="MathJax_Preview">&lt;\alpha, \phi, \theta&gt;</span><script type="math/tex"><\alpha, \phi, \theta></script></span>三个特征都是法线之间的角度信息，则它们的值很可能会归为同一个空间。</li>
+<li>计算每一个点对的特征值，直方图中对应于该点对四个特征值区间的统计个数+1</li>
+</ol>
+<p><strong>注意</strong>，在一些情况下，第四个特征<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>通常跟设备捕获2.5D深度数据是相关的，临近点的距离<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>是从视点开始递增的，在不同视角下，这些值的变化意义不大，所以在扫描局部点密度影响特征时，省略距离<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>效果会更好。</p>
+<p>以下是两个点的PFH直方图演示：</p>
+<p><img alt="image-20200516205729207" src="../assets/image-20200516205729207.png" /></p>
+<p>默认PFH的实现，对每个特征都使用5个子区间进行分类，这里不包括距离<span><span class="MathJax_Preview">d</span><script type="math/tex">d</script></span>。这样就组成了一个125个浮点数元素的特征向量（<span><span class="MathJax_Preview">5^3</span><script type="math/tex">5^3</script></span>），保存在数据类型<code>pcl::PFHSignature125</code>中。</p>
+<p>以下是根据3D点与法线的空间邻域估计单个点的三个角特征的PFH（点特征直方图）。</p>
+<div class="highlight"><pre><span></span><code><span class="cm">/** \brief Estimate the PFH (Point Feature Histograms) individual signatures of the three angular (f1, f2, f3)</span>
+<span class="cm">* features for a given point based on its spatial neighborhood of 3D points with normals</span>
+<span class="cm">* \param[in] cloud the dataset containing the XYZ Cartesian coordinates of the two points</span>
+<span class="cm">* \param[in] normals the dataset containing the surface normals at each point in \a cloud</span>
+<span class="cm">* \param[in] indices the k-neighborhood point indices in the dataset</span>
+<span class="cm">* \param[in] nr_split the number of subdivisions for each angular feature interval</span>
+<span class="cm">* \param[out] pfh_histogram the resultant (combinatorial) PFH histogram representing the feature at the query point</span>
+<span class="cm">*/</span>
+<span class="kt">void</span> 
+<span class="nf">computePointPFHSignature</span> <span class="p">(</span><span class="k">const</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointInT</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">cloud</span><span class="p">,</span>
+                          <span class="k">const</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">normals</span><span class="p">,</span> 
+                          <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">indices</span><span class="p">,</span> <span class="kt">int</span> <span class="n">nr_split</span><span class="p">,</span>
+                          <span class="n">Eigen</span><span class="o">::</span><span class="n">VectorXf</span> <span class="o">&amp;</span><span class="n">pfh_histogram</span><span class="p">);</span>
+</code></pre></div>
+
+<p><strong>参数说明：</strong></p>
+<ol>
+<li>
+<p>cloud：包含xyz坐标点信息的数据集</p>
+</li>
+<li>
+<p>normals：数据集中点的法向量信息</p>
+</li>
+<li>
+<p>indices：指定查询点，数据集中k邻域点的索引</p>
+</li>
+<li>
+<p>nr_split：每个角特征的区间数</p>
+</li>
+<li>
+<p>pfh_histogram（输出）：结果PFH直方图，表示查询点处的特征</p>
+</li>
+</ol>
+<p>更多相关信息和数学推导，包括不同几何体表面点云的 PFH 特征分析，详见<a href="http://mediatum.ub.tum.de/doc/800632/941254.pdf">论文链接RusuDissertation</a></p>
+<p>代码实现参见：https://pcl-tutorials.readthedocs.io/en/master/pfh_estimation.html#</p>
+<p><code>pfh_estimation.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="c1">//</span>
+<span class="c1">// Created by ty on 20-5-28.</span>
+<span class="c1">//</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/pfh.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/cloud_viewer.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/normal_3d.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// load point cloud</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="c1">//    pcl::io::loadPCDFile(&quot;./data/target.pcd&quot;, *cloud);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="s">&quot;./data/bunny.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+
+    <span class="c1">// estimate normals ------------------------------------------------------------- 计算法向量</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">normals</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="c1">// Object for normal estimation.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">NormalEstimation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span> <span class="n">normalEstimation</span><span class="p">;</span>
+    <span class="c1">//normalEstimation.setIndices()</span>
+    <span class="n">normalEstimation</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="c1">// For every point, use all neighbors in a radius of 3cm.</span>
+    <span class="n">normalEstimation</span><span class="p">.</span><span class="n">setRadiusSearch</span><span class="p">(</span><span class="mf">0.03</span><span class="p">);</span>
+
+    <span class="c1">// A kd-tree is a data structure that makes searches efficient. More about it later.</span>
+    <span class="c1">// The normal estimation object will use it to find nearest neighbors.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">kdtree</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">normalEstimation</span><span class="p">.</span><span class="n">setSearchMethod</span><span class="p">(</span><span class="n">kdtree</span><span class="p">);</span>
+    <span class="c1">// Calculate the normals.</span>
+    <span class="n">normalEstimation</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">normals</span><span class="p">);</span>
+
+    <span class="c1">// Create the PFH estimation class, and pass the input dataset+normals to it ------计算PFH直方图</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PFHEstimation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PFHSignature125</span><span class="o">&gt;</span> <span class="n">pfh</span><span class="p">;</span>
+    <span class="n">pfh</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">pfh</span><span class="p">.</span><span class="n">setInputNormals</span><span class="p">(</span><span class="n">normals</span><span class="p">);</span>
+    <span class="c1">// alternatively, if cloud is of tpe PointNormal, do pfh.setInputNormals (cloud);</span>
+
+    <span class="c1">// Create an empty kdtree representation, and pass it to the PFH estimation object.</span>
+    <span class="c1">// Its content will be filled inside the object, based on the given input dataset (as no other search surface is given).</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">tree</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="c1">//pcl::KdTreeFLANN&lt;pcl::PointXYZ&gt;::Ptr tree (new pcl::KdTreeFLANN&lt;pcl::PointXYZ&gt; ()); -- older call for PCL 1.5-</span>
+    <span class="n">pfh</span><span class="p">.</span><span class="n">setSearchMethod</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+
+    <span class="c1">// Output datasets</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PFHSignature125</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">pfhs</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PFHSignature125</span><span class="o">&gt;</span><span class="p">());</span>
+
+    <span class="c1">// Use all neighbors in a sphere of radius 5cm</span>
+    <span class="c1">// 使用一个半径为5厘米的球体，作为搜索邻域</span>
+    <span class="c1">// IMPORTANT: the radius used here has to be larger than the radius used to estimate the surface normals!!!</span>
+    <span class="c1">// 重点： 半径必须要比用于估算法向量的邻域半径要大</span>
+    <span class="n">pfh</span><span class="p">.</span><span class="n">setRadiusSearch</span><span class="p">(</span><span class="mf">0.08</span><span class="p">);</span>
+
+    <span class="c1">// Compute the features</span>
+    <span class="n">pfh</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">pfhs</span><span class="p">);</span>
+
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span> <span class="o">=</span> <span class="n">pfhs</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">pcl</span><span class="o">::</span><span class="n">PFHSignature125</span> <span class="o">&amp;</span><span class="n">signature125</span> <span class="o">=</span> <span class="n">pfhs</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">j</span><span class="p">];</span>
+        <span class="kt">float</span><span class="o">*</span> <span class="n">h</span> <span class="o">=</span> <span class="n">signature125</span><span class="p">.</span><span class="n">histogram</span><span class="p">;</span>
+
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%d: %f,%f,%f </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">h</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">h</span><span class="p">[</span><span class="mi">3</span><span class="p">]);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// visualize normals</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;PCL Viewer&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloudNormals</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="n">normals</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="s">&quot;normals&quot;</span><span class="p">);</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="fpfh">FPFH快速点特征直方图描述子<a class="headerlink" href="#fpfh" title="Permanent link">&para;</a></h2>
+<p>如果点云P中有n个点，则其点特征直方图PFH的理论计算复杂度<span><span class="MathJax_Preview">O(nk^2)</span><script type="math/tex">O(nk^2)</script></span>，其中k是点云P中每个点p计算特征向量时，要考虑的邻域数量。对于实时应用或近实时应用，密集点云的点特征直方图PFH的计算，是一个主要的性能瓶颈，故而我们可以将之进行简化，称为快速点特征直方图FPFH（Fast Point Feature Histograms）。这个FPFH将计算复杂度降到了<span><span class="MathJax_Preview">O(nk)</span><script type="math/tex">O(nk)</script></span>，但是仍然保留了PFH大部分的识别特性。</p>
+<p><strong>FPFH计算过程</strong></p>
+<ol>
+<li>为查询点求得它和其k邻域内每个点之间的三个特征元素值，然后统计成一个SimplePFH；</li>
+<li>分别对k邻域中的每个点确定k邻域，按第一步分别形成自己的SPFH；</li>
+<li>对邻域中的各个SPFH进行加权统计，得到最终的FPFH公式如下：</li>
+</ol>
+<div>
+<div class="MathJax_Preview">
+\operatorname{FPFH}\left(\boldsymbol{p}_{q}\right)=\operatorname{SPFH}\left(\boldsymbol{p}_{q}\right)+\frac{1}{k} \sum_{i=1}^{k} \frac{1}{\omega_{k}} \cdot \operatorname{SPFH}\left(\boldsymbol{p}_{k}\right)
+</div>
+<script type="math/tex; mode=display">
+\operatorname{FPFH}\left(\boldsymbol{p}_{q}\right)=\operatorname{SPFH}\left(\boldsymbol{p}_{q}\right)+\frac{1}{k} \sum_{i=1}^{k} \frac{1}{\omega_{k}} \cdot \operatorname{SPFH}\left(\boldsymbol{p}_{k}\right)
+</script>
+</div>
+<p>权重<span><span class="MathJax_Preview">\omega_{k}</span><script type="math/tex">\omega_{k}</script></span>表示查询点 <span><span class="MathJax_Preview">P_q</span><script type="math/tex">P_q</script></span> 和其临近点 <span><span class="MathJax_Preview">P_k</span><script type="math/tex">P_k</script></span> 之间的距离。</p>
+<p><img alt="image-20200516234137600" src="../assets/image-20200516234137600.png" /></p>
+<p>FPFH快点特征直方图的影响区域图。 每个查询点（红色）仅连接到其直接的k邻居（由灰色圆圈包围）。 每个直接邻居都连接到其自己的邻居，并将所得直方图与查询点的直方图一起加权以形成FPFH。 较粗的连接两次会被重复计数2次（比较重要的点对）。</p>
+<p><strong>FPFH与PFH的主要区别</strong></p>
+<ol>
+<li>
+<p>FPFH没有对全互连点的所有邻近点的计算参数进行统计，因此可能漏掉了一些重要的点对，而这些漏掉的对点可能对捕获查询点周围的几何特征有贡献；</p>
+</li>
+<li>
+<p>PFH特征模型是对查询点周围的一个精确的邻域半径内，而FPFH还包括半径r范围以外的额外点对（但不超过2r的范围）；</p>
+</li>
+<li>因为采用权重计算的方式，所以FPFH结合SPFH值，重新捕获邻近重要点对的几何信息；</li>
+<li>由于FPFH大大地降低了PFH的整体复杂性，因此FPFH经常使用在实时应用中；</li>
+<li>通过分解三元组，简化了合成的直方图。也就是简单生成d分离特征直方图，对每个特征维度来单独绘制，并把它们连接在一起。</li>
+</ol>
+<p><img alt="image-20200516235329781" src="../assets/image-20200516235329781.png" /></p>
+<p>默认pcl实现的的FPFH使用11个统计区间（对每个特征值都将其参数区间分割为11个），分别计算特征直方图，然后合并得到了一个33个元素的特征向量，保存在数据类型<code>pcl::FPFHSignature33</code>中。</p>
+<p>代码实现参见：https://pcl-tutorials.readthedocs.io/en/master/fpfh_estimation.html#fpfh-estimation</p>
+<p><strong>利用OpenMP提高FPFH的计算速度</strong></p>
+<p>对于计算速度要求苛刻的用户，PCL提供了一个FPFH估计的另一实现，它使用多核/多线程规范，利用OpenMP开发模式来提高计算速度。这个类的名称是<code>pcl::FPFHEstimationOMP</code>，并且它的应用程序接口（API）100%兼容单线程<code>pcl::FPFHEstimation</code>，这使它适合作为一个替换元件。在8核系统中，OpenMP的实现可以在6-8倍更快的计算时间内完全同样单核系统上的计算。</p>
+<h2 id="vfh">VFH视点特征直方图描述子<a class="headerlink" href="#vfh" title="Permanent link">&para;</a></h2>
+<p>源于FPFH描述子，为了使构造的特征保持缩放不变性的同时，还要区分不同的位姿，因而计算时，需要加入视点信息。VFH时点特征直方图包含两个部分：</p>
+<ol>
+<li>视点方向的相关分量</li>
+<li>包含扩展FPFH的描述表面形状的分量</li>
+</ol>
+<h2 id="narf">NARF特征点描述子<a class="headerlink" href="#narf" title="Permanent link">&para;</a></h2>
+<p>NARF （Normal Aligned Radial Feature）法线对齐径向特征，是一种3D特征检测和描述的算法。参见：</p>
+<p>《Point Feature Extraction on 3D Range ScansTaking into Account Object Boundaries》</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../normal_estimation/" title="07-点云表面法线估算 *" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                07-点云表面法线估算 *
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../../chapter03/" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                学习目标
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

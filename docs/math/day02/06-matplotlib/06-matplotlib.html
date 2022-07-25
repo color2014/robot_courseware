@@ -1,0 +1,773 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 高等数学和信息科学">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>06-matplotlib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马智能机器人—高等数学和信息科学" aria-label="黑马智能机器人—高等数学和信息科学" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马智能机器人—高等数学和信息科学" aria-label="黑马智能机器人—高等数学和信息科学" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马智能机器人—高等数学和信息科学</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                06-matplotlib
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马智能机器人—高等数学和信息科学" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马智能机器人—高等数学和信息科学
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      day01-numpy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        day01-numpy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/" title="课程简介" class="md-nav__link">
+      课程简介
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/01-numpy/" title="01-numpy简单入门" class="md-nav__link">
+      01-numpy简单入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/02-numpy_calc/" title="02-numpy科学计算" class="md-nav__link">
+      02-numpy科学计算
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/03-numpy_index_slicing/" title="03-numpy切片和索引" class="md-nav__link">
+      03-numpy切片和索引
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/04-numpy_broadcasting/" title="04-numpy广播机制" class="md-nav__link">
+      04-numpy广播机制
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day01/05-numpy_exam/" title="05-numpy作业题" class="md-nav__link">
+      05-numpy作业题
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      day02-数学&sympy
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        day02-数学&sympy
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="课程简介" class="md-nav__link">
+      课程简介
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-math_review/" title="01-高中数学快速复习" class="md-nav__link">
+      01-高中数学快速复习
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-sympy_intro/" title="02-sympy库入门" class="md-nav__link">
+      02-sympy库入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-algebra_calculus/" title="03-极限导数和微积分" class="md-nav__link">
+      03-极限导数和微积分
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-sympy_algebra/" title="04-sympy代数和解方程" class="md-nav__link">
+      04-sympy代数和解方程
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-probability/" title="05-简单概率论入门" class="md-nav__link">
+      05-简单概率论入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        06-matplotlib
+      </label>
+    
+    <a href="./" title="06-matplotlib" class="md-nav__link md-nav__link--active">
+      06-matplotlib
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    表格绘制基本操作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    绘制子表格
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    格子布局
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    表格绘制基本操作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    绘制子表格
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    格子布局
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>06-matplotlib</h1>
+                
+                <h2 id="_1">表格绘制基本操作<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ul>
+<li>导包和配置</li>
+</ul>
+<p><code>%matplotlib notebook  # 魔法配置,可以让表格显示在jupyter里面
+  import matplotlib.pyplot as plt #导包</code></p>
+<ul>
+<li>中文字体支持</li>
+</ul>
+<p><code>https://blog.csdn.net/DicserYan2518/article/details/84501315
+  plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
+  plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号</code></p>
+<ul>
+<li>绘制折线图</li>
+</ul>
+<p><code>fig = plt.figure() 
+  plt.plot([2, 3, 1, 4])  # 默认x是0开始, (0,2), (1,3), (2,1), (3,4)
+  plt.xlabel('x') #x轴标签
+  plt.ylabel('y') #y轴标签
+  plt.show()</code></p>
+<ul>
+<li>指定绘制图形的大小</li>
+</ul>
+<p><code>fig = plt.figure(figsize=(5, 4), dpi=90)</code></p>
+<ul>
+<li>绘制三角函数</li>
+</ul>
+<p><code>import numpy as np
+  X = np.linspace(-np.pi, np.pi, 7)  # -pi到pi之间的7个点
+  C = np.cos(X)
+  S = np.sin(X)
+  fig = plt.figure(figsize=(5, 4), dpi=80)
+  plt.plot(X, C)
+  plt.plot(X, S)
+  plt.show()</code></p>
+<ul>
+<li>指定线宽和颜色</li>
+</ul>
+<p><code>fig = plt.figure(figsize=(5, 4), dpi=80)
+  # 宽度2 样式 --
+  plt.plot(X, C, color="navy", linewidth=2, linestyle="--")
+  # 宽度1 样式 -
+  plt.plot(X, S, color="deeppink", linewidth=1, linestyle="-")
+  plt.show()</code></p>
+<p><img alt="img" src="../assets/matplotlib-color-1024x1008.png" /></p>
+<ul>
+<li>指定x和y轴的范围,和标签内容</li>
+</ul>
+<p><code>fig = plt.figure(figsize=(5, 4), dpi=80)
+  plt.plot(X, C, color="navy", linewidth=2, linestyle="--")
+  plt.plot(X, S, color="deeppink", linewidth=1, linestyle="-")
+  plt.xlim(-4.0, 4.0)  # Set x limits
+  plt.ylim(-1.0, 1.0)  # Set y limits
+  plt.xticks(np.linspace(-4, 4, 9, endpoint=True))  # Set x ticks
+  plt.yticks(np.linspace(-1, 1, 5, endpoint=True))  # Set y ticks
+  plt.show()</code></p>
+<ul>
+<li>内联latex表达</li>
+</ul>
+<p><code>fig = plt.figure(figsize=(5, 4), dpi=80)
+  plt.plot(X, C, color="navy", linewidth=2, linestyle="--")
+  plt.plot(X, S, color="deeppink", linewidth=1, linestyle="-")
+  plt.xlim(-4.0, 4.0)
+  plt.ylim(-1.0, 1.0)
+  plt.xticks([-np.pi, -np.pi/2, 0, np.pi/2, np.pi],  # Replace numbers with greek letters
+             [r'$-\pi$', r'$-\pi/2$', r'$0$', r'$+\pi/2$', r'$+\pi$'])
+  plt.yticks([-1, 0, +1], [r'$-1$', r'$0$', r'$+1$'])  # Replace '1' with '+1'
+  plt.show()</code></p>
+<blockquote>
+<ul>
+<li>使用 (r' ')包裹</li>
+<li>($)环绕latex表达式</li>
+</ul>
+</blockquote>
+<ul>
+<li>修改坐标轴位置</li>
+</ul>
+<p>```
+  fig = plt.figure(figsize=(5, 4), dpi=80)
+  plt.plot(X, C, color="navy", linewidth=2, linestyle="--")
+  plt.plot(X, S, color="deeppink", linewidth=1, linestyle="-")
+  plt.xlim(-4.0, 4.0)
+  plt.ylim(-1.0, 1.0)
+  plt.xticks([-np.pi, -np.pi/2, 0, np.pi/2, np.pi],
+             [r'<span><span class="MathJax_Preview">-\pi</span><script type="math/tex">-\pi</script></span>', r'<span><span class="MathJax_Preview">-\pi/2</span><script type="math/tex">-\pi/2</script></span>', r'<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>', r'<span><span class="MathJax_Preview">+\pi/2</span><script type="math/tex">+\pi/2</script></span>', r'<span><span class="MathJax_Preview">+\pi</span><script type="math/tex">+\pi</script></span>'])
+  plt.yticks([-1, 0, +1], [r'<span><span class="MathJax_Preview">-1</span><script type="math/tex">-1</script></span>', r'<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>', r'<span><span class="MathJax_Preview">+1</span><script type="math/tex">+1</script></span>'])</p>
+<p>ax = plt.gca() #  获取当前坐标轴 'get current axis'
+  ax.spines['right'].set_color('none')  # 隐藏右边框
+  ax.spines['top'].set_color('none')  #  隐藏上边框
+  ax.spines['bottom'].set_position(('data',0))  # 底边框与数据0对齐
+  ax.spines['left'].set_position(('data',0))  # 左边框与数据0对齐
+  ```</p>
+<ul>
+<li>添加函数描述</li>
+</ul>
+<p>```
+  fig = plt.figure(figsize=(5, 4), dpi=80)
+  plt.plot(X, C, color="navy", linewidth=2, linestyle="--", label="cos")  # Add a label for cos
+  plt.plot(X, S, color="deeppink", linewidth=1, linestyle="-", label="sin")  # Add a label for sin
+  plt.legend(loc='upper left')  # Add the legend
+  plt.xlim(-4.0, 4.0)
+  plt.ylim(-1.0, 1.0)
+  plt.xticks([-np.pi, -np.pi/2, 0, np.pi/2, np.pi],
+             [r'<span><span class="MathJax_Preview">-\pi</span><script type="math/tex">-\pi</script></span>', r'<span><span class="MathJax_Preview">-\pi/2</span><script type="math/tex">-\pi/2</script></span>', r'<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>', r'<span><span class="MathJax_Preview">+\pi/2</span><script type="math/tex">+\pi/2</script></span>', r'<span><span class="MathJax_Preview">+\pi</span><script type="math/tex">+\pi</script></span>'])
+  plt.yticks([-1, 0, +1], [r'<span><span class="MathJax_Preview">-1</span><script type="math/tex">-1</script></span>', r'<span><span class="MathJax_Preview">0</span><script type="math/tex">0</script></span>', r'<span><span class="MathJax_Preview">+1</span><script type="math/tex">+1</script></span>'])</p>
+<p>ax = plt.gca()
+  ax.spines['right'].set_color('none')
+  ax.spines['top'].set_color('none')
+  ax.spines['bottom'].set_position(('data',0))
+  ax.spines['left'].set_position(('data',0))
+  plt.show()
+  ```</p>
+<ul>
+<li>设置关键点标注</li>
+</ul>
+<p><code>fig = plt.figure(figsize=(5, 4), dpi=90) # 
+  plt.plot([2, 3, 1, 4])  
+  plt.xlabel('x')
+  plt.ylabel('y')
+  plt.annotate('转折点',
+               xy=(1, 3),  xytext=(+10, +30),
+               textcoords='offset points', fontsize=12,
+               arrowprops=dict(arrowstyle="-&gt;"))
+  plt.show()</code></p>
+<h2 id="_2">绘制子表格<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<ul>
+<li>准备数据</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>%matplotlib notebook
+import matplotlib.pyplot as plt
+import numpy as np
+X = np.linspace(-np.pi, np.pi, 15)
+C = np.cos(X)
+S = np.sin(X)
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>同时绘制两个表格</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>fig = plt.figure(figsize=(5, 4), dpi=80)
+plt.subplot(2, 1, 1)
+plt.plot(X, C)
+plt.subplot(2, 1, 2)
+plt.plot(X, S)
+plt.show()
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>打开关闭网格</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>fig = plt.figure(figsize=(5, 4), dpi=80)
+plt.subplot(1, 2, 1)
+plt.plot(X, C)
+plt.grid(&#39;off&#39;)
+plt.subplot(1, 2, 2)
+plt.plot(X, S)
+plt.grid(&#39;on&#39;)
+plt.show()
+</code></pre></div>
+</td></tr></table>
+
+<h2 id="_3">格子布局<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><img alt="1570293128556" src="../assets/1570293128556.png" /></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>import matplotlib.gridspec as gridspec
+fig = plt.figure(figsize=(10, 5), dpi=80)
+gs = gridspec.GridSpec(3, 3)
+ax1 = plt.subplot(gs[0, :])
+plt.plot(X, C)
+ax2 = plt.subplot(gs[1, :-1])
+plt.plot(X, S)
+ax3 = plt.subplot(gs[-1, 0])
+plt.plot(X, -C)
+ax4 = plt.subplot(gs[-1, -2])
+plt.plot(X, -S)
+ax5 = plt.subplot(gs[1:, -1])
+plt.plot(X, (C+S)/2)
+plt.show()
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../05-probability/" title="05-简单概率论入门" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                05-简单概率论入门
+              </span>
+            </div>
+          </a>
+        
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

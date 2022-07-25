@@ -1,0 +1,1250 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 深度学习">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-分类与逻辑回归 - 黑马智能机器人—深度学习</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#01-" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马智能机器人—深度学习" aria-label="黑马智能机器人—深度学习" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马智能机器人—深度学习" aria-label="黑马智能机器人—深度学习" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马智能机器人—深度学习</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-分类与逻辑回归
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马智能机器人—深度学习" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马智能机器人—深度学习
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、机器学习入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、机器学习入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-primer/" title="01-机器学习概述" class="md-nav__link">
+      01-机器学习概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-plinko/" title="02-幸运投球" class="md-nav__link">
+      02-幸运投球
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-knn/" title="03-KNN算法" class="md-nav__link">
+      03-KNN算法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-optimize/" title="04-优化预测结果" class="md-nav__link">
+      04-优化预测结果
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-exercise/" title="05-推荐系统案例&作业练习" class="md-nav__link">
+      05-推荐系统案例&作业练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、线性回归&梯度下降
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、线性回归&梯度下降
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-linear_regression/" title="01-线性回归" class="md-nav__link">
+      01-线性回归
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-MAE%26MSE/" title="02-MAE vs MSE" class="md-nav__link">
+      02-MAE vs MSE
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-gradient_descent/" title="03-还记得大明湖畔的导数吗" class="md-nav__link">
+      03-还记得大明湖畔的导数吗
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-exercise/" title="04-作业练习" class="md-nav__link">
+      04-作业练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、学习速率&回归进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、学习速率&回归进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/01-gradient_descent/" title="01-梯度下降" class="md-nav__link">
+      01-梯度下降
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/02-learning_rate/" title="02-学习速率" class="md-nav__link">
+      02-学习速率
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/03-linear_regression/" title="03-线性回归进阶" class="md-nav__link">
+      03-线性回归进阶
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、决策树&感知机
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、决策树&感知机
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/01-decision_tree/" title="01-分类和回归-决策树" class="md-nav__link">
+      01-分类和回归-决策树
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/02-perceptron/" title="02-分类和回归-感知机" class="md-nav__link">
+      02-分类和回归-感知机
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      五、分类与逻辑回归
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、分类与逻辑回归
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-分类与逻辑回归
+      </label>
+    
+    <a href="./" title="01-分类与逻辑回归" class="md-nav__link md-nav__link--active">
+      01-分类与逻辑回归
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#binary-classification" class="md-nav__link">
+    binary classification
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    问题分析
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    数据编码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    线性模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    线性模型和感知机激活函数组合
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    决策边界
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    线性回归梯度下降步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    逻辑回归梯度下降步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    误差函数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    数据准确度
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-cross_entropy/" title="02-交叉熵" class="md-nav__link">
+      02-交叉熵
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-Multi-Class_Logistic_Regression/" title="03-多分类回归" class="md-nav__link">
+      03-多分类回归
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-image_recognition/" title="04-手写数字识别" class="md-nav__link">
+      04-手写数字识别
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      六、神经网络&模型评估
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        六、神经网络&模型评估
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/01-cnn_demo/" title="01-CNN案例" class="md-nav__link">
+      01-CNN案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/02-neural_network/" title="02-机器学习&神经网络" class="md-nav__link">
+      02-机器学习&神经网络
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/03-performance_confusion_matrix/" title="03-模型评估" class="md-nav__link">
+      03-模型评估
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      七、卷积神经网络
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        七、卷积神经网络
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/01-CNN/" title="01-CNN入门" class="md-nav__link">
+      01-CNN入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/02-CNN/" title="02-CNN网络识别和训练" class="md-nav__link">
+      02-CNN网络识别和训练
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      八、深度学习框架-keras
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        八、深度学习框架-keras
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/01-keras/" title="01-深度学习框架" class="md-nav__link">
+      01-深度学习框架
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/02-exercise/" title="02-手写数字识别实战" class="md-nav__link">
+      02-手写数字识别实战
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#binary-classification" class="md-nav__link">
+    binary classification
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    问题分析
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    数据编码
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    线性模型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    线性模型和感知机激活函数组合
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    决策边界
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    线性回归梯度下降步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    逻辑回归梯度下降步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    误差函数
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    数据准确度
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="01-">01-分类与逻辑回归<a class="headerlink" href="#01-" title="Permanent link">&para;</a></h1>
+<p>从感知机到逻辑回归</p>
+<p>线性回归： 预测连续的数值</p>
+<p>逻辑回归：对错，是否，男女等分类问题</p>
+<h2 id="binary-classification">binary classification<a class="headerlink" href="#binary-classification" title="Permanent link">&para;</a></h2>
+<p>二分类</p>
+<ul>
+<li>是否通过考试</li>
+<li>安卓还是ios</li>
+<li>是否是垃圾邮件</li>
+</ul>
+<p>多分类</p>
+<p>​   </p>
+<h2 id="_1">问题分析<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>根据人的年龄，判断某个人是爱看电视 还是爱看书</p>
+<p>feature： 年龄</p>
+<p>label：爱看书，爱看电视</p>
+<p>机器学习就是找到一个函数，一个公式，输入是年龄，输出是爱看书（1） 还是爱看电视(0）</p>
+<table>
+<thead>
+<tr>
+<th>年龄</th>
+<th>爱好</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>看电视</td>
+</tr>
+<tr>
+<td>15</td>
+<td>看电视</td>
+</tr>
+<tr>
+<td>25</td>
+<td>看书</td>
+</tr>
+<tr>
+<td>35</td>
+<td>看书</td>
+</tr>
+<tr>
+<td>45</td>
+<td>看书</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_2">数据编码<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>年龄</th>
+<th>爱好</th>
+<th>编码</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>看电视</td>
+<td>0</td>
+</tr>
+<tr>
+<td>15</td>
+<td>看电视</td>
+<td>0</td>
+</tr>
+<tr>
+<td>25</td>
+<td>看书</td>
+<td>1</td>
+</tr>
+<tr>
+<td>35</td>
+<td>看书</td>
+<td>1</td>
+</tr>
+<tr>
+<td>45</td>
+<td>看书</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_3">线性模型<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p><img alt="image-20191119164227993" src="../img/image-20191119164227993.png" /></p>
+<p>考虑我们之前的<span><span class="MathJax_Preview">y=mx+b</span><script type="math/tex">y=mx+b</script></span>的模型， 这种模型会产生一个问题， 小于0的值和大于1的值</p>
+<p><img alt="image-20191119164644645" src="../img/image-20191119164644645.png" /></p>
+<p>观察， 感知机的激活函数， sigmoid的函数 可以把值压缩到0~1 之间，  我们可以用sigmod函数来对线性函数进行进一步的加工处理。</p>
+<h2 id="_4">线性模型和感知机激活函数组合<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<div>
+<div class="MathJax_Preview">
+p=\dfrac {1}{1+e^{-\left( m*age - b\right) }}
+</div>
+<script type="math/tex; mode=display">
+p=\dfrac {1}{1+e^{-\left( m*age - b\right) }}
+</script>
+</div>
+<p>假设<span><span class="MathJax_Preview">m = 0.57</span><script type="math/tex">m = 0.57</script></span>  <span><span class="MathJax_Preview">b = -11.1</span><script type="math/tex">b = -11.1</script></span></p>
+<div>
+<div class="MathJax_Preview">
+p=\dfrac {1}{1+e^{-\left( 0.57 × age - 11.1\right) }}
+</div>
+<script type="math/tex; mode=display">
+p=\dfrac {1}{1+e^{-\left( 0.57 × age - 11.1\right) }}
+</script>
+</div>
+<table>
+<thead>
+<tr>
+<th>年龄</th>
+<th>爱读书的概率</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>5</td>
+<td>0.00002</td>
+</tr>
+<tr>
+<td>15</td>
+<td>0.07</td>
+</tr>
+<tr>
+<td>20</td>
+<td>0.58</td>
+</tr>
+<tr>
+<td>25</td>
+<td>0.96</td>
+</tr>
+<tr>
+<td>35</td>
+<td>0.9998</td>
+</tr>
+<tr>
+<td>45</td>
+<td>0.9999999</td>
+</tr>
+<tr>
+<td>55</td>
+<td>0.99999999999</td>
+</tr>
+</tbody>
+</table>
+<h2 id="_5">决策边界<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>sigmoid函数出来后是一个概率， 决策边界就是多大的概率我们才认为分类成功</p>
+<p>例如大于58% 就认为喜欢读书， 小于58%认为喜欢看电视</p>
+<h2 id="_6">线性回归梯度下降步骤<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<ol>
+<li>随机选取一个b值</li>
+<li>计算这个b值对应的mse的斜率</li>
+<li>如果mse的斜率非常大，那要根据mse的斜率，去修改b的值</li>
+<li>mse值越大，b的修改值越大，mse斜率为正，b需要减少，mse斜率为负，b需要增加</li>
+<li>选取一个很小的值，叫learningrate，学习速率，可以理解为迈开的步伐</li>
+<li>用learningrate和mse的信号去更新b的值</li>
+<li>重复2-6的步骤，直到mse的斜率接近于0</li>
+</ol>
+<h2 id="_7">逻辑回归梯度下降步骤<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<ol>
+<li>先把分类结果编码为0和1</li>
+<li>随机选取一个b值</li>
+<li>计算这个b值对应的<strong>~~mse~~</strong> <strong>误差函数</strong>的斜率</li>
+<li>如果<strong>~~mse~~</strong>  <strong>误差函数</strong>的斜率非常大，那要根据<strong>~~mse~~</strong>  <strong>误差函数</strong>的斜率，去修改b的值</li>
+<li><strong>~~mse~~</strong>  <strong>误差函数</strong>值越大，b的修改值越大，<strong>~~mse~~</strong> <strong>误差函数</strong> 斜率为正，b需要减少， <strong>误差函数</strong>斜率为负，b需要增加</li>
+<li>选取一个很小的值，叫learningrate，学习速率，可以理解为迈开的步伐</li>
+<li>用learningrate和 <strong>误差函数</strong>的信号去更新b的值</li>
+<li>重复2-6的步骤，直到 <strong>误差函数</strong>的各项偏导数斜率接近于0</li>
+</ol>
+<h2 id="_8">误差函数<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>mse：mean square error  最小平方差</p>
+<p>mae：mean absolute error 最小绝对值差</p>
+<p>误差函数是评估，模型好坏的一种标识</p>
+<p><img alt="image-20191119214413848" src="../img/image-20191119214413848.png" /></p>
+<p>这两种误差函数在分类上面，显得无能为力， 分类的结果只有正确或者错误， 按照这种结果来说， 红色和蓝色线都是正确的分类线，都是正确的模型，但是红色更好 还是蓝色更好呢？</p>
+<p><img alt="image-20191119215029569" src="../img/image-20191119215029569.png" /></p>
+<p>每种类型的数据点，离红线越远，置信概率越大，误差越小。</p>
+<p>那么我们如何用数学的角度，定义一个公式来描述，误差函数呢？</p>
+<h2 id="_9">数据准确度<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>小明： 中国足球明天出线的概率是 80% </p>
+<p>小刚： 中国足球明天出线的概率是 50% </p>
+<p>问：这两个模型，这两个预测哪个更准确?</p>
+<p>如果中国队第二天出线了，小明的模型好，</p>
+<p>如果中国队第二天没出线，小刚的模型好。</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../02-cross_entropy/" title="02-交叉熵" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-交叉熵
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

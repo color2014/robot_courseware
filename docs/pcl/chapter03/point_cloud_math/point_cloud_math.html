@@ -1,0 +1,1885 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-点云中的数学 - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-点云中的数学
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-点云中的数学
+      </label>
+    
+    <a href="./" title="01-点云中的数学" class="md-nav__link md-nav__link--active">
+      01-点云中的数学
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    方差&amp;协方差矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    基本概念
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    协方差矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    多元正态分布
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    线性变换
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    特征分解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    雅克比矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    理解雅克比向量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    雅克比向量&amp;矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    雅克比寻找极值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    黑塞矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    理解黑塞矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    计算过程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    方差&amp;协方差矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    基本概念
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    协方差矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    多元正态分布
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    线性变换
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    特征分解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    雅克比矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    理解雅克比向量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    雅克比向量&amp;矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    雅克比寻找极值
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    黑塞矩阵
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    理解黑塞矩阵
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    计算过程
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">点云中的数学<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>函数求导</p>
+<p><img alt="image-20200509125343217" src="../assets/image-20200509125343217.png" /></p>
+<p>对于函数<span><span class="MathJax_Preview">f(x)=x^2</span><script type="math/tex">f(x)=x^2</script></span></p>
+<p>其一阶导数也是<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的函数：<span><span class="MathJax_Preview">\frac {df}{dx} = 2x</span><script type="math/tex">\frac {df}{dx} = 2x</script></span></p>
+<p>其二阶导数为常数，与<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>无关：<span><span class="MathJax_Preview">\frac {d^2f}{dx^2} = 2</span><script type="math/tex">\frac {d^2f}{dx^2} = 2</script></span></p>
+<h2 id="_2">方差&amp;协方差矩阵<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">基本概念<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p><strong>方差</strong>（Variance）衡量的是单个随机变量的变化(比如一个人在群体中的身高)，概率论中方差用来度量随机变量和其数学期望（即均值）之间的偏离程度。方差的公式为：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+ var(x) = \sigma_{x}^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2} 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+ var(x) = \sigma_{x}^{2}=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)^{2} 
+\end{equation}
+</script>
+</div>
+<p><span><span class="MathJax_Preview">\bar x</span><script type="math/tex">\bar x</script></span> 是随机变量<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span>的均值，n为样本总数。</p>
+<p><strong>标准差</strong>（Standard Deviation）是方差的算术平方根，用σ表示。标准差能反映一个数据集的离散程度。</p>
+<p><strong>协方差</strong>（Covariance）衡量的是两个随机变量同时变化的离散程度(比如一个人在群体中的身高和体重)。方差是协方差的一种特殊情况。</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+cov(x,y) = 
+\sigma(x, y)=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+cov(x,y) = 
+\sigma(x, y)=\frac{1}{n-1} \sum_{i=1}^{n}\left(x_{i}-\bar{x}\right)\left(y_{i}-\bar{y}\right)\end{equation}
+</script>
+</div>
+<p>单个随机变量的方差<span><span class="MathJax_Preview">\sigma_x^2</span><script type="math/tex">\sigma_x^2</script></span>也可以通过协方差表示<span><span class="MathJax_Preview">\sigma(x,x)</span><script type="math/tex">\sigma(x,x)</script></span>，方差和协方差有如下性质：</p>
+<ul>
+<li><span><span class="MathJax_Preview">cov(x, x) = var(x)</span><script type="math/tex">cov(x, x) = var(x)</script></span> </li>
+<li><span><span class="MathJax_Preview">cov(x,y)=cov(y,x)</span><script type="math/tex">cov(x,y)=cov(y,x)</script></span></li>
+</ul>
+<h3 id="_4">协方差矩阵<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><strong>协方差矩阵</strong>表示一组随机变量之间的两两线性相关性，其中的每个元素代表了两个随机变量之间的<strong>协方差</strong>。</p>
+<p>根据方差和协方差的定义，假如现在有n个样本数据，每个样本有d个随机变量，则其协方差矩阵为：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+ \Sigma=\left[\begin{array}{ccc}\sigma\left(x_{1}, x_{1}\right) &amp; \dots &amp; \sigma\left(x_{1}, x_{d}\right) \\ \vdots &amp; \ddots &amp; \vdots \\ \sigma\left(x_{d}, x_{1}\right) &amp; \dots &amp; \sigma\left(x_{d}, x_{d}\right)\end{array}\right] \in \mathbb{R}^{d \times d} 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+ \Sigma=\left[\begin{array}{ccc}\sigma\left(x_{1}, x_{1}\right) & \dots & \sigma\left(x_{1}, x_{d}\right) \\ \vdots & \ddots & \vdots \\ \sigma\left(x_{d}, x_{1}\right) & \dots & \sigma\left(x_{d}, x_{d}\right)\end{array}\right] \in \mathbb{R}^{d \times d} 
+\end{equation}
+</script>
+</div>
+<p>对角线上的元素为各个随机变量的方差，非对角线上的元素为两两随机变量之间的协方差，根据协方差的定义，我们可以认定：矩阵<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>为<strong>对称矩阵</strong>(symmetric matrix)，其大小为<span><span class="MathJax_Preview">d \times d</span><script type="math/tex">d \times d</script></span></p>
+<p>则如果有一堆二维的点坐标，其协方差矩阵为：</p>
+<div>
+<div class="MathJax_Preview">
+\Sigma=\left(\begin{array}{lll}
+\operatorname{cov}(x, x) &amp; \operatorname{cov}(x, y)  \\ 
+\operatorname{cov}(y, x) &amp; \operatorname{cov}(y, y)  \\ 
+\end{array}\right)
+</div>
+<script type="math/tex; mode=display">
+\Sigma=\left(\begin{array}{lll}
+\operatorname{cov}(x, x) & \operatorname{cov}(x, y)  \\ 
+\operatorname{cov}(y, x) & \operatorname{cov}(y, y)  \\ 
+\end{array}\right)
+</script>
+</div>
+<p>三维的点坐标，协方差矩阵应为：</p>
+<div>
+<div class="MathJax_Preview">
+\Sigma=\left(\begin{array}{lll}\operatorname{cov}(x, x) &amp; \operatorname{cov}(x, y) &amp; \operatorname{cov}(x, z) \\ \operatorname{cov}(y, x) &amp; \operatorname{cov}(y, y) &amp; \operatorname{cov}(y, z) \\ \operatorname{cov}(z, x) &amp; \operatorname{cov}(z, y) &amp; \operatorname{cov}(z, z)\end{array}\right)
+</div>
+<script type="math/tex; mode=display">
+\Sigma=\left(\begin{array}{lll}\operatorname{cov}(x, x) & \operatorname{cov}(x, y) & \operatorname{cov}(x, z) \\ \operatorname{cov}(y, x) & \operatorname{cov}(y, y) & \operatorname{cov}(y, z) \\ \operatorname{cov}(z, x) & \operatorname{cov}(z, y) & \operatorname{cov}(z, z)\end{array}\right)
+</script>
+</div>
+<h3 id="_5">多元正态分布<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>假如数据集<span><span class="MathJax_Preview">X</span><script type="math/tex">X</script></span>中的向量 <span><span class="MathJax_Preview">\vec x</span><script type="math/tex">\vec x</script></span> 服从多元正态分布（multivariate Gaussian distribution），且均值向量为<span><span class="MathJax_Preview">\vec \mu</span><script type="math/tex">\vec \mu</script></span>，协方差为 <span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span></p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}p(\vec{x})=\frac{1}{2 \pi \sqrt{|\Sigma|}} \exp \left(-\frac{(\vec{x}-\vec{\mu})^{\mathrm{T}} \Sigma^{-1}(\vec{x}-\vec{\mu})}{2}\right)\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}p(\vec{x})=\frac{1}{2 \pi \sqrt{|\Sigma|}} \exp \left(-\frac{(\vec{x}-\vec{\mu})^{\mathrm{T}} \Sigma^{-1}(\vec{x}-\vec{\mu})}{2}\right)\end{equation}
+</script>
+</div>
+<p>我们一起通过二维点分布，探究协方差矩阵与数据分布特点的关系。</p>
+<p>为了简化图像，我们令均值向量 <span><span class="MathJax_Preview">\vec \mu</span><script type="math/tex">\vec \mu</script></span> 为0向量，指数前的系数通常作为常量，即跟变化无关，则我们将多元正态分布简化为似然函数：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}L(\vec{x})\propto \exp \left(-\frac{1}{2}\vec{x}^{\mathrm{T}} \Sigma^{-1}\vec{x}\right)\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}L(\vec{x})\propto \exp \left(-\frac{1}{2}\vec{x}^{\mathrm{T}} \Sigma^{-1}\vec{x}\right)\end{equation}
+</script>
+</div>
+<p>为了展示二维图像，则我们令<span><span class="MathJax_Preview">\vec x = (x, y)^T</span><script type="math/tex">\vec x = (x, y)^T</script></span>，包含x，y方向的坐标值，则协方差为以下形式：</p>
+<div>
+<div class="MathJax_Preview">
+\Sigma=\left[\begin{array}{ll}\sigma(x, x) &amp; \sigma(x, y) \\ \sigma(y, x) &amp; \sigma(y, y)\end{array}\right] \in \mathbb{R}^{2 \times 2}
+</div>
+<script type="math/tex; mode=display">
+\Sigma=\left[\begin{array}{ll}\sigma(x, x) & \sigma(x, y) \\ \sigma(y, x) & \sigma(y, y)\end{array}\right] \in \mathbb{R}^{2 \times 2}
+</script>
+</div>
+<p>这里令协方差矩阵<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>为单位矩阵 <span><span class="MathJax_Preview">I=\left[\begin{array}{ll} 1 &amp; 0\\ 0 &amp; 1 \end{array} \right]</span><script type="math/tex">I=\left[\begin{array}{ll} 1 & 0\\ 0 & 1 \end{array} \right]</script></span>  ，即<strong>随机变量<span><span class="MathJax_Preview">x,y</span><script type="math/tex">x,y</script></span>的方差均为1</strong>，我们可以生成如下随机分布，共200个点：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="c1"># %matplotlib inline</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Normal distributed x and y vector with mean 0 and standard deviation 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Generated Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>此时，我们的变量<span><span class="MathJax_Preview">x,y</span><script type="math/tex">x,y</script></span>是相互独立的，协方差矩阵 <span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span> 是如下形式：</p>
+<div>
+<div class="MathJax_Preview">
+C = \Sigma =  \left[\begin{array}{cc}
+\sigma_x^2 &amp; 0 \\
+0   &amp; \sigma_y^2
+\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+C = \Sigma =  \left[\begin{array}{cc}
+\sigma_x^2 & 0 \\
+0   & \sigma_y^2
+\end{array}\right]
+</script>
+</div>
+<p>我们可以通过如下代码计算随机生成的点的真实协方差矩阵</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Covariance</span>
+<span class="k">def</span> <span class="nf">cov</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="n">xbar</span><span class="p">,</span> <span class="n">ybar</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">x</span> <span class="o">-</span> <span class="n">xbar</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">ybar</span><span class="p">))</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Covariance matrix</span>
+<span class="k">def</span> <span class="nf">cov_mat</span><span class="p">(</span><span class="n">X</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">])],</span>
+                     <span class="p">[</span><span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">cov</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">])]])</span>
+
+<span class="c1"># Calculate covariance matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">(</span><span class="n">X</span><span class="p">))</span> <span class="c1"># (or with np.cov(X))</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code>[[ 1.08970816 -0.03960157]
+ [-0.03960157  0.99871813]]
+</code></pre></div>
+
+<p>可见其十分接近我们之前对随机变量<span><span class="MathJax_Preview">x,y</span><script type="math/tex">x,y</script></span>方差的定义：<span><span class="MathJax_Preview">\sigma_x^2 = \sigma_y^2 = 1</span><script type="math/tex">\sigma_x^2 = \sigma_y^2 = 1</script></span></p>
+<p>即协方差矩阵主轴上的数据描述了其各个维度的离散程度（分布情况），值越大，分散的越开。</p>
+<h3 id="_6">线性变换<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<p>接下来我们为所有点进行<strong>线性变换</strong>，来<strong>观察数据分布的变化以及协方差矩阵的变化</strong>。我们先使用以下<strong>缩放矩阵（scaling matrix）</strong>修改之前的协方差矩阵：</p>
+<div>
+<div class="MathJax_Preview">
+S = \left[\begin{array}{cc}
+s_x &amp; 0 \\
+0   &amp; s_y
+\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+S = \left[\begin{array}{cc}
+s_x & 0 \\
+0   & s_y
+\end{array}\right]
+</script>
+</div>
+<p>然后使用<strong>旋转矩阵（rotation matrix）</strong>进行旋转，<span><span class="MathJax_Preview">\theta</span><script type="math/tex">\theta</script></span>为逆时针旋转的弧度值：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+ R=\left[\begin{array}{cc}\cos (\theta) &amp; -\sin (\theta) \\ \sin (\theta) &amp; \cos (\theta)\end{array}\right] 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+ R=\left[\begin{array}{cc}\cos (\theta) & -\sin (\theta) \\ \sin (\theta) & \cos (\theta)\end{array}\right] 
+\end{equation}
+</script>
+</div>
+<p>本例设<span><span class="MathJax_Preview">s_x = \frac {1}{2}, s_y = 2, \theta=\frac {\pi}{6}</span><script type="math/tex">s_x = \frac {1}{2}, s_y = 2, \theta=\frac {\pi}{6}</script></span>即水平方向缩放一半，竖直方向放大一倍，然后逆时针旋转30度：</p>
+<div>
+<div class="MathJax_Preview">
+S = \left[\begin{array}{cc}
+\frac {1}{2} &amp; 0 \\
+0   &amp; 2
+\end{array}\right]
+,
+R = \left[\begin{array}{cc}
+\frac {\sqrt 3}{2} &amp; -\frac {1}{2} \\
+\frac {1}{2}   &amp; \frac {\sqrt 3}{2}
+\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+S = \left[\begin{array}{cc}
+\frac {1}{2} & 0 \\
+0   & 2
+\end{array}\right]
+,
+R = \left[\begin{array}{cc}
+\frac {\sqrt 3}{2} & -\frac {1}{2} \\
+\frac {1}{2}   & \frac {\sqrt 3}{2}
+\end{array}\right]
+</script>
+</div>
+<p>只进行缩放操作：</p>
+<p><img alt="image-20200513021127726" src="../assets/image-20200513021127726.png" /></p>
+<p>代码实现：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Normal distributed x and y vector with mean 0 and standard deviation 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="c1"># 2xn</span>
+
+<span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span>
+<span class="n">Scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">sx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">sy</span><span class="p">]])</span>
+
+<span class="n">Y</span> <span class="o">=</span> <span class="n">Scale</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+<span class="c1"># 原始点集</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c1"># 缩放后点</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Generated Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>先缩放，后旋转：</p>
+<p><img alt="image-20200513021206977" src="../assets/image-20200513021206977.png" /></p>
+<p>代码实现：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;ggplot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Normal distributed x and y vector with mean 0 and standard deviation 1</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span> <span class="c1"># 2xn</span>
+
+<span class="n">sx</span><span class="p">,</span> <span class="n">sy</span> <span class="o">=</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">2.0</span>
+<span class="n">Scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">sx</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">sy</span><span class="p">]])</span>
+
+<span class="c1"># Rotation matrix</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">6</span>
+<span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+<span class="n">Rot</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">]])</span>
+
+<span class="c1"># Transformation matrix</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">Rot</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Scale</span><span class="p">)</span>
+
+<span class="c1"># Apply transformation matrix to X</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="n">T</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+
+<span class="c1"># 原始点集</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">X</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+<span class="c1"># 缩放、旋转后</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">Y</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Generated Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Calculate covariance matrix</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cov_mat</span><span class="p">(</span><span class="n">Y</span><span class="p">))</span> <span class="c1"># (or with np.cov(Y))</span>
+</code></pre></div>
+
+<p>其协方差矩阵输出结果为：</p>
+<div class="highlight"><pre><span></span><code>[[ 1.1830068  -1.66028421]
+ [-1.66028421  3.10071868]]
+</code></pre></div>
+
+<p>为了计算变换与协方差矩阵个关系，我们将旋转矩阵、缩放矩阵合并为同一个变换矩阵：<span><span class="MathJax_Preview">A = RS</span><script type="math/tex">A = RS</script></span></p>
+<p>我们想了解的是经过线性变换后，其协方差矩阵的变换。即将所有点进行变换操作<span><span class="MathJax_Preview">\vec t = A\vec x</span><script type="math/tex">\vec t = A\vec x</script></span>之后，在<span><span class="MathJax_Preview">\vec t</span><script type="math/tex">\vec t</script></span>集合情况下的协方差矩阵<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>对应的值。则将<span><span class="MathJax_Preview">\vec x = A^{-1}\vec t</span><script type="math/tex">\vec x = A^{-1}\vec t</script></span> 代入函数<span><span class="MathJax_Preview">（3.2）</span><script type="math/tex">（3.2）</script></span>可得：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{align*}L(\vec{x})&amp;\propto 
+ \exp \left(-\frac{1}{2}(A^{-1}\vec t)^{\mathrm{T}} (A^{-1}\vec t))\right)\\
+ &amp;=\exp \left(-\frac{1}{2}{\vec t}^T(A^{-1})^{\mathrm{T}} A^{-1}\vec t)\right)\\
+ &amp;=\exp \left(-\frac{1}{2}{\vec t}^T(A^{T})^{-1} A^{-1}\vec t)\right)\\
+ &amp;=\exp \left(-\frac{1}{2}{\vec t}^T (A A^T)^{-1}\vec t)\right)
+\end{align*}
+\tag{3.2}
+</div>
+<script type="math/tex; mode=display">
+\begin{align*}L(\vec{x})&\propto 
+ \exp \left(-\frac{1}{2}(A^{-1}\vec t)^{\mathrm{T}} (A^{-1}\vec t))\right)\\
+ &=\exp \left(-\frac{1}{2}{\vec t}^T(A^{-1})^{\mathrm{T}} A^{-1}\vec t)\right)\\
+ &=\exp \left(-\frac{1}{2}{\vec t}^T(A^{T})^{-1} A^{-1}\vec t)\right)\\
+ &=\exp \left(-\frac{1}{2}{\vec t}^T (A A^T)^{-1}\vec t)\right)
+\end{align*}
+\tag{3.2}
+</script>
+</div>
+<p>注意，由于之前的<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span>为单位矩阵，故这里的<span><span class="MathJax_Preview">\Sigma^{-1}</span><script type="math/tex">\Sigma^{-1}</script></span>直接省掉。</p>
+<p>则变换后的多元正态分布的协方差矩阵为：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{align*}
+&amp; A = RS = \left[\begin{array}{cc}
+\frac {\sqrt 3}{2} &amp; -\frac {1}{2} \\
+\frac {1}{2}   &amp; \frac {\sqrt 3}{2}
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {1}{2} &amp; 0 \\
+0   &amp; 2
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} &amp; -1 \\
+\frac {1}{4}   &amp; {\sqrt 3}
+\end{array}\right]
+\tag{3.3}
+\\
+&amp; \Sigma = A A^T = 
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} &amp; -1 \\
+\frac {1}{4}   &amp; {\sqrt 3}
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} &amp; \frac {1}{4} \\
+  -1  &amp; {\sqrt 3}
+\end{array}\right]
+= 
+\left[\begin{array}{cc}
+\frac {19}{16} &amp; -\frac {15\sqrt 3}{16} \\
+  -\frac {15\sqrt 3}{16}  &amp; \frac {49}{16}
+\end{array}\right]
+\tag{3.4}
+\end{align*}
+</div>
+<script type="math/tex; mode=display">
+\begin{align*}
+& A = RS = \left[\begin{array}{cc}
+\frac {\sqrt 3}{2} & -\frac {1}{2} \\
+\frac {1}{2}   & \frac {\sqrt 3}{2}
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {1}{2} & 0 \\
+0   & 2
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} & -1 \\
+\frac {1}{4}   & {\sqrt 3}
+\end{array}\right]
+\tag{3.3}
+\\
+& \Sigma = A A^T = 
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} & -1 \\
+\frac {1}{4}   & {\sqrt 3}
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{4} & \frac {1}{4} \\
+  -1  & {\sqrt 3}
+\end{array}\right]
+= 
+\left[\begin{array}{cc}
+\frac {19}{16} & -\frac {15\sqrt 3}{16} \\
+  -\frac {15\sqrt 3}{16}  & \frac {49}{16}
+\end{array}\right]
+\tag{3.4}
+\end{align*}
+</script>
+</div>
+<p>可验证与之前代码输出的协方差结果近似。现在我们已经得到<strong>协方差矩阵</strong>与<strong>缩放矩阵、旋转矩阵</strong>的关系，由于协方差矩阵是正定对称矩阵即可对角化矩阵，则接下来我们对协方差矩阵进行特征值分解，观察其<strong>特征向量矩阵、特征值矩阵</strong>与<strong>缩放矩阵、旋转矩阵</strong>的关系</p>
+<h3 id="_7">特征分解<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p>根据线性代数相关定义，对于任意可对角化矩阵，都存在一个特征分解（eigen decomposition）</p>
+<div>
+<div class="MathJax_Preview">
+\Sigma = U\Lambda U^T
+</div>
+<script type="math/tex; mode=display">
+\Sigma = U\Lambda U^T
+</script>
+</div>
+<p><span><span class="MathJax_Preview">U</span><script type="math/tex">U</script></span>为特征向量矩阵，且是正交矩阵满足<span><span class="MathJax_Preview">U^T=U^{-1}, UU^T=I</span><script type="math/tex">U^T=U^{-1}, UU^T=I</script></span>，</p>
+<p><span><span class="MathJax_Preview">\Lambda</span><script type="math/tex">\Lambda</script></span>为特征值矩阵，且是对角矩阵，其对角线上是特征值，非对角线的元素为0。</p>
+<p>则，我们对<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span> 进行变换可得：</p>
+<div>
+<div class="MathJax_Preview"> \Sigma=\left(U \Lambda^{1 / 2}\right)\left(U \Lambda^{1 / 2}\right)^{T} </div>
+<script type="math/tex; mode=display"> \Sigma=\left(U \Lambda^{1 / 2}\right)\left(U \Lambda^{1 / 2}\right)^{T} </script>
+</div>
+<p>则、联立方程<span><span class="MathJax_Preview">(3.3),(3.4)</span><script type="math/tex">(3.3),(3.4)</script></span>可得</p>
+<div>
+<div class="MathJax_Preview">\left(U \Lambda^{1 / 2}\right)\left(U \Lambda^{1 / 2}\right)^{T} = AA^T=RS(RS)^T = RSS^TR^T</div>
+<script type="math/tex; mode=display">\left(U \Lambda^{1 / 2}\right)\left(U \Lambda^{1 / 2}\right)^{T} = AA^T=RS(RS)^T = RSS^TR^T</script>
+</div>
+<p>此时，<span><span class="MathJax_Preview">A=RS=U \Lambda^{1 / 2}</span><script type="math/tex">A=RS=U \Lambda^{1 / 2}</script></span>，即可发现旋转矩阵和特征向量矩阵相关，缩放矩阵与特征值矩阵相关。</p>
+<div>
+<div class="MathJax_Preview">
+\begin{align*}
+U=\pm R = \pm
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{2} &amp; -\frac {1}{2} \\
+\frac {1}{2}   &amp; \frac {\sqrt 3}{2}
+\end{array}\right]
+\end{align*}
+</div>
+<script type="math/tex; mode=display">
+\begin{align*}
+U=\pm R = \pm
+\left[\begin{array}{cc}
+\frac {\sqrt 3}{2} & -\frac {1}{2} \\
+\frac {1}{2}   & \frac {\sqrt 3}{2}
+\end{array}\right]
+\end{align*}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\begin{align*}
+\Lambda=SS^T = 
+\left[\begin{array}{cc}
+\frac {1}{2} &amp; 0 \\
+0   &amp; 2
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {1}{2} &amp; 0 \\
+0   &amp; 2
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+\frac {1}{4} &amp; 0 \\
+0   &amp; 4
+\end{array}\right]
+\end{align*}
+</div>
+<script type="math/tex; mode=display">
+\begin{align*}
+\Lambda=SS^T = 
+\left[\begin{array}{cc}
+\frac {1}{2} & 0 \\
+0   & 2
+\end{array}\right]
+\left[\begin{array}{cc}
+\frac {1}{2} & 0 \\
+0   & 2
+\end{array}\right]
+=
+\left[\begin{array}{cc}
+\frac {1}{4} & 0 \\
+0   & 4
+\end{array}\right]
+\end{align*}
+</script>
+</div>
+<p>我们通过以下代码对<span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span> 进行特征分解、对结果进行验证：</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">sigma</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">19</span> <span class="o">/</span> <span class="mi">16</span><span class="p">,</span> <span class="o">-</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">16</span><span class="p">,],</span>
+    <span class="p">[</span><span class="o">-</span><span class="mi">15</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">/</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">49</span> <span class="o">/</span> <span class="mi">16</span><span class="p">]</span>
+<span class="p">])</span>
+
+<span class="n">eVa</span><span class="p">,</span> <span class="n">eVe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;eigen value:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">eVa</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;eigen vector:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">eVe</span><span class="p">)</span>
+</code></pre></div>
+
+<ul>
+<li>输出</li>
+</ul>
+<div class="highlight"><pre><span></span><code>eigen value - SS^T:
+ [0.25 4.  ]
+eigen vector - U:
+ [[-0.8660254  0.5      ]
+ [-0.5       -0.8660254]]
+</code></pre></div>
+
+<p>可验证该输出结果与上述一致。</p>
+<p>我们可以将特征值和特征向量分别相乘，得到变换后椭圆区域的两个基向量：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Calculate covariance matrix</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">cov_mat</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>  <span class="c1"># (or with np.cov(Y))</span>
+
+<span class="n">eVa</span><span class="p">,</span> <span class="n">eVe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">Y</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">Y</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">eigen</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">eVa</span><span class="p">,</span> <span class="n">eVe</span><span class="o">.</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigen</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+        <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">*</span> <span class="n">eigen</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
+         <span class="n">lw</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Transformed Data&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<p>输出：</p>
+<p><img alt="image-20200513131429615" src="../assets/image-20200513131429615.png" /></p>
+<p><strong>总结</strong>：</p>
+<p>一个多元正态分布的概率密度函数中，其协方差矩阵 <span><span class="MathJax_Preview">\Sigma</span><script type="math/tex">\Sigma</script></span> 包含了分布的<strong>旋转角度和缩放信息</strong>，其均值向量<span><span class="MathJax_Preview">\vec \mu</span><script type="math/tex">\vec \mu</script></span>包含了<strong>密度中心的位置信息</strong>。</p>
+<h2 id="_8">雅克比矩阵<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<h3 id="_9">理解雅克比向量<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p><img alt="jacobian01" src="../assets/Jacobian-01.png" /></p>
+<p>将多个维度作为整体，来理解函数与变量的关系。</p>
+<p>雅克比矩阵即通过线性代数的向量来描述高纬度的数据在空间中的表现。</p>
+<p>通过向量将每一个函数的变量变化（偏导数）合并为一个整体，在高维空间去观察变化。</p>
+<p><span><span class="MathJax_Preview">|J|</span><script type="math/tex">|J|</script></span>是其在梯度方向的向量的模，该向量指向其梯度的上坡方向。</p>
+<h3 id="_10">雅克比向量&amp;矩阵<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p><img alt="jacobian01" src="../assets/Jacobian-02.png" /></p>
+<p>假如我们求一个两个参数的函数<span><span class="MathJax_Preview">f(x,y)</span><script type="math/tex">f(x,y)</script></span>的导数时，会先去求出每一个变量的偏导数<span><span class="MathJax_Preview">\frac{\partial f}{\partial x}</span><script type="math/tex">\frac{\partial f}{\partial x}</script></span>和<span><span class="MathJax_Preview">\frac{\partial f}{\partial y}</span><script type="math/tex">\frac{\partial f}{\partial y}</script></span>，然后将两个偏导数放到一个row vector中，即是一个Jacobian。通过不同x，y参数所组成的vector在空间中的长度（模）和方向，我们可以理解不同参数对应结果的变化关系。</p>
+<p>梯度gradient为0的地方可能有三个种：顶点Maximum Point、谷点Minimum Point、鞍点Saddle Point 。</p>
+<p>Jacobian Matrix</p>
+<ul>
+<li>多个自变量和多个因变量</li>
+</ul>
+<ul>
+<li>多个函数条件</li>
+</ul>
+<p>例如：</p>
+<div>
+<div class="MathJax_Preview">\begin{aligned}
+&amp;u(x, y)=x-2 y\\
+&amp;\mathrm{v}(x, y)=3 y-2 x
+\end{aligned}</div>
+<script type="math/tex; mode=display">\begin{aligned}
+&u(x, y)=x-2 y\\
+&\mathrm{v}(x, y)=3 y-2 x
+\end{aligned}</script>
+</div>
+<p>则自变量为x、y，因变量为u、v。则雅克比矩阵为为两个雅克比向量的合体：</p>
+<div>
+<div class="MathJax_Preview">J_{u}=\left[\begin{array}{ll}
+\partial u / \partial x &amp; \partial u / \partial y
+\end{array}\right]</div>
+<script type="math/tex; mode=display">J_{u}=\left[\begin{array}{ll}
+\partial u / \partial x & \partial u / \partial y
+\end{array}\right]</script>
+</div>
+<div>
+<div class="MathJax_Preview">J_{v}=\left[\begin{array}{11}\partial v / \partial x &amp; \partial v / \partial y
+\end{array}\right]</div>
+<script type="math/tex; mode=display">J_{v}=\left[\begin{array}{11}\partial v / \partial x & \partial v / \partial y
+\end{array}\right]</script>
+</div>
+<p>合并为Jacobian Matrix</p>
+<div>
+<div class="MathJax_Preview">J=\left[\begin{array}{ll}
+\partial u / \partial x &amp; \partial u / \partial y \\
+\partial v / \partial x &amp; \partial v / \partial y
+\end{array}\right]</div>
+<script type="math/tex; mode=display">J=\left[\begin{array}{ll}
+\partial u / \partial x & \partial u / \partial y \\
+\partial v / \partial x & \partial v / \partial y
+\end{array}\right]</script>
+</div>
+<p><strong>雅克比矩阵</strong>：是多个多元函数的一阶偏导数以一定方式排列形成的矩阵，其体现了可微方程与给出点的最优线性逼近。可以理解为多元函数对各个变量的导数。</p>
+<p>设 <span><span class="MathJax_Preview">f: \mathbb{R}_{n} \rightarrow \mathbb{R}_{m}</span><script type="math/tex">f: \mathbb{R}_{n} \rightarrow \mathbb{R}_{m}</script></span> 是一个函数，它的输入是向量 <span><span class="MathJax_Preview">\mathbf{x} \in \mathbb{R}_{n}</span><script type="math/tex">\mathbf{x} \in \mathbb{R}_{n}</script></span> ，输出是向量 <span><span class="MathJax_Preview">\mathbf{y}=f(\mathbf{x}) \in \mathbb{R}_{m}</span><script type="math/tex">\mathbf{y}=f(\mathbf{x}) \in \mathbb{R}_{m}</script></span>:</p>
+<div>
+<div class="MathJax_Preview">\left\{\begin{array}{l}
+y_{1}=f_{1}\left(x_{1}, \ldots, x_{n}\right) \\
+y_{2}=f_{2}\left(x_{1}, \ldots, x_{n}\right) \\
+\ldots \\
+y_{m}=f_{m}\left(x_{1}, \ldots, x_{n}\right)
+\end{array}\right.</div>
+<script type="math/tex; mode=display">\left\{\begin{array}{l}
+y_{1}=f_{1}\left(x_{1}, \ldots, x_{n}\right) \\
+y_{2}=f_{2}\left(x_{1}, \ldots, x_{n}\right) \\
+\ldots \\
+y_{m}=f_{m}\left(x_{1}, \ldots, x_{n}\right)
+\end{array}\right.</script>
+</div>
+<p>则雅可比矩阵是一个m×n矩阵：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}\mathbf{J}=\left[\begin{array}{ccc}\frac{\partial \mathbf{f}}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial \mathbf{f}}{\partial x_{n}}\end{array}\right]=\left[\begin{array}{ccc}\frac{\partial f_{1}}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial f_{1}}{\partial x_{n}} \\\vdots &amp; \ddots &amp; \vdots \\\frac{\partial f_{m}}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial f_{m}}{\partial x_{n}}\end{array}\right]\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}\mathbf{J}=\left[\begin{array}{ccc}\frac{\partial \mathbf{f}}{\partial x_{1}} & \cdots & \frac{\partial \mathbf{f}}{\partial x_{n}}\end{array}\right]=\left[\begin{array}{ccc}\frac{\partial f_{1}}{\partial x_{1}} & \cdots & \frac{\partial f_{1}}{\partial x_{n}} \\\vdots & \ddots & \vdots \\\frac{\partial f_{m}}{\partial x_{1}} & \cdots & \frac{\partial f_{m}}{\partial x_{n}}\end{array}\right]\end{equation}
+</script>
+</div>
+<h3 id="_11">雅克比寻找极值<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/Jacobian-03.png" /></p>
+<p>当函数进入极大值或极小值时，其梯度会比较平缓，接近或等于0。当极值只有一个时，找到对应的x，y位置比较容易。</p>
+<p>当函数比较复杂时，极值可能有多个，会有全局最高的山顶、全局最低的山谷、局部山顶、局部的山谷。这些地方的梯度也都是0。如果将x，y等于0，则无法确定是哪个极值。</p>
+<p>如果我们任意选择一点，无法知道最高峰和最低谷的位置。但是可以知道其最近的较高点和较低点。雅克比Vector的方向指向了最近的较高点，其模表述了幅度。即可以帮我们高效地找到局部的较高和较低点，但不能帮我们找到全局的最高点和最低点。</p>
+<h2 id="_12">黑塞矩阵<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h2>
+<h3 id="_13">理解黑塞矩阵<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/HessianMatrix.jpg" /></p>
+<p>数学上，黑塞矩阵（Hessian matrix又称海森矩阵）是一个自变量为向量的实值函数的二阶偏导数组成的方阵。即可以理解为对Jacobian Vector再次进行求导，把每一项偏导项再做一次求导。其矩阵是对称矩阵。</p>
+<p>那么如何在<span><span class="MathJax_Preview">J</span><script type="math/tex">J</script></span>处于极值情况下，判断这个极值是最大值、最小值、还是鞍值？这就需要使用黑塞矩阵了。</p>
+<p>对于二次函数，黑塞矩阵为常数矩阵，与参数无关。</p>
+<p>令<span><span class="MathJax_Preview">J</span><script type="math/tex">J</script></span> = 0</p>
+<p>当<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>的行列式<span><span class="MathJax_Preview">|H|&gt;0</span><script type="math/tex">|H|>0</script></span>且左上角值<span><span class="MathJax_Preview">H_{11}&gt;0</span><script type="math/tex">H_{11}>0</script></span>，此时函数对应极小值。</p>
+<p>当<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>的行列式<span><span class="MathJax_Preview">|H|&gt;0</span><script type="math/tex">|H|>0</script></span>且左上角值<span><span class="MathJax_Preview">H_{11}&gt;0</span><script type="math/tex">H_{11}>0</script></span>，此时函数对应极大值。</p>
+<p>当<span><span class="MathJax_Preview">H</span><script type="math/tex">H</script></span>的行列式<span><span class="MathJax_Preview">|H|&lt;0</span><script type="math/tex">|H|<0</script></span> ，在一个方向上是极大值，另一个方向是极小值。</p>
+<p>如果一个多维函数如下：</p>
+<div>
+<div class="MathJax_Preview">y=f\left(x_{1}, \ldots, x_{n}\right)</div>
+<script type="math/tex; mode=display">y=f\left(x_{1}, \ldots, x_{n}\right)</script>
+</div>
+<p>假如此函数的所有二阶导数都存在，则其黑塞矩阵为：</p>
+<div>
+<div class="MathJax_Preview">H(f)_{i j}(x)=D_{i} D_{j} f(x)</div>
+<script type="math/tex; mode=display">H(f)_{i j}(x)=D_{i} D_{j} f(x)</script>
+</div>
+<h3 id="_14">计算过程<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p>其一阶偏导为向量，称作梯度（gradient）：<span><span class="MathJax_Preview">x=x_1,...,x_n</span><script type="math/tex">x=x_1,...,x_n</script></span></p>
+<div>
+<div class="MathJax_Preview">\nabla f(\boldsymbol{x})=\left[\begin{array}{c}
+\frac{\partial f}{\partial x_{1}} \\
+\frac{\partial f}{\partial x_{2}} \\
+\vdots \\
+\frac{\partial f}{\partial x_{n}}
+\end{array}\right]</div>
+<script type="math/tex; mode=display">\nabla f(\boldsymbol{x})=\left[\begin{array}{c}
+\frac{\partial f}{\partial x_{1}} \\
+\frac{\partial f}{\partial x_{2}} \\
+\vdots \\
+\frac{\partial f}{\partial x_{n}}
+\end{array}\right]</script>
+</div>
+<p><span><span class="MathJax_Preview">\delta</span><script type="math/tex">\delta</script></span>即为偏导数partial</p>
+<p>按照如下形式求每一项的二阶偏导：</p>
+<div>
+<div class="MathJax_Preview">
+\nabla\left(\frac{\partial f}{\partial x_{i}}\right)=\left[\begin{array}{ccc}\frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{i}} &amp; \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{i}} &amp; \cdots &amp; \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{i}}\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+\nabla\left(\frac{\partial f}{\partial x_{i}}\right)=\left[\begin{array}{ccc}\frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{i}} & \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{i}} & \cdots & \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{i}}\end{array}\right]
+</script>
+</div>
+<p>则可得<span><span class="MathJax_Preview">f(x)</span><script type="math/tex">f(x)</script></span>的二阶偏导：</p>
+<div>
+<div class="MathJax_Preview">
+H(x)=\nabla^{2} f(\boldsymbol{x})=\left[\begin{array}{cccc}\frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{1}} &amp; \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{1}} &amp; \cdots &amp; \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{1}} \\ \frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{2}} &amp; \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{2}} &amp; \cdots &amp; \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{2}} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ \frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{n}} &amp; \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{n}} &amp; \cdots &amp; \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{n}}\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+H(x)=\nabla^{2} f(\boldsymbol{x})=\left[\begin{array}{cccc}\frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{1}} & \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{1}} & \cdots & \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{1}} \\ \frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{2}} & \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{2}} & \cdots & \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{2}} \\ \vdots & \vdots & \ddots & \vdots \\ \frac{\partial}{\partial x_{1}} \frac{\partial f}{\partial x_{n}} & \frac{\partial}{\partial x_{2}} \frac{\partial f}{\partial x_{n}} & \cdots & \frac{\partial}{\partial x_{n}} \frac{\partial f}{\partial x_{n}}\end{array}\right]
+</script>
+</div>
+<p>即<span><span class="MathJax_Preview">H(x)</span><script type="math/tex">H(x)</script></span>为方阵：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}\left[\begin{array}{cccc}
+\frac{\partial^{2} f}{\partial x_{1}^{2}} &amp; \frac{\partial^{2} f}{\partial x_{1} \partial x_{2}} &amp; \cdots &amp; \frac{\partial^{2} f}{\partial x_{1} \partial x_{n}} \\
+\frac{\partial^{2} f}{\partial x_{2} \partial x_{1}} &amp; \frac{\partial^{2} f}{\partial x_{2}^{2}} &amp; \cdots &amp; \frac{\partial^{2} f}{\partial x_{2} \partial x_{n}} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\frac{\partial^{2} f}{\partial x_{n} \partial x_{1}} &amp; \frac{\partial^{2} f}{\partial x_{n} \partial x_{2}} &amp; \cdots &amp; \frac{\partial^{2} f}{\partial x_{n}^{2}}
+\end{array}\right]\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}\left[\begin{array}{cccc}
+\frac{\partial^{2} f}{\partial x_{1}^{2}} & \frac{\partial^{2} f}{\partial x_{1} \partial x_{2}} & \cdots & \frac{\partial^{2} f}{\partial x_{1} \partial x_{n}} \\
+\frac{\partial^{2} f}{\partial x_{2} \partial x_{1}} & \frac{\partial^{2} f}{\partial x_{2}^{2}} & \cdots & \frac{\partial^{2} f}{\partial x_{2} \partial x_{n}} \\
+\vdots & \vdots & \ddots & \vdots \\
+\frac{\partial^{2} f}{\partial x_{n} \partial x_{1}} & \frac{\partial^{2} f}{\partial x_{n} \partial x_{2}} & \cdots & \frac{\partial^{2} f}{\partial x_{n}^{2}}
+\end{array}\right]\end{equation}
+</script>
+</div>
+<p>黑塞矩阵常通过牛顿法来处理大规模优化问题。</p>
+<p>黑塞矩阵的对称性：</p>
+<div>
+<div class="MathJax_Preview">
+\boldsymbol{H}_{i j}=\frac{\partial}{\partial x_{j}} \frac{\partial f}{\partial x_{i}}=\frac{\partial}{\partial x_{i}} \frac{\partial f}{\partial x_{j}}=\boldsymbol{H}_{j i}
+</div>
+<script type="math/tex; mode=display">
+\boldsymbol{H}_{i j}=\frac{\partial}{\partial x_{j}} \frac{\partial f}{\partial x_{i}}=\frac{\partial}{\partial x_{i}} \frac{\partial f}{\partial x_{j}}=\boldsymbol{H}_{j i}
+</script>
+</div>
+<p>练习：**</p>
+<ol>
+<li>求函数<span><span class="MathJax_Preview">f(x,y,z)=x^2z + 5x - 2y^3</span><script type="math/tex">f(x,y,z)=x^2z + 5x - 2y^3</script></span>的雅克比向量</li>
+</ol>
+<div>
+<div class="MathJax_Preview">
+J = [2zx+5, -6y^2, x^2]
+</div>
+<script type="math/tex; mode=display">
+J = [2zx+5, -6y^2, x^2]
+</script>
+</div>
+<ol>
+<li>求函数<span><span class="MathJax_Preview">f(x,y)=-x^2-4y^2+3x+9y-3xy</span><script type="math/tex">f(x,y)=-x^2-4y^2+3x+9y-3xy</script></span>的黑塞矩阵</li>
+</ol>
+<div>
+<div class="MathJax_Preview">
+\nabla f(x,y) = \left[\begin{array}{c}
+\frac{\partial f}{\partial x} \\
+\frac{\partial f}{\partial y} 
+\end{array}\right] = \left[\begin{array}{c}
+-2x+3-3y \\ -8y+9-3x 
+\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+\nabla f(x,y) = \left[\begin{array}{c}
+\frac{\partial f}{\partial x} \\
+\frac{\partial f}{\partial y} 
+\end{array}\right] = \left[\begin{array}{c}
+-2x+3-3y \\ -8y+9-3x 
+\end{array}\right]
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+H(x)=\nabla^{2} f(\boldsymbol{x})=\left[\begin{array}{cccc}
+\frac{\partial}{\partial x} \frac{\partial f}{\partial x} &amp; 
+\frac{\partial}{\partial y} \frac{\partial f}{\partial x} \\ 
+\frac{\partial}{\partial x} \frac{\partial f}{\partial y} &amp; 
+\frac{\partial}{\partial y} \frac{\partial f}{\partial y} \\ 
+\end{array}\right]
+=\left[\begin{array}{cccc}
+\frac{\partial(-2x+3-3y)}{\partial x} &amp; 
+\frac{\partial(-2x+3-3y)}{\partial y} \\ 
+\frac{\partial(-8y+9-3x)}{\partial x} &amp; 
+\frac{\partial(-8y+9-3x)}{\partial y} \\ 
+\end{array}\right]
+= \left[\begin{array}{cccc}
+-2 &amp; -3 \\ 
+-3 &amp; -8\\ 
+\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+H(x)=\nabla^{2} f(\boldsymbol{x})=\left[\begin{array}{cccc}
+\frac{\partial}{\partial x} \frac{\partial f}{\partial x} & 
+\frac{\partial}{\partial y} \frac{\partial f}{\partial x} \\ 
+\frac{\partial}{\partial x} \frac{\partial f}{\partial y} & 
+\frac{\partial}{\partial y} \frac{\partial f}{\partial y} \\ 
+\end{array}\right]
+=\left[\begin{array}{cccc}
+\frac{\partial(-2x+3-3y)}{\partial x} & 
+\frac{\partial(-2x+3-3y)}{\partial y} \\ 
+\frac{\partial(-8y+9-3x)}{\partial x} & 
+\frac{\partial(-8y+9-3x)}{\partial y} \\ 
+\end{array}\right]
+= \left[\begin{array}{cccc}
+-2 & -3 \\ 
+-3 & -8\\ 
+\end{array}\right]
+</script>
+</div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../registration_intro/" title="02-点云配准原理概述" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-点云配准原理概述
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

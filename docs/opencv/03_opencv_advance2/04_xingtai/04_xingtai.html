@@ -1,0 +1,1319 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 正则表达式">
+      
+      
+        <link rel="canonical" href="https://www.czxy.com/docs/03_opencv_advance2/04_xingtai/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>形态学变换 - 黑马机器人—OpenCV机器视觉：让机器看见世界！</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="https://www.czxy.com/docs" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" aria-label="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-header-nav__button md-logo"> -->
+        <a href="/" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" aria-label="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="https://www.czxy.com/docs">黑马机器人—OpenCV机器视觉：让机器看见世界！</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                形态学变换
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="https://www.czxy.com/docs" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—OpenCV机器视觉：让机器看见世界！
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      01_OpenCV基础
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        01_OpenCV基础
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/" title="概述" class="md-nav__link">
+      概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/01_challenge/" title="面临的挑战" class="md-nav__link">
+      面临的挑战
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/02_install/" title="OpenCV安装" class="md-nav__link">
+      OpenCV安装
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/03_quickstart/" title="入门案例" class="md-nav__link">
+      入门案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/04_jihebianhuan/" title="图片的几何变换" class="md-nav__link">
+      图片的几何变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/05_texiao/" title="图像特效" class="md-nav__link">
+      图像特效
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/06_meihua/" title="图片美化" class="md-nav__link">
+      图片美化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_opencv_basic/07_shipin/" title="视频处理" class="md-nav__link">
+      视频处理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      02_OpenCV高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        02_OpenCV高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/01_facedeteaction/" title="人脸识别" class="md-nav__link">
+      人脸识别
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/02_hsv/" title="HSV颜色模型" class="md-nav__link">
+      HSV颜色模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/03_inrange/" title="颜色过滤" class="md-nav__link">
+      颜色过滤
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/04_binary/" title="图像的二值化" class="md-nav__link">
+      图像的二值化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/05_noise/" title="图像的噪声" class="md-nav__link">
+      图像的噪声
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      03_OpenCV进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        03_OpenCV进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01_hist_match/" title="直方图匹配" class="md-nav__link">
+      直方图匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02_juanji/" title="图片卷积" class="md-nav__link">
+      图片卷积
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03_hough/" title="霍夫变换" class="md-nav__link">
+      霍夫变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04_contours/" title="边缘与轮廓" class="md-nav__link">
+      边缘与轮廓
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        形态学变换
+      </label>
+    
+    <a href="./" title="形态学变换" class="md-nav__link md-nav__link--active">
+      形态学变换
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    膨胀与腐蚀
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dilation" class="md-nav__link">
+    膨胀Dilation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erosion" class="md-nav__link">
+    腐蚀Erosion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening" class="md-nav__link">
+    开操作Opening
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    去除验证码上面的干扰线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closing" class="md-nav__link">
+    闭操作Closing
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    小结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04_match/" title="模板匹配" class="md-nav__link">
+      模板匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../07_road_line/" title="案例:提取车道线" class="md-nav__link">
+      案例:提取车道线
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05_bs/" title="案例:背景消除" class="md-nav__link">
+      案例:背景消除
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../06_birds/" title="案例:flappybird" class="md-nav__link">
+      案例:flappybird
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      04_CPP版OpenCV
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        04_CPP版OpenCV
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/01_install/" title="配置cpp环境" class="md-nav__link">
+      配置cpp环境
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/02_quickstart/" title="Mat类" class="md-nav__link">
+      Mat类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/03_histogram/" title="直方图" class="md-nav__link">
+      直方图
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/04_match/" title="模板匹配" class="md-nav__link">
+      模板匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/06_juanji/" title="图像的卷积" class="md-nav__link">
+      图像的卷积
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/07_xingtai/" title="形态学变换" class="md-nav__link">
+      形态学变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/08_perspective/" title="透视变换" class="md-nav__link">
+      透视变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/09_hough/" title="霍夫圆" class="md-nav__link">
+      霍夫圆
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/10_contours/" title="轮廓提取" class="md-nav__link">
+      轮廓提取
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/11_lianxi/" title="CPP操作小案例" class="md-nav__link">
+      CPP操作小案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/12_floodfill/" title="泛洪填充/漫水填充" class="md-nav__link">
+      泛洪填充/漫水填充
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/13_watershed/" title="图像分水岭" class="md-nav__link">
+      图像分水岭
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/14_distancechange/" title="距离变换" class="md-nav__link">
+      距离变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/15_example_inpaint/" title="0. 图片修复" class="md-nav__link">
+      0. 图片修复
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/16_example_qiebian/" title="1. 切边" class="md-nav__link">
+      1. 切边
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/17_example_qiebian2/" title="2. 切边+旋转" class="md-nav__link">
+      2. 切边+旋转
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/18_example_linedetect/" title="3. 直线检测" class="md-nav__link">
+      3. 直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/19_example_count/" title="4. 图像计数" class="md-nav__link">
+      4. 图像计数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/20_example_segement/" title="5. 图像分割" class="md-nav__link">
+      5.  图像分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/21_example_changebg/" title="6. 证件照换背景" class="md-nav__link">
+      6. 证件照换背景
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    膨胀与腐蚀
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dilation" class="md-nav__link">
+    膨胀Dilation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#erosion" class="md-nav__link">
+    腐蚀Erosion
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opening" class="md-nav__link">
+    开操作Opening
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    去除验证码上面的干扰线
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closing" class="md-nav__link">
+    闭操作Closing
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    小结
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">形态学变换<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">膨胀与腐蚀<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>形态学变化是基于图像形状的一些简单操作。操作对象一般是二值图像，需要两个输入，一个是我们的原图，另一个是<strong>3x3的结构元素</strong>(内核)，决定了膨胀操作的本质。常见的操作是图像的膨胀和腐蚀。以及他们的进阶操作注入Opening、Closing、Gradient等等。（<a href="https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html">参考</a>）</p>
+<p>结构元素的形状</p>
+<table>
+<thead>
+<tr>
+<th>MORPH_RECT</th>
+<th>矩形</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MORPH_ELLIPSE</td>
+<td>椭圆形</td>
+</tr>
+<tr>
+<td>MORPH_CROSS</td>
+<td>十字型</td>
+</tr>
+</tbody>
+</table>
+<h3 id="dilation">膨胀Dilation<a class="headerlink" href="#dilation" title="Permanent link">&para;</a></h3>
+<p>跟卷积操作非常类似.有图像A和3x3的结构元素,结构元素在A上进行滑动.计算结构元素在A上覆盖的最大像素值来替换当前结构元素对应的正中间的元素</p>
+<p>膨胀的作用：</p>
+<ol>
+<li>对象边缘增加一个像素</li>
+<li>使对象边缘平滑</li>
+<li>减少了对象与对象之间的距离</li>
+</ol>
+<p><img alt="" src="../../04_cpp_opencv/img/dilation.jpg" /></p>
+<p>示例代码</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * 膨胀： 用内核中最大的值填充当前像素点的值</span>
+<span class="cm"> */</span>
+<span class="k">import</span> <span class="n">cv2</span> <span class="n">as</span> <span class="n">cv</span>
+
+<span class="n">src</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">&quot;../img/morph-closing.jpg&quot;</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="n">src</span><span class="p">)</span>
+
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_RECT</span><span class="p">,(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;dst&quot;</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">waitKey</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="erosion">腐蚀Erosion<a class="headerlink" href="#erosion" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../04_cpp_opencv/img/erosion.jpg" /></p>
+<p>腐蚀和膨胀过程类似,唯一不同的是以覆盖的最小值替换当前的像素值</p>
+<p>侵蚀的作用：</p>
+<ol>
+<li>对象边缘减少一个像素</li>
+<li>对象边缘平滑</li>
+<li>弱化了对象与对象之间连接</li>
+</ol>
+<p>示例代码</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * 腐蚀： 用内核覆盖的最小像素值替换当前像素值</span>
+<span class="cm"> */</span>
+<span class="k">import</span> <span class="n">cv2</span> <span class="n">as</span> <span class="n">cv</span>
+
+<span class="n">src</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">&quot;../img/morph-j.jpg&quot;</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="n">src</span><span class="p">)</span>
+
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_RECT</span><span class="p">,(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">erode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;dst&quot;</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">waitKey</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="opening">开操作Opening<a class="headerlink" href="#opening" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../../04_cpp_opencv/img/open.jpg" /></p>
+<p>先腐蚀，后膨胀，主要应用在二值图像或灰度图像</p>
+<p>先腐蚀: 让当前窗口中最小的颜色值替换当前颜色值</p>
+<p>后膨胀: 让当前窗口中最大的颜色值替换当前颜色值</p>
+<p>作用：</p>
+<ol>
+<li>一般用于消除小的干扰或噪点（验证码图的干扰线）</li>
+<li>可以通过此操作配合<strong>结构元素</strong>，提取图像的横线和竖线</li>
+</ol>
+<p>示例代码</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> * 开操作： 先腐蚀，再膨胀</span>
+<span class="cm"> */</span>
+<span class="k">import</span> <span class="n">cv2</span> <span class="n">as</span> <span class="n">cv</span>
+
+<span class="n">src</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">&quot;../img/morph-opening.jpg&quot;</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="n">src</span><span class="p">)</span>
+
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_RECT</span><span class="p">,(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;dst&quot;</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">waitKey</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h4 id="_3">去除验证码上面的干扰线<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h4>
+<p><img alt="" src="../../04_cpp_opencv/img/yanzhengma.jpg" /></p>
+<h3 id="closing">闭操作Closing<a class="headerlink" href="#closing" title="Permanent link">&para;</a></h3>
+<p>先膨胀，后侵蚀</p>
+<p>一般用于填充内部缝隙</p>
+<p><img alt="" src="../../04_cpp_opencv/img/closing.jpg" /></p>
+<p>示例代码</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cm">/**</span>
+<span class="cm"> *  先膨胀再腐蚀</span>
+<span class="cm"> */</span>
+<span class="k">import</span> <span class="n">cv2</span> <span class="n">as</span> <span class="n">cv</span>
+
+<span class="n">src</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">imread</span><span class="p">(</span><span class="s">&quot;../img/morph-closing.jpg&quot;</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span><span class="n">src</span><span class="p">)</span>
+
+<span class="n">kernel</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_RECT</span><span class="p">,(</span><span class="mi">5</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv</span><span class="p">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">cv</span><span class="p">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span><span class="n">kernel</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;dst&quot;</span><span class="p">,</span><span class="n">dst</span><span class="p">)</span>
+<span class="n">cv</span><span class="p">.</span><span class="n">waitKey</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="_4">小结<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>形态学变换中还有一些其它的变换,大家可以自行尝试查看执行效果</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">开运算</span>
+    <span class="err">先对图像腐蚀，再膨胀</span>
+    <span class="n">dst</span><span class="o">=</span><span class="n">open</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="o">=</span><span class="n">dilate</span><span class="p">(</span><span class="n">erode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">))</span>
+
+<span class="err">闭运算</span>
+    <span class="err">先膨胀再腐蚀</span>
+    <span class="n">dst</span><span class="o">=</span><span class="n">close</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="o">=</span><span class="n">erode</span><span class="p">(</span><span class="n">dilate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">))</span>
+
+<span class="err">形态梯度</span>
+    <span class="err">膨胀图和腐蚀图之差</span>
+    <span class="n">dst</span><span class="o">=</span><span class="n">morph_grad</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="o">=</span><span class="n">dilate</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="err">−</span><span class="n">erode</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span>
+
+<span class="err">顶冒</span>
+    <span class="err">原图和开运算图之差</span>
+    <span class="n">dst</span><span class="o">=</span><span class="n">tophat</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="o">=</span><span class="n">src</span><span class="err">−</span><span class="n">open</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span>
+
+<span class="err">黑冒</span>
+    <span class="err">闭运算结果和原图之差</span>
+    <span class="n">dst</span><span class="o">=</span><span class="n">blackhat</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="o">=</span><span class="n">close</span><span class="p">(</span><span class="n">src</span><span class="p">,</span><span class="n">element</span><span class="p">)</span><span class="err">−</span><span class="n">src</span>
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../04_contours/" title="边缘与轮廓" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                边缘与轮廓
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../04_match/" title="模板匹配" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                模板匹配
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

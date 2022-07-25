@@ -1,0 +1,1839 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 正则表达式">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>账户管理(一) - 黑马机器人—PYTHON高级阶段</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="黑马机器人—PYTHON高级阶段" aria-label="黑马机器人—PYTHON高级阶段" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              黑马机器人—PYTHON高级阶段
+            </span>
+            <span class="md-header-nav__topic">
+              
+                账户管理(一)
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="黑马机器人—PYTHON高级阶段" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—PYTHON高级阶段
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      01_正则表达式
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        01_正则表达式
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/02_%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A6%82%E8%BF%B0/" title="正则表达式概述" class="md-nav__link">
+      正则表达式概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/03_regexutils/" title="正则表达式测试工具" class="md-nav__link">
+      正则表达式测试工具
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/04_match_single/" title="匹配单个字符" class="md-nav__link">
+      匹配单个字符
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/05_match_many/" title="匹配多个字符" class="md-nav__link">
+      匹配多个字符
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/06_match_startend/" title="匹配开头与结尾" class="md-nav__link">
+      匹配开头与结尾
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/07_match_group/" title="匹配分组" class="md-nav__link">
+      匹配分组
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/08_re_advanced/" title="re模块的高级用法" class="md-nav__link">
+      re模块的高级用法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/09_r/" title="r的作用" class="md-nav__link">
+      r的作用
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/10_tanlan/" title="python贪婪和非贪婪" class="md-nav__link">
+      python贪婪和非贪婪
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../01_regex/11_regex_lianxi/" title="简单爬虫案例" class="md-nav__link">
+      简单爬虫案例
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      02_数据库基本操作
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        02_数据库基本操作
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/02_gaishu/" title="数据库概述" class="md-nav__link">
+      数据库概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/03_install/" title="MySql 安装与卸载" class="md-nav__link">
+      MySql 安装与卸载
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/04_DB_CRUD/" title="数据库操作" class="md-nav__link">
+      数据库操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/05_TABLE_CRUD/" title="表的CRUD操作" class="md-nav__link">
+      表的CRUD操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/06_DATA_CUD/" title="表记录增删改" class="md-nav__link">
+      表记录增删改
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_mysql1/07_QUERY/" title="数据的查询" class="md-nav__link">
+      数据的查询
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      03_数据库多表操作
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        03_数据库多表操作
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_mysql2/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_mysql2/02_relation/" title="SQL 创建多表及多表之间关系" class="md-nav__link">
+      SQL 创建多表及多表之间关系
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_mysql2/03_lianxi/" title="商城表实例的分析" class="md-nav__link">
+      商城表实例的分析
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_mysql2/04_lianxi/" title="查询综合练习" class="md-nav__link">
+      查询综合练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      04_数据库高级操作
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        04_数据库高级操作
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_mysql3/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_mysql3/01_view/" title="视图" class="md-nav__link">
+      视图
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_mysql3/02_transaction/" title="事务" class="md-nav__link">
+      事务
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_mysql3/03_index/" title="索引" class="md-nav__link">
+      索引
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_mysql3/04_NF/" title="数据库设计三范式" class="md-nav__link">
+      数据库设计三范式
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6" checked>
+    
+    <label class="md-nav__link" for="nav-6">
+      05_数据库编程
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        05_数据库编程
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        账户管理(一)
+      </label>
+    
+    <a href="./" title="账户管理(一)" class="md-nav__link md-nav__link--active">
+      账户管理(一)
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    账户管理(一)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1mysql" class="md-nav__link">
+    1.MySQL账户管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 查看所有用户
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 创建账户、授权
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    账户管理(二)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 删除权限
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    2. 修改密码
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    !!! 忘记mysql默认密码
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 删除账户
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02_pymysql/" title="数据库编程" class="md-nav__link">
+      数据库编程
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03_sql_pro/" title="SQL注入问题" class="md-nav__link">
+      SQL注入问题
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04_stysystem/" title="学生信息管理系统" class="md-nav__link">
+      学生信息管理系统
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      06_html超文本标记语言
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        06_html超文本标记语言
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/02_info/" title="1-网站信息案例" class="md-nav__link">
+      1-网站信息案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/03_image/" title="2-图片展示案例" class="md-nav__link">
+      2-图片展示案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/04_liebiao/" title="3-网站友情链接页面案例" class="md-nav__link">
+      3-网站友情链接页面案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/05_xiaoshuo/" title="4-小说排行案例" class="md-nav__link">
+      4-小说排行案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/06_zonghe/" title="5-综合案例" class="md-nav__link">
+      5-综合案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_html/07_input/" title="6-注册页面案例" class="md-nav__link">
+      6-注册页面案例
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      07_css层叠样式表
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        07_css层叠样式表
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/02_div_span/" title="div和span" class="md-nav__link">
+      div和span
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/03_css_gaishu/" title="CSS概述和体验" class="md-nav__link">
+      CSS概述和体验
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/04_css_grammer/" title="CSS语法" class="md-nav__link">
+      CSS语法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/05_selector/" title="选择器" class="md-nav__link">
+      选择器
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/06_property/" title="CSS常用的属性" class="md-nav__link">
+      CSS常用的属性
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../06_css/07_lianxi/" title="仿百度首页练习" class="md-nav__link">
+      仿百度首页练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      08_网络爬虫
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        08_网络爬虫
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../07_spider/" title="爬虫概述" class="md-nav__link">
+      爬虫概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../07_spider/01_common_spider/" title="通用爬虫" class="md-nav__link">
+      通用爬虫
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../07_spider/02_jujiao_spider/" title="聚焦爬虫" class="md-nav__link">
+      聚焦爬虫
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../07_spider/03_spider/" title="爬虫综合案例" class="md-nav__link">
+      爬虫综合案例
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10">
+    
+    <label class="md-nav__link" for="nav-10">
+      扩展内容
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-10">
+        扩展内容
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/" title="课程介绍" class="md-nav__link">
+      课程介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/danymic_import/" title="动态import模块" class="md-nav__link">
+      动态import模块
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/QQtranslate/" title="QQ翻译案例" class="md-nav__link">
+      QQ翻译案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/Requests/" title="Requests模块" class="md-nav__link">
+      Requests模块
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/singleton/" title="单例设计模式" class="md-nav__link">
+      单例设计模式
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/SQLAlchemy/" title="SQLAlchemy" class="md-nav__link">
+      SQLAlchemy
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/unittest/" title="单元测试unittest" class="md-nav__link">
+      单元测试unittest
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/urllib/" title="urllib模块" class="md-nav__link">
+      urllib模块
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/SQLite/SQLite/" title="SQLite" class="md-nav__link">
+      SQLite
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../ext/scrapy/scrapy/" title="Scrapy框架" class="md-nav__link">
+      Scrapy框架
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    账户管理(一)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1mysql" class="md-nav__link">
+    1.MySQL账户管理
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 查看所有用户
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 创建账户、授权
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    账户管理(二)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 删除权限
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    2. 修改密码
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    !!! 忘记mysql默认密码
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 删除账户
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>账户管理(一)</h1>
+                
+                <h2 id="_1">账户管理(一)<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="1mysql">1.MySQL账户管理<a class="headerlink" href="#1mysql" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>在我们之前登录MySQL的时候我们都是直接使用的root用户，root用户属于数据库系统中的超级管理员，有权限对mysql进行任何想要做的操作。</p>
+</li>
+<li>
+<p>如果在生产环境下操作数据库时也是全部直接使用root账户连接，这就和悬崖边跳舞差不多。所以 创建特定的账户，授予这个账户特定的操作权限，然后连接进行操作 比如常规的crud 才是正道。</p>
+</li>
+<li>
+<p>MySQL账户体系：根据账户所具有的权限的不同，MySQL的账户可以分为以下几种</p>
+</li>
+<li>服务实例级账号：，启动了一个mysqld，即为一个数据库实例；如果某用户如root,拥有服务实例级分配的权限，那么该账号就可以删除所有的数据库、连同这些库中的表</li>
+<li>数据库级别账号：对特定数据库执行增删改查的所有操作</li>
+<li>数据表级别账号：对特定表执行增删改查等所有操作</li>
+<li>字段级别的权限：对某些表的特定字段进行操作</li>
+<li>存储程序级别的账号：对存储程序进行增删改查的操作</li>
+</ul>
+<blockquote>
+<p>注意：进行账户操作时，需要使用root账户登录，这个账户拥有最高的实例级权限。账户的操作主要包括创建账户、删除账户、修改密码、授权权限等。</p>
+</blockquote>
+<p>需要使用实例级账户登录后操作，以root为例</p>
+<p>主要操作包括：</p>
+<ul>
+<li>查看所有用户</li>
+<li>修改密码</li>
+<li>删除用户</li>
+</ul>
+<h3 id="2">2. 查看所有用户<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>所有用户及权限信息存储在mysql数据库的user表中</li>
+<li>查看user表的结构</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">use</span> <span class="n">mysql</span><span class="p">;</span>
+<span class="k">desc</span> <span class="k">user</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>主要字段说明：</li>
+<li>Host表示允许访问的主机</li>
+<li>User表示用户名</li>
+<li>password表示密码，为加密后的值</li>
+</ul>
+<p>查看所有用户</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">select</span> <span class="k">host</span><span class="p">,</span><span class="k">user</span><span class="p">,</span><span class="n">password</span> <span class="k">from</span> <span class="k">user</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>结果    taobao.com jd.com itheima.com              zhangsan 123456</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">select</span> <span class="k">host</span><span class="p">,</span><span class="k">user</span><span class="p">,</span><span class="n">password</span> <span class="k">from</span> <span class="k">user</span><span class="p">;</span>
+<span class="o">+</span><span class="c1">-----------+------+-------------------------------------------+</span>
+<span class="o">|</span> <span class="k">host</span>      <span class="o">|</span> <span class="k">user</span> <span class="o">|</span> <span class="n">password</span>                                  <span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+------+-------------------------------------------+</span>
+<span class="o">|</span> <span class="n">localhost</span> <span class="o">|</span> <span class="n">root</span> <span class="o">|</span> <span class="o">*</span><span class="mi">6</span><span class="n">BB4837EB74329105EE4568DDA7DC67ED2CA2AD9</span> <span class="o">|</span>
+<span class="o">+</span><span class="c1">-----------+------+-------------------------------------------+</span>
+<span class="mi">1</span> <span class="k">row</span> <span class="k">in</span> <span class="k">set</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="3">3. 创建账户、授权<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<ul>
+<li>需要使用实例级账户登录后操作，以root为例</li>
+<li>常用权限主要包括：create、alter、drop、insert、update、delete、select</li>
+<li>如果分配所有权限，可以使用all privileges</li>
+</ul>
+<p>步骤</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">步骤一：创建用户</span>
+<span class="k">create</span> <span class="k">user</span> <span class="s1">&#39;用户名&#39;</span><span class="o">@</span><span class="s1">&#39;主机&#39;</span> <span class="n">identified</span> <span class="k">by</span> <span class="s1">&#39;密码&#39;</span><span class="p">;</span>
+
+<span class="err">步骤二：授权</span>
+<span class="k">grant</span> <span class="err">权限</span> <span class="k">on</span> <span class="err">数据库</span><span class="p">.</span><span class="err">表名</span> <span class="k">to</span> <span class="s1">&#39;用户名&#39;</span><span class="o">@</span><span class="s1">&#39;主机名&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p><strong>示例1:</strong></p>
+<p>创建一个<code>laowang</code>的账号，密码为<code>123456</code>，只能通过本地(localhost)访问, 并且只能对<code>day26</code>数据库中的所有表进行<code>读</code>操作</p>
+<ul>
+<li>step1：使用root登录</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span> <span class="o">-</span><span class="n">uroot</span> <span class="o">-</span><span class="n">p</span>
+<span class="err">回车后写密码，然后回车</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>step2：创建账户并授予所有权限</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">create</span> <span class="k">user</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span> <span class="n">identified</span> <span class="k">by</span> <span class="s1">&#39;123456&#39;</span><span class="p">;</span>  <span class="o">#</span> <span class="err">创建用户</span>
+
+<span class="k">grant</span> <span class="k">select</span> <span class="k">on</span> <span class="n">day26</span><span class="p">.</span><span class="k">user</span> <span class="k">to</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>      <span class="o">#</span> <span class="err">授予</span><span class="n">select的权限</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>说明</p>
+<ul>
+<li>可以操作day26数据库的user表，方式为:<code>day26.user</code></li>
+<li>访问主机通常使用 百分号% 表示此账户可以使用任何ip的主机登录访问此数据库</li>
+<li>
+<p>访问主机可以设置成 localhost或具体的ip，表示只允许本机或特定主机访问</p>
+</li>
+<li>
+<p>查看用户有哪些权限</p>
+</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">show</span> <span class="n">grants</span> <span class="k">for</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p><img alt="" src="../img/01.jpg" /></p>
+<ul>
+<li>step3：退出root的登录</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">quit</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>step4：使用laowang账户登录</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span> <span class="o">-</span><span class="n">ulaowang</span> <span class="o">-</span><span class="n">p654321</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>登录后效果如下图
+  <img alt="" src="../img/02.jpg" /></li>
+<li>查看<code>day26</code>数据库中的表
+  <img alt="" src="../img/03.jpg" /></li>
+<li>
+<p>查看<code>day26.user</code>表中的数据
+  <img alt="" src="../img/04.jpg" /></p>
+</li>
+<li>
+<p>前面的这些查询操作我们都能愉快的验证通过,那么接下来我们来修改一下数据试试</p>
+</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">update</span> <span class="k">user</span> <span class="k">set</span> <span class="n">money</span><span class="o">=</span><span class="mi">3000</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p><img alt="" src="../img/05.jpg" /></p>
+<p>这里提示说:<strong>更新</strong>命令被拒绝啦!laowang这个用户没有对user表执行update的权限.还记得我们前面授予的权限吗?</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">grant</span> <span class="k">select</span> <span class="k">on</span> <span class="n">day26</span><span class="p">.</span><span class="k">user</span> <span class="k">to</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="err">我们仅仅只是授予了</span><span class="n">laowang能够查询day26库中的user表</span>
+</code></pre></div>
+</td></tr></table>
+
+<p><strong><u>示例2</u></strong></p>
+<p>创建一个<code>laoli</code>的账号，密码为<code>123456</code>，可以任意电脑进行链接访问, 并且对<code>day26</code>数据库中的所有表拥有所有权限</p>
+<p><strong>注意:</strong>需要使用root账户才能进行创建用户和授权</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="k">create</span> <span class="k">user</span> <span class="s1">&#39;laoli&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span> <span class="n">identified</span> <span class="k">by</span> <span class="s1">&#39;123456&#39;</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">01</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">grant</span> <span class="k">all</span> <span class="k">privileges</span> <span class="k">on</span> <span class="n">day26</span><span class="p">.</span><span class="o">*</span> <span class="k">to</span> <span class="s1">&#39;laoli&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="k">rows</span> <span class="n">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>
+<p>使用<code>'laoli'@'localhost'进行登录</code>
+  <img alt="" src="../img/06.jpg" /></p>
+</li>
+<li>
+<p>查看所有的表</p>
+</li>
+</ul>
+<p><img alt="" src="../img/07.jpg" /></p>
+<p>​   哇塞,当我们授权<code>day26.*</code>的时候,我们可以查看到day26这个数据库的中的所有的表喔!</p>
+<ul>
+<li>下面我们来查看一下表中的数据</li>
+</ul>
+<p><img alt="" src="../img/08.jpg" /></p>
+<ul>
+<li>我们再来更新一下数据试试</li>
+<li>看这个时候,就没有再出现权限被拒绝的情况啦! 因为laoli的权限为<code>all privileges</code></li>
+</ul>
+<p><img alt="" src="../img/09.jpg" /></p>
+<hr />
+<h2 id="_2">账户管理(二)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="1">1. 删除权限<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">revoke</span> <span class="err">权限名称</span> <span class="k">on</span> <span class="err">数据库</span><span class="p">.</span><span class="err">表名</span> <span class="k">from</span> <span class="err">账户</span><span class="o">@</span><span class="err">主机</span> 
+
+<span class="err">如</span><span class="p">:</span>
+<span class="k">revoke</span> <span class="k">select</span> <span class="k">on</span> <span class="n">day26</span><span class="p">.</span><span class="k">user</span> <span class="k">from</span> <span class="n">laoli</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
+<span class="err">刷新权限列表</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p><img alt="" src="../img/10.jpg" /></p>
+<p><img alt="" src="../img/11.jpg" /></p>
+<h3 id="2_1">2. 修改密码<a class="headerlink" href="#2_1" title="Permanent link">&para;</a></h3>
+<p>使用root登录，修改mysql数据库的user表</p>
+<ul>
+<li>使用password()函数进行密码加密</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">set</span> <span class="n">password</span> <span class="k">for</span> <span class="s1">&#39;用户名&#39;</span><span class="o">@</span><span class="s1">&#39;地址&#39;</span><span class="o">=</span><span class="n">password</span><span class="p">(</span><span class="s1">&#39;新密码&#39;</span><span class="p">)</span>
+
+<span class="err">例：</span>
+<span class="k">set</span> <span class="n">password</span> <span class="k">for</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="o">=</span><span class="n">password</span><span class="p">(</span><span class="s1">&#39;123456&#39;</span><span class="p">);</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>注意修改完成后需要刷新权限</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="err">刷新权限：</span><span class="n">flush</span> <span class="k">privileges</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">mysql</span><span class="o">&gt;</span> <span class="kt">set</span> <span class="n">password</span> <span class="k">for</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;localhost&#39;</span><span class="o">=</span><span class="nf">password</span><span class="p">(</span><span class="s1">&#39;123456&#39;</span><span class="p">);</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="n">rows</span> <span class="nf">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">00</span> <span class="n">sec</span><span class="p">)</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span> <span class="k">flush</span> <span class="n">privileges</span><span class="p">;</span>
+<span class="n">Query</span> <span class="n">OK</span><span class="p">,</span> <span class="mi">0</span> <span class="n">rows</span> <span class="nf">affected</span> <span class="p">(</span><span class="mi">0</span><span class="p">.</span><span class="mi">02</span> <span class="n">sec</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="mysql">!!! 忘记mysql默认密码<a class="headerlink" href="#mysql" title="Permanent link">&para;</a></h3>
+<p>假设我们忘记了密码或者输错了密码, 输入 mysql -uroot -p ，回车输入密码进入数据库就会出现这样到错误；</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>Access denied for user &#39;root&#39;@&#39;localhost&#39; (using password: YES)
+</code></pre></div>
+</td></tr></table>
+
+<p><strong>解决方案：密码置空+修改密码</strong></p>
+<p>第一步，停止MySQL服务</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>以管理员到身份打开cmd命令行窗口!
+
+C:\WINDOWS\system32&gt;net stop mysql
+MySQL 服务正在停止.
+MySQL 服务已成功停止。
+</code></pre></div>
+</td></tr></table>
+
+<p>第二步，编辑MySQL配置文件：</p>
+<p>编辑mysql的配置文件</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>C:\Program Files\MySQL\MySQL Server 5.5\my.ini
+</code></pre></div>
+</td></tr></table>
+
+<p>在[mysqld]段下加入一行“<code>skip-grant-tables</code>”。让mysql<strong>跳过正常验证（非常危险，尽快操作）</strong></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">mysqld</span><span class="p">]</span>
+<span class="n">skip</span><span class="o">-</span><span class="k">grant</span><span class="o">-</span><span class="kp">tables</span>
+<span class="c1"># The TCP/IP Port the MySQL Server will listen on</span>
+<span class="n">port</span><span class="o">=</span><span class="mi">3306</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>保存文件，并退出编辑模式</p>
+<p>第三步，启动MySQL服务：</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>C:\WINDOWS\system32&gt;net start mysql
+MySQL 服务正在启动 .
+MySQL 服务已经启动成功。
+</code></pre></div>
+</td></tr></table>
+
+<p>第四步，控制台直接输入mysql 即可登录到 mysql控制台</p>
+<p><img alt="" src="../img/12.jpg" /></p>
+<p>第五步，修改密码，将laowang的密码设置为123123</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">use</span> <span class="n">mysql</span><span class="p">;</span>
+
+<span class="k">update</span> <span class="n">user</span> <span class="kt">set</span> <span class="n">password</span><span class="o">=</span><span class="nf">password</span><span class="p">(</span><span class="s1">&#39;123123&#39;</span><span class="p">)</span> <span class="k">where</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;laowang&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>第六步，退出控制台，并修改mysql启动方式为普通模式</p>
+<p>再次编辑 mysql 配置文件，注释或删除此行 <code>skip-grant-tables</code> 并保存退出</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>C:\Program Files\MySQL\MySQL Server 5.5\my.ini
+</code></pre></div>
+</td></tr></table>
+
+<p>第七步：重启 mysql服务，此时密码就为空了</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">C</span><span class="p">:</span><span class="err">\</span><span class="n">WINDOWS</span><span class="err">\</span><span class="n">system32</span><span class="o">&gt;</span><span class="n">net</span> <span class="n">stop</span> <span class="n">mysql</span>
+<span class="n">MySQL</span> <span class="err">服务正在停止</span><span class="p">.</span>
+<span class="n">MySQL</span> <span class="err">服务已成功停止。</span>
+
+
+<span class="n">C</span><span class="p">:</span><span class="err">\</span><span class="n">WINDOWS</span><span class="err">\</span><span class="n">system32</span><span class="o">&gt;</span><span class="n">net</span> <span class="n">start</span> <span class="n">mysql</span>
+<span class="n">MySQL</span> <span class="err">服务正在启动</span> <span class="p">.</span>
+<span class="n">MySQL</span> <span class="err">服务已经启动成功。</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>第八步: 使用laowang用户，密码为123123登录</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">C</span><span class="p">:</span><span class="err">\</span><span class="n">WINDOWS</span><span class="err">\</span><span class="n">system32</span><span class="o">&gt;</span><span class="n">mysql</span> <span class="o">-</span><span class="n">ulaowang</span> <span class="o">-</span><span class="n">p123123</span>
+<span class="n">Welcome</span> <span class="k">to</span> <span class="n">the</span> <span class="n">MySQL</span> <span class="n">monitor</span><span class="p">.</span>  <span class="n">Commands</span> <span class="n">end</span> <span class="k">with</span> <span class="p">;</span> <span class="k">or</span> <span class="err">\</span><span class="n">g</span><span class="p">.</span>
+<span class="n">Your</span> <span class="n">MySQL</span> <span class="n">connection</span> <span class="n">id</span> <span class="k">is</span> <span class="mi">2</span>
+<span class="n">Server</span> <span class="n">version</span><span class="p">:</span> <span class="mi">5</span><span class="p">.</span><span class="mi">5</span><span class="p">.</span><span class="mi">27</span> <span class="n">MySQL</span> <span class="n">Community</span> <span class="nf">Server</span> <span class="p">(</span><span class="n">GPL</span><span class="p">)</span>
+
+<span class="nf">Copyright</span> <span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2000</span><span class="p">,</span> <span class="mi">2011</span><span class="p">,</span> <span class="n">Oracle</span> <span class="k">and</span><span class="o">/</span><span class="k">or</span> <span class="n">its</span> <span class="n">affiliates</span><span class="p">.</span> <span class="k">All</span> <span class="n">rights</span> <span class="n">reserved</span><span class="p">.</span>
+
+<span class="n">Oracle</span> <span class="k">is</span> <span class="n">a</span> <span class="n">registered</span> <span class="n">trademark</span> <span class="n">of</span> <span class="n">Oracle</span> <span class="n">Corporation</span> <span class="k">and</span><span class="o">/</span><span class="k">or</span> <span class="n">its</span>
+<span class="n">affiliates</span><span class="p">.</span> <span class="n">Other</span> <span class="n">names</span> <span class="n">may</span> <span class="n">be</span> <span class="n">trademarks</span> <span class="n">of</span> <span class="n">their</span> <span class="n">respective</span>
+<span class="n">owners</span><span class="p">.</span>
+
+<span class="n">Type</span> <span class="s1">&#39;help;&#39;</span> <span class="k">or</span> <span class="s1">&#39;\h&#39;</span> <span class="k">for</span> <span class="n">help</span><span class="p">.</span> <span class="n">Type</span> <span class="s1">&#39;\c&#39;</span> <span class="k">to</span> <span class="n">clear</span> <span class="n">the</span> <span class="n">current</span> <span class="n">input</span> <span class="n">statement</span><span class="p">.</span>
+
+<span class="n">mysql</span><span class="o">&gt;</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="4">4. 删除账户<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<ul>
+<li>语法1：使用root登录</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">drop</span> <span class="k">user</span> <span class="s1">&#39;用户名&#39;</span><span class="o">@</span><span class="s1">&#39;主机&#39;</span><span class="p">;</span>
+<span class="err">例：</span>
+<span class="k">drop</span> <span class="k">user</span> <span class="s1">&#39;laowang&#39;</span><span class="o">@</span><span class="s1">&#39;%&#39;</span><span class="p">;</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>语法2：使用root登录，删除mysql数据库的user表中数据</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">delete</span> <span class="k">from</span> <span class="k">user</span> <span class="k">where</span> <span class="k">user</span><span class="o">=</span><span class="s1">&#39;用户名&#39;</span><span class="p">;</span>
+<span class="err">例：</span>
+<span class="k">delete</span> <span class="k">from</span> <span class="k">user</span> <span class="k">where</span> <span class="k">user</span><span class="o">=</span><span class="s1">&#39;laowang&#39;</span><span class="p">;</span>
+
+<span class="c1">-- 操作结束之后需要刷新权限</span>
+<span class="n">flush</span> <span class="k">privileges</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>推荐使用语法1删除用户, 如果使用语法1删除失败，采用语法2方式</li>
+</ul>
+<blockquote>
+<p>忘记 root 账户密码怎么办 !!</p>
+</blockquote>
+<ul>
+<li>一般也轮不到我们来管理 root 账户,所以别瞎卖白粉的心了</li>
+</ul>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../02_pymysql/" title="数据库编程" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                数据库编程
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1595 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 Linux命令、Ubuntu系统、Shell脚本、ROS、ROS架构设计">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>向量的加法 - 机器人运动学</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="机器人运动学" aria-label="机器人运动学" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              机器人运动学
+            </span>
+            <span class="md-header-nav__topic">
+              
+                向量的加法
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="机器人运动学" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    机器人运动学
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+    
+    <label class="md-nav__link" for="nav-1">
+      向量基础
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        向量基础
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../base/" title="向量的基本概念" class="md-nav__link">
+      向量的基本概念
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        向量的加法
+      </label>
+    
+    <a href="./" title="向量的加法" class="md-nav__link md-nav__link--active">
+      向量的加法
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    通用法则
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    平行四边形法则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    三角形法则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    首尾相连法则
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    加法计算
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2d" class="md-nav__link">
+    公理总结2D
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3d" class="md-nav__link">
+    公理总结3D
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    向量减法
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码实现加法
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../scale/" title="向量的缩放" class="md-nav__link">
+      向量的缩放
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../dot/" title="向量的点乘" class="md-nav__link">
+      向量的点乘
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../multi/" title="向量的叉乘" class="md-nav__link">
+      向量的叉乘
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      运动学理解
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        运动学理解
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kinematics/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kinematics/dof/" title="自由度理解" class="md-nav__link">
+      自由度理解
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kinematics/joint/" title="关节类型" class="md-nav__link">
+      关节类型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kinematics/frame/" title="坐标系理解" class="md-nav__link">
+      坐标系理解
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      坐标转换
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        坐标转换
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/relative/" title="相对坐标系" class="md-nav__link">
+      相对坐标系
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/2dtranslate/" title="2D坐标系平移原理(几何)" class="md-nav__link">
+      2D坐标系平移原理(几何)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/2dtranslateV/" title="2D坐标系平移原理(向量)" class="md-nav__link">
+      2D坐标系平移原理(向量)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/2drotate/" title="2D坐标系旋转原理" class="md-nav__link">
+      2D坐标系旋转原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/2d/" title="2D坐标系旋转平移总结" class="md-nav__link">
+      2D坐标系旋转平移总结
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3dtranslate/" title="3D坐标系平移" class="md-nav__link">
+      3D坐标系平移
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3drotatez/" title="3D坐标系旋转Z轴" class="md-nav__link">
+      3D坐标系旋转Z轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3drotatey/" title="3D坐标系旋转Y轴" class="md-nav__link">
+      3D坐标系旋转Y轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3drotatex/" title="3D坐标系旋转X轴" class="md-nav__link">
+      3D坐标系旋转X轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3drotate/" title="3D坐标系旋转综合" class="md-nav__link">
+      3D坐标系旋转综合
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/3dRT/" title="3D坐标系旋转平移叠加" class="md-nav__link">
+      3D坐标系旋转平移叠加
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/pose/" title="空间姿态描述" class="md-nav__link">
+      空间姿态描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../frames/demo/" title="2d案例" class="md-nav__link">
+      2d案例
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      URDF模型
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        URDF模型
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/intro/" title="URDF介绍" class="md-nav__link">
+      URDF介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/first/" title="URDF可视化" class="md-nav__link">
+      URDF可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4">
+    
+    <label class="md-nav__link" for="nav-4-4">
+      Link连杆配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        Link连杆配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/link/" title="连杆介绍" class="md-nav__link">
+      连杆介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/link/geometry/" title="视觉形状配置" class="md-nav__link">
+      视觉形状配置
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/link/origin/" title="视觉位姿配置" class="md-nav__link">
+      视觉位姿配置
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/link/material/" title="视觉纹理配置" class="md-nav__link">
+      视觉纹理配置
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      Joint关节配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        Joint关节配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/joint/" title="关节介绍" class="md-nav__link">
+      关节介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/joint/fixed/" title="Fixed关节" class="md-nav__link">
+      Fixed关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/joint/revolute/" title="Revolute关节" class="md-nav__link">
+      Revolute关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/joint/continuous/" title="Continuous关节" class="md-nav__link">
+      Continuous关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/joint/prismatic/" title="Prismatic关节" class="md-nav__link">
+      Prismatic关节
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/scara/" title="URDF案例:SCARA" class="md-nav__link">
+      URDF案例:SCARA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/xacro/" title="xacro" class="md-nav__link">
+      xacro
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../urdf/scara2/" title="XACRO案例:SCARA" class="md-nav__link">
+      XACRO案例:SCARA
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      KDL库
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        KDL库
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../kdl/base/" title="kdl介绍" class="md-nav__link">
+      kdl介绍
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      写字案例
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        写字案例
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../write/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../write/intro/" title="案例介绍" class="md-nav__link">
+      案例介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../write/qt/" title="Qt界面" class="md-nav__link">
+      Qt界面
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Moveit!
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Moveit!
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/intro/" title="Moveit!介绍" class="md-nav__link">
+      Moveit!介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/env/" title="环境搭建" class="md-nav__link">
+      环境搭建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/rviz/" title="UR3可视化构建" class="md-nav__link">
+      UR3可视化构建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-5" type="checkbox" id="nav-7-5">
+    
+    <label class="md-nav__link" for="nav-7-5">
+      路径规划
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-5">
+        路径规划
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/goal/rviz/" title="rviz可视化操作" class="md-nav__link">
+      rviz可视化操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/goal/move/" title="编码控制移动" class="md-nav__link">
+      编码控制移动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/goal/plan/" title="路点规划" class="md-nav__link">
+      路点规划
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-6" type="checkbox" id="nav-7-6">
+    
+    <label class="md-nav__link" for="nav-7-6">
+      场景配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-6">
+        场景配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/scene/gui/" title="GUI操作" class="md-nav__link">
+      GUI操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/scene/code/" title="编码构建场景" class="md-nav__link">
+      编码构建场景
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/visualtool/" title="Rviz虚拟调试工具" class="md-nav__link">
+      Rviz虚拟调试工具
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/auboi5/" title="Aubo i5真机" class="md-nav__link">
+      Aubo i5真机
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/ur/" title="UR3 真机" class="md-nav__link">
+      UR3 真机
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/panda/" title="Panda机械臂" class="md-nav__link">
+      Panda机械臂
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../moveit/assistant/" title="moveit助理" class="md-nav__link">
+      moveit助理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    通用法则
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    平行四边形法则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    三角形法则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    首尾相连法则
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    加法计算
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#2d" class="md-nav__link">
+    公理总结2D
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3d" class="md-nav__link">
+    公理总结3D
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    向量减法
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码实现加法
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>向量的加法</h1>
+                
+                <h2 id="_1">通用法则<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="_2">平行四边形法则<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>案例: 向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上 向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> </p>
+<p><img alt="" src="../asserts/vector02.png" /></p>
+<p>如图，向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上向量 <span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> ,可以通过补全平行四边形的方案来计算。</p>
+<p>得到的平行四边形的对角线就是 加法的结果。</p>
+<h3 id="_3">三角形法则<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>案例: 向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上 向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> </p>
+<p><img alt="" src="../asserts/vector03.png" /></p>
+<p>如图，向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上向量 <span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> , 首先可以将向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span>移动到向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span>的末端。</p>
+<p>接着，从向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 的起始端向向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span>的末端连一根线。</p>
+<p>连接的这条线就是 加法的结果。</p>
+<h3 id="_4">首尾相连法则<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>案例: 多个向量相加。</p>
+<p><img alt="" src="../asserts/vector04.png" /></p>
+<p>如图，多个向量相加时，只需要将向量进行首尾相连，就可以计算出结果。</p>
+<h2 id="_5">加法计算<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>案例: 向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上 向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> </p>
+<p>通常，我们用坐标去表示一个向量，例如我们用真实的坐标值来描述向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 和 <span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span></p>
+<div>
+<div class="MathJax_Preview">
+\vec {a} = (4, 1)
+</div>
+<script type="math/tex; mode=display">
+\vec {a} = (4, 1)
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\vec {b} = (3, 7)
+</div>
+<script type="math/tex; mode=display">
+\vec {b} = (3, 7)
+</script>
+</div>
+<p>那么向量<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> 加上 向量<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span> 可以表示为:</p>
+<div>
+<div class="MathJax_Preview">
+\vec {a} + \vec {b} = (4 + 3, 1 + 7)
+</div>
+<script type="math/tex; mode=display">
+\vec {a} + \vec {b} = (4 + 3, 1 + 7)
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\vec {a} + \vec {b} = (7, 8)
+</div>
+<script type="math/tex; mode=display">
+\vec {a} + \vec {b} = (7, 8)
+</script>
+</div>
+<h3 id="2d">公理总结2D<a class="headerlink" href="#2d" title="Permanent link">&para;</a></h3>
+<p>已知多个向量: <span><span class="MathJax_Preview">\vec {v_1}</span><script type="math/tex">\vec {v_1}</script></span>, <span><span class="MathJax_Preview">\vec {v_2}</span><script type="math/tex">\vec {v_2}</script></span>, <span><span class="MathJax_Preview">\vec {v_3}</span><script type="math/tex">\vec {v_3}</script></span>, ......,<span><span class="MathJax_Preview">\vec {v_n}</span><script type="math/tex">\vec {v_n}</script></span></p>
+<p>他们的坐标分别表示为: (<span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>, <span><span class="MathJax_Preview">y_1</span><script type="math/tex">y_1</script></span>), (<span><span class="MathJax_Preview">x_2</span><script type="math/tex">x_2</script></span>, <span><span class="MathJax_Preview">y_2</span><script type="math/tex">y_2</script></span>), (<span><span class="MathJax_Preview">x_3</span><script type="math/tex">x_3</script></span>, <span><span class="MathJax_Preview">y_3</span><script type="math/tex">y_3</script></span>), ......,(<span><span class="MathJax_Preview">x_n</span><script type="math/tex">x_n</script></span>, <span><span class="MathJax_Preview">y_n</span><script type="math/tex">y_n</script></span>)</p>
+<p>那么这些向量和计算规则为:</p>
+<div>
+<div class="MathJax_Preview">
+\vec {v_1} + \vec {v_2} + ... + \vec {v_n} 
+= 
+(
+\vec {x_1} + \vec {x_2} + ... + \vec {x_n}
+,
+\vec {y_1} + \vec {y_2} + ... + \vec {y_n}
+)
+</div>
+<script type="math/tex; mode=display">
+\vec {v_1} + \vec {v_2} + ... + \vec {v_n} 
+= 
+(
+\vec {x_1} + \vec {x_2} + ... + \vec {x_n}
+,
+\vec {y_1} + \vec {y_2} + ... + \vec {y_n}
+)
+</script>
+</div>
+<h3 id="3d">公理总结3D<a class="headerlink" href="#3d" title="Permanent link">&para;</a></h3>
+<p>已知多个向量: <span><span class="MathJax_Preview">\vec {v_1}</span><script type="math/tex">\vec {v_1}</script></span>, <span><span class="MathJax_Preview">\vec {v_2}</span><script type="math/tex">\vec {v_2}</script></span>, <span><span class="MathJax_Preview">\vec {v_3}</span><script type="math/tex">\vec {v_3}</script></span>, ......,<span><span class="MathJax_Preview">\vec {v_n}</span><script type="math/tex">\vec {v_n}</script></span></p>
+<p>他们的坐标分别表示为: (<span><span class="MathJax_Preview">x_1</span><script type="math/tex">x_1</script></span>, <span><span class="MathJax_Preview">y_1</span><script type="math/tex">y_1</script></span>,<span><span class="MathJax_Preview">z_1</span><script type="math/tex">z_1</script></span>), (<span><span class="MathJax_Preview">x_2</span><script type="math/tex">x_2</script></span>, <span><span class="MathJax_Preview">y_2</span><script type="math/tex">y_2</script></span>,<span><span class="MathJax_Preview">z_2</span><script type="math/tex">z_2</script></span>), (<span><span class="MathJax_Preview">x_3</span><script type="math/tex">x_3</script></span>, <span><span class="MathJax_Preview">y_3</span><script type="math/tex">y_3</script></span>,<span><span class="MathJax_Preview">z_3</span><script type="math/tex">z_3</script></span>), ......,(<span><span class="MathJax_Preview">x_n</span><script type="math/tex">x_n</script></span>, <span><span class="MathJax_Preview">y_n</span><script type="math/tex">y_n</script></span>,<span><span class="MathJax_Preview">z_n</span><script type="math/tex">z_n</script></span>)</p>
+<p>那么这些向量和计算规则为:</p>
+<div>
+<div class="MathJax_Preview">
+\vec {v_1} + \vec {v_2} + ... + \vec {v_n} 
+= 
+(
+\vec {x_1} + \vec {x_2} + ... + \vec {x_n}
+,
+\vec {y_1} + \vec {y_2} + ... + \vec {y_n}
+,
+\vec {z_1} + \vec {z_2} + ... + \vec {z_n}
+)
+</div>
+<script type="math/tex; mode=display">
+\vec {v_1} + \vec {v_2} + ... + \vec {v_n} 
+= 
+(
+\vec {x_1} + \vec {x_2} + ... + \vec {x_n}
+,
+\vec {y_1} + \vec {y_2} + ... + \vec {y_n}
+,
+\vec {z_1} + \vec {z_2} + ... + \vec {z_n}
+)
+</script>
+</div>
+<h2 id="_6">向量减法<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>向量不存在减法，如果真的要去计算减法，我们得从几何意义上入手。</p>
+<p>例如，我们要求解<span><span class="MathJax_Preview">\vec {a}</span><script type="math/tex">\vec {a}</script></span> - <span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span></p>
+<p>我们就要转换思维了，可以转换为以下:</p>
+<div>
+<div class="MathJax_Preview">
+\vec {a} - \vec {b}
+=
+\vec {a} + (-\vec {b})
+</div>
+<script type="math/tex; mode=display">
+\vec {a} - \vec {b}
+=
+\vec {a} + (-\vec {b})
+</script>
+</div>
+<p>也就是将减法转换为加法。</p>
+<p>那么<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span>和-<span><span class="MathJax_Preview">\vec {b}</span><script type="math/tex">\vec {b}</script></span>  是啥关系了？</p>
+<p>他们大小相同，方向相反。</p>
+<p>如果:</p>
+<div>
+<div class="MathJax_Preview">
+\vec {b} = (2, 3)
+</div>
+<script type="math/tex; mode=display">
+\vec {b} = (2, 3)
+</script>
+</div>
+<p>那么:</p>
+<div>
+<div class="MathJax_Preview">
+-\vec {b} = (-2, -3)
+</div>
+<script type="math/tex; mode=display">
+-\vec {b} = (-2, -3)
+</script>
+</div>
+<h2 id="_7">代码实现加法<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="nb">pow</span><span class="p">,</span> <span class="n">sqrt</span>
+
+<span class="c1"># numpy</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+
+<span class="c1"># numpy</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">3</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">4</span><span class="p">]</span>
+<span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+<span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>
+</code></pre></div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../base/" title="向量的基本概念" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                向量的基本概念
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../scale/" title="向量的缩放" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                向量的缩放
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

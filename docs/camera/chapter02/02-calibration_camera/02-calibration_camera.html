@@ -1,0 +1,1552 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="相机标定 物体检测 3d相机原理 双目相机 结构光相机 TOF相机 三维扫描仪 3D相机编程 相机标定 去畸变 位姿估计 三维重建 相机模型 小孔成像模型">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>02-标定实现</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo"> -->
+        <a href="/docs" title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | 相机标定&物体检测</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                02-标定实现
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | 相机标定&物体检测" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | 相机标定&物体检测
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、相机基础知识
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、相机基础知识
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-camera/" title="01-相机基础" class="md-nav__link">
+      01-相机基础
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-3D_camera/" title="02-3D相机及分类" class="md-nav__link">
+      02-3D相机及分类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-pinhole_camera_model/" title="03-相机模型" class="md-nav__link">
+      03-相机模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-coordinates/" title="04-坐标变换" class="md-nav__link">
+      04-坐标变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-distortions/" title="05-相机透镜及畸变" class="md-nav__link">
+      05-相机透镜及畸变
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/06-undistortion/" title="06-相机标定与去畸变" class="md-nav__link">
+      06-相机标定与去畸变
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      二、相机标定&去畸变
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、相机标定&去畸变
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-calibration_board/" title="01-相机标定&标定板" class="md-nav__link">
+      01-相机标定&标定板
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        02-标定实现
+      </label>
+    
+    <a href="./" title="02-标定实现" class="md-nav__link md-nav__link--active">
+      02-标定实现
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    内参标定(棋盘格)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 加载图片
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 查找角点
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 执行相机标定
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 保存标定结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    标定结果示例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    内参标定(圆网格)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    摄像头实时标定
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    标定参数及优化
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#findchessboardcorners" class="md-nav__link">
+    findChessboardCorners
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cornersubpix" class="md-nav__link">
+    cornerSubPix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calibratecamera" class="md-nav__link">
+    calibrateCamera
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-undistortion/" title="03-去畸变(矫正)" class="md-nav__link">
+      03-去畸变(矫正)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-pose_estimation/" title="04-位置估计及3D重建" class="md-nav__link">
+      04-位置估计及3D重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../exercise/" title="作业" class="md-nav__link">
+      作业
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、双目相机原理与应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、双目相机原理与应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/01-stereo_theory/" title="01-双目相机原理" class="md-nav__link">
+      01-双目相机原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/02-stereo_drivers/" title="02-双目相机驱动" class="md-nav__link">
+      02-双目相机驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/03-stereo_calibration/" title="03-双目相机标定" class="md-nav__link">
+      03-双目相机标定
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/04-stereo_point_cloud/" title="04-双目相机生成点云" class="md-nav__link">
+      04-双目相机生成点云
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/05-stereo_other/" title="05-其他操作" class="md-nav__link">
+      05-其他操作
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、2D图像处理实战
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、2D图像处理实战
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/01-obj_detect/" title="01-物体检测概述" class="md-nav__link">
+      01-物体检测概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/02-line_detect/" title="02-直线检测" class="md-nav__link">
+      02-直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/03-box_detect/" title="03-牙膏盒检测" class="md-nav__link">
+      03-牙膏盒检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/04-common_detect/" title="04-多阈值检测多边形" class="md-nav__link">
+      04-多阈值检测多边形
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/05-template_match/" title="05-模板匹配多个物体" class="md-nav__link">
+      05-模板匹配多个物体
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/06-feature_detection_description/" title="06-特征检测及描述" class="md-nav__link">
+      06-特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-corner_detection/" title="07-角点检测" class="md-nav__link">
+      07-角点检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-feature_detection/" title="07-实现特征检测及描述" class="md-nav__link">
+      07-实现特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/08-feature_matching/" title="08-特征匹配" class="md-nav__link">
+      08-特征匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/09-feature_matching2/" title="09-使用特征匹配查找目标" class="md-nav__link">
+      09-使用特征匹配查找目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/10-feature_matching3/" title="10-特征匹配恢复目标" class="md-nav__link">
+      10-特征匹配恢复目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/exercise/" title="作业&练习" class="md-nav__link">
+      作业&练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/01-opencv/" title="编译安装OpenCV依赖库" class="md-nav__link">
+      编译安装OpenCV依赖库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/02-CMakeLists/" title="CMakeLists配置模板" class="md-nav__link">
+      CMakeLists配置模板
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    内参标定(棋盘格)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 加载图片
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 查找角点
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 执行相机标定
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 保存标定结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    标定结果示例
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    内参标定(圆网格)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    摄像头实时标定
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    标定参数及优化
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#findchessboardcorners" class="md-nav__link">
+    findChessboardCorners
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cornersubpix" class="md-nav__link">
+    cornerSubPix
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calibratecamera" class="md-nav__link">
+    calibrateCamera
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>02-标定实现</h1>
+                
+                <h2 id="_1">内参标定(棋盘格)<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>仅考虑棋盘的一个图像的情况下。相机校准所需的重要输入数据是一组3D现实世界点及其对应的2D图像点。可以从图像中轻松找到2D图像点。 （这些图像点是棋盘上两个黑色正方形相互接触的位置）</p>
+<p>问题是，如何获取现实世界中的3D点呢？
+由于这些图像是从静态相机拍摄的，而棋盘放置在不同的位置和方向。我们需要知道<span><span class="MathJax_Preview">(X,Y,Z)</span><script type="math/tex">(X,Y,Z)</script></span>的值。但是换个角度思考，假如我们定义棋盘在X、Y平面上保持静止（Z始终为0），让照相机发生移动了。这种思考仅有助于我们找到X，Y值。现在对于X，Y值，我们可以简单地将点记为<span><span class="MathJax_Preview">(0,0),(1,0),(2,0),...</span><script type="math/tex">(0,0),(1,0),(2,0),...</script></span>，这表示实际点的位置。在这种情况下，我们得到的结果只是棋盘正方形的大小比例。但是，如果我们知道正方形尺寸（例如20 mm），则可以将值记为<span><span class="MathJax_Preview">(0,0),(20,0),(40,0),...</span><script type="math/tex">(0,0),(20,0),(40,0),...</script></span>，且得到的结果以mm为单位。（在这种情况下，我们不知道正方形尺寸，因为我们没有拍摄图像，因此我们以正方形尺寸表示）。</p>
+<p>计算中，我们将3D对象点取名<code>object points</code>，2D图像点取名<code>image points</code></p>
+<h3 id="1">1. 加载图片<a class="headerlink" href="#1" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+
+<span class="c1">// 保存多张图片对象点列表</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;&gt;</span> <span class="n">objectPoints</span><span class="p">;</span>
+<span class="c1">// 保存多张图片的角点列表</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;&gt;</span> <span class="n">cornerPoints</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="c1">// 图片像素尺寸</span>
+    <span class="n">Size</span> <span class="n">imgSize</span><span class="p">;</span>
+    <span class="c1">// 图片路径</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">String</span> <span class="n">src_path</span> <span class="o">=</span> <span class="s">&quot;./assets/camerargb_*.jpg&quot;</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">filenames</span><span class="p">;</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">glob</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">filenames</span><span class="p">);</span><span class="c1">//获取路径下所有文件名</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;filenames.size:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filenames</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">imgName</span> <span class="p">:</span> <span class="n">filenames</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 读取图片</span>
+        <span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">imgName</span><span class="p">,</span> <span class="n">IMREAD_COLOR</span><span class="p">);</span>
+        <span class="c1">// 获取图片像素尺寸</span>
+        <span class="n">imgSize</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">imgName</span><span class="o">&lt;&lt;</span> <span class="s">&quot; imgSize: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">imgSize</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="c1">//...</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="2">2. 查找角点<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<p>由于OpenCV提供的函数参数为灰度图，所以要提前将彩图转为灰度图</p>
+<ul>
+<li>首先定义交点查找函数</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// 棋盘格的尺寸（宽6，高9）</span>
+<span class="k">const</span> <span class="n">Size</span> <span class="nf">patternSize</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+<span class="c1">// 黑方格的大小 20mm</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">squareSize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+<span class="cm">/**</span>
+<span class="cm"> * 在指定图片中查找角点，并将结果输出到corners中</span>
+<span class="cm"> * @param img     待检测图片</span>
+<span class="cm"> * @param corners 检测到的焦点列表</span>
+<span class="cm"> * @return 是否检测到角点（两个黑方格的交点）</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span> <span class="nf">findCorners</span><span class="p">(</span><span class="n">Mat</span> <span class="o">&amp;</span><span class="n">img</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">corners</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">Mat</span> <span class="n">gray</span><span class="p">;</span>
+    <span class="c1">// 将图片转成灰度图</span>
+    <span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">gray</span><span class="p">,</span> <span class="n">COLOR_RGB2GRAY</span><span class="p">);</span>
+    <span class="c1">// 查找当前图片所有的角点</span>
+    <span class="kt">bool</span> <span class="n">patternWasFound</span> <span class="o">=</span> <span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">patternSize</span><span class="p">,</span> <span class="n">corners</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">patternWasFound</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 找到角点</span>
+        <span class="c1">// 提高角点的精确度</span>
+        <span class="c1">// 原理：https://docs.opencv.org/4.1.0/dd/d1a/group__imgproc__feature.html#ga354e0d7c86d0d9da75de9b9701a9a87e</span>
+        <span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">Size</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="n">Size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                     <span class="n">TermCriteria</span><span class="p">(</span><span class="n">TermCriteria</span><span class="o">::</span><span class="n">EPS</span> <span class="o">+</span> <span class="n">TermCriteria</span><span class="o">::</span><span class="n">COUNT</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">));</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 将所有的焦点在原图中绘制出来</span>
+    <span class="n">drawChessboardCorners</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">patternSize</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">patternWasFound</span><span class="p">);</span>
+    <span class="c1">// 绘制完角点之后，显示原图</span>
+    <span class="n">imshow</span><span class="p">(</span><span class="s">&quot;src&quot;</span><span class="p">,</span> <span class="n">img</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">patternWasFound</span><span class="p">){</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;角点检测失败！&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">patternWasFound</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>查找角点，创建其对象点</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// 保存多张图片对象点列表</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;&gt;</span> <span class="n">objectPoints</span><span class="p">;</span>
+<span class="c1">// 保存多张图片的角点列表</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;&gt;</span> <span class="n">cornerPoints</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">calcObjectPoints</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">objPoint</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 计算uv空间中角点对应的相机坐标系坐标值，设Z为0</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">patternSize</span><span class="p">.</span><span class="n">height</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">patternSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+            <span class="n">objPoint</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">,</span> <span class="n">i</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="c1">// 图片像素尺寸</span>
+<span class="n">Size</span> <span class="n">imgSize</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="c1">// 图片路径</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">String</span> <span class="n">src_path</span> <span class="o">=</span> <span class="s">&quot;./assets/camerargb_*.jpg&quot;</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">filenames</span><span class="p">;</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">glob</span><span class="p">(</span><span class="n">src_path</span><span class="p">,</span> <span class="n">filenames</span><span class="p">);</span><span class="c1">//获取路径下所有文件名</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;filenames.size:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filenames</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">auto</span><span class="o">&amp;</span> <span class="nl">imgName</span> <span class="p">:</span> <span class="n">filenames</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 读取图片</span>
+        <span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">imgName</span><span class="p">,</span> <span class="n">IMREAD_COLOR</span><span class="p">);</span>
+        <span class="c1">// 获取图片像素尺寸</span>
+        <span class="n">imgSize</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;name: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">imgName</span><span class="o">&lt;&lt;</span> <span class="s">&quot; imgSize: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">imgSize</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="c1">// 声明每张图片的角点</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="n">corners</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">found</span> <span class="o">=</span> <span class="n">findCorners</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">corners</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;</span> <span class="n">objPoints</span><span class="p">;</span>
+            <span class="n">calcObjectPoints</span><span class="p">(</span><span class="n">objPoints</span><span class="p">);</span>
+            <span class="c1">// 找到角点，证明这张图是有效的</span>
+            <span class="n">objectPoints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">objPoints</span><span class="p">);</span>
+            <span class="n">cornerPoints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">corners</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="3">3. 执行相机标定<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">Mat</span> <span class="n">cameraMatrix</span><span class="p">;</span> <span class="c1">// 相机参数矩阵</span>
+<span class="n">Mat</span> <span class="n">disCoffes</span><span class="p">;</span> <span class="c1">// 失真系数 distortion coefficients</span>
+<span class="n">Mat</span> <span class="n">rvecs</span><span class="p">;</span> <span class="c1">// 图片旋转向量</span>
+<span class="n">Mat</span> <span class="n">tvecs</span><span class="p">;</span> <span class="c1">// 图片平移向量</span>
+
+<span class="n">calibrateCamera</span><span class="p">(</span><span class="n">objectPoints</span><span class="p">,</span> <span class="n">cornerPoints</span><span class="p">,</span> <span class="n">imgSize</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">disCoffes</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">);</span>
+
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;标定矩阵：&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cameraMatrix</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;畸变矩阵：&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">disCoffes</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="c1">// save2xml(cameraMatrix, distCoffes);</span>
+
+<span class="n">waitKey</span><span class="p">();</span>
+</code></pre></div>
+
+<h3 id="4">4. 保存标定结果<a class="headerlink" href="#4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="kt">void</span> <span class="nf">save2xml</span><span class="p">(</span><span class="k">const</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">cameraMatrix</span><span class="p">,</span> <span class="k">const</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">disCoffes</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 获取当前时间</span>
+    <span class="kt">time_t</span> <span class="n">tm</span><span class="p">;</span>
+    <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+    <span class="k">struct</span> <span class="n">tm</span> <span class="o">*</span><span class="n">t2</span> <span class="o">=</span> <span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+    <span class="n">strftime</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="s">&quot;%c&quot;</span><span class="p">,</span> <span class="n">t2</span><span class="p">);</span>
+
+    <span class="c1">// 写出数据</span>
+    <span class="n">String</span> <span class="n">inCailFilePath</span> <span class="o">=</span> <span class="s">&quot;./inCailFilePath.xml&quot;</span><span class="p">;</span>
+    <span class="n">FileStorage</span> <span class="n">inCailFs</span><span class="p">(</span><span class="n">inCailFilePath</span><span class="p">,</span> <span class="n">FileStorage</span><span class="o">::</span><span class="n">WRITE</span><span class="p">);</span>
+    <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;calibration_time&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">buf</span><span class="p">;</span>
+    <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;cameraMatrix&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cameraMatrix</span><span class="p">;</span>
+    <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;distCoffes&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">disCoffes</span><span class="p">;</span>
+    <span class="n">inCailFs</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_2">标定结果示例<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<ul>
+<li>xml版本</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;opencv_storage&gt;</span>
+<span class="nt">&lt;calibration_time&gt;</span>&quot;2019年10月15日 星期二 17时25分25秒&quot;<span class="nt">&lt;/calibration_time&gt;</span>
+<span class="nt">&lt;cameraMatrix</span> <span class="na">type_id=</span><span class="s">&quot;opencv-matrix&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;rows&gt;</span>3<span class="nt">&lt;/rows&gt;</span>
+  <span class="nt">&lt;cols&gt;</span>3<span class="nt">&lt;/cols&gt;</span>
+  <span class="nt">&lt;dt&gt;</span>d<span class="nt">&lt;/dt&gt;</span>
+  <span class="nt">&lt;data&gt;</span>
+    1.0743566574494685e+03 0. 9.5548426688037193e+02 0.
+    1.0758663741535415e+03 5.4946692912295123e+02 0. 0. 1.<span class="nt">&lt;/data&gt;&lt;/cameraMatrix&gt;</span>
+<span class="nt">&lt;disCoffes</span> <span class="na">type_id=</span><span class="s">&quot;opencv-matrix&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;rows&gt;</span>1<span class="nt">&lt;/rows&gt;</span>
+  <span class="nt">&lt;cols&gt;</span>5<span class="nt">&lt;/cols&gt;</span>
+  <span class="nt">&lt;dt&gt;</span>d<span class="nt">&lt;/dt&gt;</span>
+  <span class="nt">&lt;data&gt;</span>
+    7.2163806117565163e-02 -1.1302001810933321e-01
+    1.4988711762593146e-03 -3.0609919169149657e-03
+    4.2575786627597728e-02<span class="nt">&lt;/data&gt;&lt;/disCoffes&gt;</span>
+<span class="nt">&lt;/opencv_storage&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>yml版本</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="err">%</span><span class="l l-Scalar l-Scalar-Plain">YAML:1.0</span>
+<span class="nn">---</span>
+<span class="nt">calibration_time</span><span class="p">:</span> <span class="s">&quot;2019年10月20日</span><span class="nv"> </span><span class="s">星期日</span><span class="nv"> </span><span class="s">23时25分26秒&quot;</span>
+<span class="nt">frame_count</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">15</span>
+<span class="nt">image_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">640</span>
+<span class="nt">image_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">480</span>
+<span class="nt">board_width</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">6</span>
+<span class="nt">board_height</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">9</span>
+<span class="nt">square_size</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.9999999552965164e-02</span>
+<span class="nt">rms</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.2085572726037488e-01</span>
+<span class="nt">cameraMatrix</span><span class="p">:</span> <span class="kt">!!opencv-matrix</span>
+   <span class="nt">rows</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+   <span class="nt">cols</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">3</span>
+   <span class="nt">dt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">d</span>
+   <span class="nt">data</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">6.0447700370270286e+02</span><span class="p p-Indicator">,</span> <span class="nv">0.</span><span class="p p-Indicator">,</span> <span class="nv">3.3181544620019122e+02</span><span class="p p-Indicator">,</span> <span class="nv">0.</span><span class="p p-Indicator">,</span>
+       <span class="nv">6.0479737087406238e+02</span><span class="p p-Indicator">,</span> <span class="nv">2.9128742694561294e+02</span><span class="p p-Indicator">,</span> <span class="nv">0.</span><span class="p p-Indicator">,</span> <span class="nv">0.</span><span class="p p-Indicator">,</span> <span class="nv">1.</span> <span class="p p-Indicator">]</span>
+<span class="nt">distCoeffs</span><span class="p">:</span> <span class="kt">!!opencv-matrix</span>
+   <span class="nt">rows</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">5</span>
+   <span class="nt">cols</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
+   <span class="nt">dt</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">d</span>
+   <span class="nt">data</span><span class="p">:</span> <span class="p p-Indicator">[</span> <span class="nv">1.9175212705577635e-01</span><span class="p p-Indicator">,</span> <span class="nv">-7.0334052488796239e-01</span><span class="p p-Indicator">,</span>
+       <span class="nv">6.9245817187035201e-04</span><span class="p p-Indicator">,</span> <span class="nv">-1.5403756810363311e-03</span><span class="p p-Indicator">,</span>
+       <span class="nv">4.2337569654123880e-01</span> <span class="p p-Indicator">]</span>
+</code></pre></div>
+
+<h2 id="_3">内参标定(圆网格)<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>将<strong>“棋盘格”</strong>标定中，查找角点的步骤更改为<code>findCirclesGrid</code>即可</p>
+<div class="highlight"><pre><span></span><code><span class="kt">bool</span> <span class="n">found</span> <span class="o">=</span> <span class="n">findCirclesGrid</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">board_sz</span><span class="p">,</span> <span class="n">corners</span><span class="p">);</span>
+</code></pre></div>
+
+<h2 id="_4">摄像头实时标定<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="kt">int</span> <span class="n">ACTION_ESC</span> <span class="o">=</span> <span class="mi">27</span><span class="p">;</span>
+<span class="k">const</span> <span class="kt">int</span> <span class="n">ACTION_SPACE</span> <span class="o">=</span> <span class="mi">32</span><span class="p">;</span>
+
+<span class="k">static</span> <span class="kt">void</span> <span class="nf">print_help</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;通过棋盘格标定相机</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;参数：CalibrationChessboard &lt;board_width&gt; n&lt;board_height&gt; &lt;square_size&gt; [number_of_boards] &quot;</span>
+           <span class="s">&quot;[--delay=&lt;delay&gt;] [-s=&lt;scale_factor&gt;]</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;例子：CalibrationACircle2 6 9 30 500 1.0</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 执行标定并保存标定结果</span>
+<span class="cm"> * @param square_size   格子尺寸</span>
+<span class="cm"> * @param board_sz      格子尺寸Size</span>
+<span class="cm"> * @param image_size    图片尺寸Size</span>
+<span class="cm"> * @param image_points  图片角点集合</span>
+<span class="cm"> * @param cameraMatrix  相机参数</span>
+<span class="cm"> * @param distCoeffs    畸变参数</span>
+<span class="cm"> */</span>
+<span class="kt">void</span>
+<span class="nf">runAndSave</span><span class="p">(</span><span class="kt">float</span> <span class="n">square_size</span><span class="p">,</span> <span class="k">const</span> <span class="n">Size</span> <span class="n">board_sz</span><span class="p">,</span> <span class="k">const</span> <span class="n">Size</span> <span class="n">image_size</span><span class="p">,</span>
+           <span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;&gt;</span> <span class="o">&amp;</span><span class="n">image_points</span><span class="p">,</span>
+           <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">distCoeffs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;&gt;</span> <span class="n">object_points</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;</span> <span class="n">objPoints</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">board_sz</span><span class="p">.</span><span class="n">height</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">board_sz</span><span class="p">.</span><span class="n">width</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// 注意非对称圆网格的对象坐标计算方式</span>
+            <span class="n">objPoints</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Point3f</span><span class="p">(</span><span class="kt">float</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">j</span> <span class="o">+</span> <span class="n">i</span><span class="o">%</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">square_size</span><span class="p">),</span>
+                                        <span class="kt">float</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">square_size</span><span class="p">),</span> <span class="mi">0</span><span class="p">));</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">object_points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">(),</span> <span class="n">objPoints</span><span class="p">);</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">;</span>
+
+    <span class="c1">// 执行标定</span>
+    <span class="kt">double</span> <span class="n">rms</span> <span class="o">=</span> <span class="n">calibrateCamera</span><span class="p">(</span><span class="n">object_points</span><span class="p">,</span> <span class="n">image_points</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">);</span>
+
+    <span class="c1">// 均方根值(RMS)</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;RMS error reported by calibrateCamera: %g</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">rms</span><span class="p">);</span>
+    <span class="c1">// 检查标定结果误差</span>
+    <span class="kt">bool</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">checkRange</span><span class="p">(</span><span class="n">cameraMatrix</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="n">checkRange</span><span class="p">(</span><span class="n">distCoeffs</span><span class="p">);</span>
+
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">ok</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;标定参数：&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">cameraMatrix</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;畸变参数：&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">distCoeffs</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+        <span class="c1">// 时间、图片个数、图片尺寸、标定板宽高、标定板块尺寸、RMS</span>
+        <span class="c1">// 标定参数、畸变参数</span>
+
+        <span class="c1">// 获取当前时间</span>
+        <span class="kt">time_t</span> <span class="n">tm</span><span class="p">;</span>
+        <span class="n">time</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+        <span class="k">struct</span> <span class="n">tm</span> <span class="o">*</span><span class="n">t2</span> <span class="o">=</span> <span class="n">localtime</span><span class="p">(</span><span class="o">&amp;</span><span class="n">tm</span><span class="p">);</span>
+        <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+        <span class="n">strftime</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">buf</span><span class="p">),</span> <span class="s">&quot;%c&quot;</span><span class="p">,</span> <span class="n">t2</span><span class="p">);</span>
+
+        <span class="c1">// 写出数据</span>
+<span class="c1">//        String inCailFilePath = &quot;./calibration_in_params.xml&quot;;</span>
+        <span class="n">String</span> <span class="n">inCailFilePath</span> <span class="o">=</span> <span class="s">&quot;./calibration_in_params2.yml&quot;</span><span class="p">;</span>
+        <span class="n">FileStorage</span> <span class="n">inCailFs</span><span class="p">(</span><span class="n">inCailFilePath</span><span class="p">,</span> <span class="n">FileStorage</span><span class="o">::</span><span class="n">WRITE</span><span class="p">);</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;calibration_time&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">buf</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;frame_count&quot;</span> <span class="o">&lt;&lt;</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;image_width&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">image_size</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;image_height&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">image_size</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;board_width&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">board_sz</span><span class="p">.</span><span class="n">width</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;board_height&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">board_sz</span><span class="p">.</span><span class="n">height</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;square_size&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">square_size</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;rms&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rms</span><span class="p">;</span>
+
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;cameraMatrix&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cameraMatrix</span><span class="p">;</span>
+        <span class="n">inCailFs</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;distCoeffs&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">distCoeffs</span><span class="p">;</span>
+        <span class="n">inCailFs</span><span class="p">.</span><span class="n">release</span><span class="p">();</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;标定结果已保存：&quot;</span><span class="o">&lt;&lt;</span> <span class="n">inCailFilePath</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;标定结果有误，请重新标定！&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">cv</span><span class="o">::</span><span class="n">getVersionString</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="kt">bool</span> <span class="n">flipHorizontal</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="c1">// 解析参数</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">CommandLineParser</span> <span class="n">parser</span><span class="p">(</span><span class="n">argc</span><span class="p">,</span> <span class="n">argv</span><span class="p">,</span>
+                                 <span class="s">&quot;{@arg1||}{@arg2||}{@arg3|20|}{@arg4|15|}&quot;</span>
+                                 <span class="s">&quot;{help h||}{delay d|500|}{scale s|1.0|}{f||}&quot;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">parser</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;help&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">print_help</span><span class="p">();</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">board_width</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">board_height</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="kt">float</span> <span class="n">square_size</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">num_boards</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">delay</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;delay&quot;</span><span class="p">);</span>
+    <span class="k">auto</span> <span class="n">image_sf</span> <span class="o">=</span> <span class="n">parser</span><span class="p">.</span><span class="n">get</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;scale&quot;</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">board_width</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="o">||</span> <span class="n">board_height</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Command-line parameter error: both image of width and height must be specified</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">print_help</span><span class="p">();</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">parser</span><span class="p">.</span><span class="n">has</span><span class="p">(</span><span class="s">&quot;f&quot;</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">flipHorizontal</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;board_width: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">board_width</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;board_height: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">board_height</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;square_size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">square_size</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;num_boards: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">num_boards</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;delay: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">delay</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;image_sf: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">image_sf</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="n">cv</span><span class="o">::</span><span class="n">Size</span> <span class="n">board_sz</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">Size</span><span class="p">(</span><span class="n">board_width</span><span class="p">,</span> <span class="n">board_height</span><span class="p">);</span>
+
+    <span class="n">cv</span><span class="o">::</span><span class="n">VideoCapture</span> <span class="n">capture</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">capture</span><span class="p">.</span><span class="n">isOpened</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;无法开启摄像头！&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;&gt;</span> <span class="n">image_points</span><span class="p">;</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;&gt;</span> <span class="n">object_points</span><span class="p">;</span>
+
+    <span class="n">cv</span><span class="o">::</span><span class="n">Size</span> <span class="n">image_size</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">num_boards</span><span class="p">){</span>
+        <span class="n">Mat</span> <span class="n">image0</span><span class="p">,</span> <span class="n">image</span><span class="p">;</span>
+        <span class="n">capture</span> <span class="o">&gt;&gt;</span> <span class="n">image0</span><span class="p">;</span>
+        <span class="n">image_size</span> <span class="o">=</span> <span class="n">image0</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="c1">// 将图像复制到image</span>
+        <span class="n">image0</span><span class="p">.</span><span class="n">copyTo</span><span class="p">(</span><span class="n">image</span><span class="p">);</span>
+        <span class="c1">// 缩放</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">image_sf</span> <span class="o">!=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">resize</span><span class="p">(</span><span class="n">image0</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">Size</span><span class="p">(),</span> <span class="n">image_sf</span><span class="p">,</span> <span class="n">image_sf</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">INTER_LINEAR</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 水平翻转</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">flipHorizontal</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">flip</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="c1">// 查找标定板(不对称圆网格板)</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="n">corners</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">found</span> <span class="o">=</span> <span class="n">findCirclesGrid</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">board_sz</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">CALIB_CB_ASYMMETRIC_GRID</span><span class="p">);</span>
+
+        <span class="c1">// 画上去</span>
+        <span class="n">drawChessboardCorners</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">board_sz</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">found</span><span class="p">);</span>
+
+        <span class="kt">int</span> <span class="n">action</span> <span class="o">=</span> <span class="n">waitKey</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">255</span><span class="p">;</span>
+
+        <span class="c1">// 判断动作</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="o">==</span> <span class="n">ACTION_SPACE</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 用户按下了空格</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">found</span><span class="p">)</span> <span class="p">{</span>
+                <span class="c1">// 闪屏</span>
+                <span class="n">bitwise_not</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">image</span><span class="p">);</span>
+                <span class="c1">// 保存角点</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s: %d/%d </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;save角点&quot;</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">num_boards</span><span class="p">);</span>
+                <span class="n">image_points</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">corners</span><span class="p">);</span>
+                <span class="c1">// 保存图片</span>
+            <span class="p">}</span><span class="k">else</span> <span class="p">{</span>
+                <span class="n">printf</span><span class="p">(</span><span class="s">&quot;%s</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="s">&quot;未检测到角点&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">action</span> <span class="o">==</span> <span class="n">ACTION_ESC</span><span class="p">)</span> <span class="p">{</span> <span class="c1">// 用户按下了ESC</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="n">cv</span><span class="o">::</span><span class="n">imshow</span><span class="p">(</span><span class="s">&quot;Calibration&quot;</span><span class="p">,</span> <span class="n">image</span><span class="p">);</span>
+
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">image_points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">num_boards</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">&quot;角点未达到目标个数，标定已终止！&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;角点收集完毕, 执行标定中... 图片尺寸 %d:%d</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">image_size</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">image_size</span><span class="p">.</span><span class="n">height</span><span class="p">);</span>
+
+    <span class="n">Mat</span> <span class="n">cameraMatrix</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">CV_64F</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">distCoeffs</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CV_64F</span><span class="p">);</span>
+    <span class="n">runAndSave</span><span class="p">(</span><span class="n">square_size</span><span class="p">,</span> <span class="n">board_sz</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">image_points</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">);</span>
+
+    <span class="n">cv</span><span class="o">::</span><span class="n">destroyWindow</span><span class="p">(</span><span class="s">&quot;Calibration&quot;</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h2 id="_5">标定参数及优化<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="findchessboardcorners">findChessboardCorners<a class="headerlink" href="#findchessboardcorners" title="Permanent link">&para;</a></h3>
+<p>通常在执行<code>cv::findChessboardCorners</code>棋盘格角点查找时，会在最后一个参数flags设置一些参数进行角点查找优化，默认参数是<code>CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE</code>，以下是这些参数的意义，这些参数可以单数使用也可以组合使用：</p>
+<ul>
+<li><code>CALIB_CB_ADAPTIVE_THRESH</code>：使用自适应阈值将图像转换为黑色和白色，而不是一个固定的阈值水平(从图像的平均亮度计算出来的阈值)。</li>
+<li><code>CALIB_CB_NORMALIZE_IMAGE</code>：在自适应二值化之前，对图片的gamma值进行直方图均衡化</li>
+<li>
+<p><code>CALIB_CB_FAST_CHECK</code>：运行一个快速棋盘格角点检查，如果没有找到则尽快返回。这可以大大加快在界面中没有棋盘格时候的查找速度。</p>
+</li>
+<li>
+<p><code>CALIB_CB_FILTER_QUADS</code>：使用其他条件（例如轮廓区域，周长，正方形形状）过滤掉在轮廓检索阶段提取的假四边形。</p>
+</li>
+</ul>
+<p>推荐使用组合：<code>CALIB_CB_ADAPTIVE_THRESH + CALIB_CB_NORMALIZE_IMAGE + CALIB_CB_FAST_CHECK</code></p>
+<p>该功能需要在木板周围留有空白（如正方形的边框，越宽越好），以使检测在各种环境中都更加可靠。否则，如果没有边框且背景较暗，则无法正确分割外部黑色正方形。</p>
+<h3 id="cornersubpix">cornerSubPix<a class="headerlink" href="#cornersubpix" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1">// 提高角点精度</span>
+<span class="n">TermCriteria</span> <span class="nf">criteria</span><span class="p">(</span><span class="n">cv</span><span class="o">::</span><span class="n">TermCriteria</span><span class="o">::</span><span class="n">EPS</span> <span class="o">+</span> <span class="n">cv</span><span class="o">::</span><span class="n">TermCriteria</span><span class="o">::</span><span class="n">COUNT</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>
+<span class="n">cv</span><span class="o">::</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">Size</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">cv</span><span class="o">::</span><span class="n">Size</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">criteria</span><span class="p">);</span>
+</code></pre></div>
+
+<p>函数参数说明如下：</p>
+<ul>
+<li>
+<p><code>image</code>：输入图像</p>
+</li>
+<li>
+<p><code>corners</code>：输入角点的初始坐标以及精准化后的坐标用于输出。</p>
+</li>
+<li>
+<p><code>winSize</code>：搜索窗口边长的一半，例如如果<code>winSize=Size(5,5)</code>，则一个大小为11的搜索窗口将被使用。</p>
+</li>
+<li>
+<p><code>zeroZone</code>：搜索区域中间的dead region边长的一半，有时用于避免自相关矩阵的奇异性。如果值设为(-1,-1)则表示没有这个区域。</p>
+</li>
+<li><code>criteria</code>：角点精准化迭代过程的终止条件。也就是当迭代次数超过<code>criteria.maxCount</code>，或者角点位置变化小于<code>criteria.epsilon</code>时，停止迭代过程。</li>
+</ul>
+<h3 id="calibratecamera">calibrateCamera<a class="headerlink" href="#calibratecamera" title="Permanent link">&para;</a></h3>
+<p>使用示例：</p>
+<div class="highlight"><pre><span></span><code><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">cameraMatrix</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">::</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">CV_64F</span><span class="p">);</span>
+<span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">distCoeffs</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CV_64F</span><span class="p">);</span>
+<span class="n">vector</span><span class="o">&lt;</span><span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">;</span>
+<span class="kt">double</span> <span class="n">rms</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">objectPoints</span><span class="p">,</span> <span class="n">imagePoints</span><span class="p">,</span> <span class="n">imgSize</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">);</span>
+</code></pre></div>
+
+<ul>
+<li><code>objectPoints</code>： 对象坐标点列表</li>
+<li><code>imagePoints</code>：图像像素点列表</li>
+<li>
+<p><code>imageSize</code>：图像的大小，在计算相机的内参数和畸变矩阵需要用到</p>
+</li>
+<li>
+<p><code>cameraMatrix</code>：内参矩阵。输入<code>cv::Mat cameraMatrix</code>即可</p>
+</li>
+<li>
+<p><code>distCoeffs</code>：畸变矩阵。输入<code>cv::Mat distCoeffs</code>即可</p>
+</li>
+<li>
+<p><code>rvecs</code>：旋转向量<code>vector&lt;cv::Mat&gt; rvecs</code></p>
+</li>
+<li>
+<p><code>tvecs</code>：位移向量<code>vector&lt;cv::Mat&gt; tvecs</code></p>
+</li>
+<li>
+<p>flags为标定是所采用的算法。可如下一个或者多个参数，通过+号连接即可：</p>
+</li>
+<li><code>CV_CALIB_USE_INTRINSIC_GUESS</code>：使用该参数时，在<code>cameraMatrix</code>矩阵中应该有<code>fx,fy,cx,cy</code>的估计值。否则将初始化<code>(cx,cy</code>）图像的中心点，使用最小二乘估算出<code>fx，fy</code>。如果内参矩阵和畸变矩阵已知，应使用标定模块中的<code>solvePnP()</code>函数计算外参数矩阵。</li>
+<li><code>CV_CALIB_FIX_PRINCIPAL_POINT</code>：在进行优化时会固定光轴点。当<code>CV_CALIB_USE_INTRINSIC_GUESS</code>参数被设置，光轴点将保持在中心或者某个输入的值。</li>
+<li><code>CV_CALIB_FIX_ASPECT_RATIO</code>：固定<code>fx/fy</code>的比值，只将<code>fy</code>作为可变量，进行优化计算。当<code>CV_CALIB_USE_INTRINSIC_GUESS</code>没有被设置，<code>fx</code>和<code>fy</code>将会被忽略。只有<code>fx/fy</code>的比值在计算中会被用到。</li>
+<li><code>CV_CALIB_ZERO_TANGENT_DIST</code>：设定切向畸变参数<code>（p1,p2）</code>为零。</li>
+<li><code>CV_CALIB_FIX_K1,...,CV_CALIB_FIX_K6</code>：对应的径向畸变在优化中保持不变。</li>
+<li><code>CV_CALIB_RATIONAL_MODEL</code>：计算<code>k4，k5，k6</code>三个畸变参数。如果没有设置，则只计算其它5个参数。</li>
+</ul>
+<p>如果对<code>calibrateCamera</code>的详细算法感兴趣，可以阅读张正友的标定算法<strong>《A Flexible New Technique for Camera Calibration》</strong></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../01-calibration_board/" title="01-相机标定&标定板" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                01-相机标定&标定板
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../03-undistortion/" title="03-去畸变(矫正)" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                03-去畸变(矫正)
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

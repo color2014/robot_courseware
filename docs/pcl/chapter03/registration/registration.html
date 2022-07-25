@@ -1,0 +1,1678 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>03-点云配准流程示例 * - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                03-点云配准流程示例 *
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        03-点云配准流程示例 *
+      </label>
+    
+    <a href="./" title="03-点云配准流程示例 *" class="md-nav__link md-nav__link--active">
+      03-点云配准流程示例 *
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#icp" class="md-nav__link">
+    使用迭代最近点算法(ICP)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配准多对点云
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ndt" class="md-nav__link">
+    正态分布变换配准(NDT)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    代码详解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    刚性物体的鲁棒姿态估计
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    代码详解
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#icp" class="md-nav__link">
+    使用迭代最近点算法(ICP)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配准多对点云
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ndt" class="md-nav__link">
+    正态分布变换配准(NDT)
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    代码详解
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    刚性物体的鲁棒姿态估计
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    代码详解
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">点云配准流程示例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="icp">使用迭代最近点算法(ICP)<a class="headerlink" href="#icp" title="Permanent link">&para;</a></h2>
+<p>迭代最近点算法（Iterative Closest Point，简称ICP算法）</p>
+<p><img alt="ICP" src="../assets/icp_theroy.png" /></p>
+<h3 id="_2">代码实现<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>创建文件：<code>iterative_closest_point.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/icp.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 定义输入和输出点云</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_in</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_out</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+
+    <span class="c1">// 随机填充无序点云</span>
+    <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+    <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">is_dense</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">*</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Saved &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points to input:&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span>
+                  <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span>
+                  <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">cloud_out</span> <span class="o">=</span> <span class="o">*</span><span class="n">cloud_in</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;size:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 在点云上执行简单的刚性变换，将cloud_out中的x平移0.7f米，然后再次输出数据值。</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">+</span> <span class="mf">0.7f</span><span class="p">;</span>
+    <span class="c1">// 打印这些点</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Transformed &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points:&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span>
+                  <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_out</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 创建IterativeClosestPoint的实例</span>
+    <span class="c1">// setInputSource将cloud_in作为输入点云</span>
+    <span class="c1">// setInputTarget将平移后的cloud_out作为目标点云</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">IterativeClosestPoint</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">icp</span><span class="p">;</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setInputSource</span><span class="p">(</span><span class="n">cloud_in</span><span class="p">);</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setInputTarget</span><span class="p">(</span><span class="n">cloud_out</span><span class="p">);</span>
+
+    <span class="c1">// 创建一个 pcl::PointCloud&lt;pcl::PointXYZ&gt;实例 Final 对象,存储配准变换后的源点云,</span>
+    <span class="c1">// 应用 ICP 算法后, IterativeClosestPoint 能够保存结果点云集,如果这两个点云匹配正确的话</span>
+    <span class="c1">// （即仅对其中一个应用某种刚体变换，就可以得到两个在同一坐标系下相同的点云）,那么 icp. hasConverged()= 1 (true),</span>
+    <span class="c1">// 然后会输出最终变换矩阵的匹配分数和变换矩阵等信息。</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">Final</span><span class="p">;</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">align</span><span class="p">(</span><span class="n">Final</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;has converged:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">icp</span><span class="p">.</span><span class="n">hasConverged</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; score: &quot;</span> <span class="o">&lt;&lt;</span>
+              <span class="n">icp</span><span class="p">.</span><span class="n">getFitnessScore</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">const</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Registration</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="kt">float</span><span class="o">&gt;::</span><span class="n">Matrix4</span> <span class="o">&amp;</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">icp</span><span class="p">.</span><span class="n">getFinalTransformation</span><span class="p">();</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">matrix</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_3">输出结果<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>Saved 5 data points to input:
+    0.352222 -0.151883 -0.106395
+    -0.397406 -0.473106 0.292602
+    -0.731898 0.667105 0.441304
+    -0.734766 0.854581 -0.0361733
+    -0.4607 -0.277468 -0.916762
+size:5
+Transformed 5 data points:
+    1.05222 -0.151883 -0.106395
+    0.302594 -0.473106 0.292602
+    -0.0318983 0.667105 0.441304
+    -0.0347655 0.854581 -0.0361733
+    0.2393 -0.277468 -0.916762
+has converged:1 score: 2.44826e-13
+           1 -3.25963e-07 -2.98023e-08          0.7
+-1.45286e-07            1  1.30385e-07  -1.3113e-07
+-2.23517e-07  1.11759e-08            1 -4.61936e-08
+           0            0            0            1
+</code></pre></div>
+
+<h3 id="_4">配准多对点云<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p>参加<a href="http://pointclouds.org/documentation/tutorials/pairwise_incremental_registration.php#pairwise-incremental-registration">代码示例</a></p>
+<h2 id="ndt">正态分布变换配准(NDT)<a class="headerlink" href="#ndt" title="Permanent link">&para;</a></h2>
+<p>正态分布变换( Normal Distributions Transform )进行配准</p>
+<p>用正态分布变换算法来确定两个大型点云（都超过 100 000个点）之间的刚体变换。正态分布变换算法是一个配准算法 , 它应用于 三维点的统计模型，使用标准最优化技术来确定两个点云间的最优的匹配，因为其在配准过程中不利用对应点的特征计算和匹配，所以时间比其他方法快，更多关于正态分布变换算法的详细的信息，请看 Martin Magnusson 博士的博士毕业论文“The Three-Dimensional Normal Distributions Transform – an Efficient Representation for Registration, Surface Analysis, and Loop Detection.”。</p>
+<p>点此下载房间扫描 <a href="../res/room_scan1.pcd">文件一</a>，<a href="../res/room_scan2.pcd">文件二</a></p>
+<h3 id="_5">代码实现<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;thread&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/ndt.h&gt;       // ndt配准文件头</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/approximate_voxel_grid.h&gt;// 滤波文件头</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="o">::</span><span class="n">chrono_literals</span><span class="p">;</span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Loading first scan of room.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">target_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;./data/room_scan1.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">target_cloud</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Couldn&#39;t read file room_scan1.pcd </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Loaded &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">target_cloud</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan1.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Loading second scan of room from new perspective.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">input_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="s">&quot;./data/room_scan2.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">input_cloud</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Couldn&#39;t read file room_scan2.pcd </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Loaded &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">input_cloud</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan2.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Filtering input scan to roughly 10% of original size to increase speed of registration.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">filtered_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ApproximateVoxelGrid</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">approximate_voxel_filter</span><span class="p">;</span>
+    <span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">setLeafSize</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">);</span>
+    <span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">input_cloud</span><span class="p">);</span>
+    <span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">filtered_cloud</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Filtered cloud contains &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filtered_cloud</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan2.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Initializing Normal Distributions Transform (NDT).</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">NormalDistributionsTransform</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">ndt</span><span class="p">;</span>
+
+    <span class="c1">// Setting scale dependent NDT parameters</span>
+    <span class="c1">// Setting minimum transformation difference for termination condition.</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setTransformationEpsilon</span><span class="p">(</span><span class="mf">0.01</span><span class="p">);</span>
+    <span class="c1">// Setting maximum step size for More-Thuente line search.</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setStepSize</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span>
+    <span class="c1">//Setting Resolution of NDT grid structure (VoxelGridCovariance).</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setResolution</span><span class="p">(</span><span class="mf">1.0</span><span class="p">);</span>
+
+    <span class="c1">// Setting max number of registration iterations.</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setMaximumIterations</span><span class="p">(</span><span class="mi">35</span><span class="p">);</span>
+
+    <span class="c1">// Setting point cloud to be aligned.</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setInputSource</span><span class="p">(</span><span class="n">filtered_cloud</span><span class="p">);</span>
+    <span class="c1">// Setting point cloud to be aligned to.</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">setInputTarget</span><span class="p">(</span><span class="n">target_cloud</span><span class="p">);</span>
+
+    <span class="c1">// Set initial alignment estimate found using robot odometry.</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">AngleAxisf</span> <span class="n">init_rotation</span><span class="p">(</span><span class="mf">0.6931</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="o">::</span><span class="n">UnitZ</span><span class="p">());</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Translation3f</span> <span class="n">init_translation</span><span class="p">(</span><span class="mf">1.79387</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span> <span class="n">init_guess</span> <span class="o">=</span> <span class="p">(</span><span class="n">init_translation</span> <span class="o">*</span> <span class="n">init_rotation</span><span class="p">).</span><span class="n">matrix</span><span class="p">();</span>
+
+    <span class="c1">// Calculating required rigid transform to align the input cloud to the target cloud.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">output_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">ndt</span><span class="p">.</span><span class="n">align</span><span class="p">(</span><span class="o">*</span><span class="n">output_cloud</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Normal Distributions Transform has converged:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ndt</span><span class="p">.</span><span class="n">hasConverged</span><span class="p">()</span>
+              <span class="o">&lt;&lt;</span> <span class="s">&quot; score: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ndt</span><span class="p">.</span><span class="n">getFitnessScore</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Transforming unfiltered, input cloud using found transform.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span><span class="p">(</span><span class="o">*</span><span class="n">input_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">output_cloud</span><span class="p">,</span> <span class="n">ndt</span><span class="p">.</span><span class="n">getFinalTransformation</span><span class="p">());</span>
+
+    <span class="c1">// Saving transformed input cloud.</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">savePCDFileASCII</span><span class="p">(</span><span class="s">&quot;room_scan2_transformed.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">output_cloud</span><span class="p">);</span>
+
+    <span class="c1">// Initializing point cloud visualizer</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span><span class="o">::</span><span class="n">Ptr</span>
+            <span class="n">viewer_final</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span><span class="p">(</span><span class="s">&quot;3D Viewer&quot;</span><span class="p">));</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// Coloring and visualizing target cloud (red).</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span>
+            <span class="n">target_color</span><span class="p">(</span><span class="n">target_cloud</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">target_cloud</span><span class="p">,</span> <span class="n">target_color</span><span class="p">,</span> <span class="s">&quot;target cloud&quot;</span><span class="p">);</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span>
+                                                   <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;target cloud&quot;</span><span class="p">);</span>
+
+    <span class="c1">// Coloring and visualizing transformed input cloud (green).</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span>
+            <span class="n">output_color</span><span class="p">(</span><span class="n">output_cloud</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">output_cloud</span><span class="p">,</span> <span class="n">output_color</span><span class="p">,</span> <span class="s">&quot;output cloud&quot;</span><span class="p">);</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span>
+                                                   <span class="mi">1</span><span class="p">,</span> <span class="s">&quot;output cloud&quot;</span><span class="p">);</span>
+
+    <span class="c1">// Starting visualizer</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">addCoordinateSystem</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="s">&quot;global&quot;</span><span class="p">);</span>
+    <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">initCameraParameters</span><span class="p">();</span>
+
+    <span class="c1">// Wait until visualizer window is closed.</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">viewer_final</span><span class="o">-&gt;</span><span class="n">spinOnce</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">this_thread</span><span class="o">::</span><span class="n">sleep_for</span><span class="p">(</span><span class="mi">100</span><span class="n">ms</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_6">输出结果<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>/home/ty/Lesson/PCL/Code/PCLDemo/build/Debug/bin/normal_distributions_transform
+Loaded 112586 data points from room_scan1.pcd
+Loaded 112624 data points from room_scan2.pcd
+Filtered cloud contains 12433 data points from room_scan2.pcd
+Normal Distributions Transform has converged:1 score: 0.713633
+</code></pre></div>
+
+<h3 id="_7">实现效果<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/normal_distributions_transform.gif" /></p>
+<h3 id="_8">代码详解<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/ndt.h&gt;       // ndt配准文件头</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/approximate_voxel_grid.h&gt;// 滤波文件头</span><span class="cp"></span>
+</code></pre></div>
+
+<p>使用【正态分布变换算法】和【用来过滤数据的过滤器】对应的头文件，这个过滤器可以用其他过滤器来替换 , 但是使用体素网格过滤器( approximate voxel filter)处理结果较好。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Loading first scan of room.</span>
+<span class="c1">// 加载首次的房间扫描数据作为目标点云 target_cloud</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">target_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">(</span><span class="s">&quot;room_scan1.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">target_cloud</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Couldn&#39;t read file room_scan1.pcd </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Loaded &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">target_cloud</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan1.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="c1">// Loading second scan of room from new perspective.</span>
+<span class="c1">// 加载从新的视角得到的房间第二次扫描数据作为输入源点云 input_cloud</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">input_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">(</span><span class="s">&quot;room_scan2.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">input_cloud</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Couldn&#39;t read file room_scan2.pcd </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Loaded &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">input_cloud</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan2.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+
+<p>以上代码加载了两个 PCD 文件到共享指针，配准操作是完成 【源点云input_cloud】到【目标点云target_cloud】坐标系变换矩阵的估算，即求出input_cloud变换到target_cloud的变换矩阵</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// Filtering input scan to roughly 10% of original size to increase speed of registration.</span>
+<span class="c1">// 过滤输入点云到约10%的原始大小，以提高配准速度。</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">filtered_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">ApproximateVoxelGrid</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">approximate_voxel_filter</span><span class="p">;</span>
+<span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">setLeafSize</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">);</span>
+<span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">input_cloud</span><span class="p">);</span>
+<span class="n">approximate_voxel_filter</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">filtered_cloud</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Filtered cloud contains &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">filtered_cloud</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">()</span>
+<span class="o">&lt;&lt;</span> <span class="s">&quot; data points from room_scan2.pcd&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+
+<p>以上代码将过滤输入点云到约10%的原始大小，以提高配准速度。这里用任何其他均匀过滤器都可以，目标点云target_cloud不需要进行滤波处理，因为NDT算法在目标点云对应的体素Voxel网格数据结构计算时，不使用单个点，而是使用体素的点。即已做了降采样处理。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 初始化正态分布变化NDT对象</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">NormalDistributionsTransform</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">ndt</span><span class="p">;</span>
+</code></pre></div>
+
+<p>Here we create the NDT algorithm with the default values. The internal data structures are not initialized until later.</p>
+<div class="highlight"><pre><span></span><code>//根据输入数据的尺度设置NDT相关参数
+ndt.setTransformationEpsilon(0.01); // 为终止条件设置最小转换差异
+// Setting maximum step size for More-Thuente line search.
+ndt.setStepSize(0.1);   // 为More-Thuente线搜索设置最大步长
+//Setting Resolution of NDT grid structure (VoxelGridCovariance).
+ndt.setResolution(1.0); // 设置NDT网格结构的分辨率 VoxelGridCovariance
+</code></pre></div>
+
+<p>这里设置一些尺度相关的参数,因为 NDT 算法使用一个体素化数据结构和More-Thuente 线搜索，因此需要缩放一些参数来适应数据集。以上参数看起来在我们使用的房间尺寸比例下运行地很好，但是它们如果需要处理例如一个咖啡杯的扫描之类更小物体，需要对参数进行很大程度的缩小。在变换中 Epsilon 参数分别从长度和弧度，定义了变换矢量[ x, y, z,roll,pitch, yaw]的最小许可的递增量，一旦递增量减小到这个临界值以下 ，那么配准算法就将终止。步长StepSize参数定义了 More-Thuente 线搜索允许的最大步长，这个线搜索算法确定了最大值以下的最佳步长，当靠近最优解时该算法会缩短迭代步长，在更大的最大步长将会在较少的迭代次数下遍历较大的距离，但是却有过度迭代和在不符合要求的局部最小值处结束的风险。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">//设置匹配迭代的最大次数</span>
+<span class="n">ndt</span><span class="p">.</span><span class="n">setMaximumIterations</span> <span class="p">(</span><span class="mi">35</span><span class="p">);</span>
+</code></pre></div>
+
+<p>这个MaximumIterations参数控制了优化程序运行的最大迭代次数，一 般来说，在达到这个限制值之前优化程序就会在 epsilon 变换阈值下终止。添加此最大迭代次数限制能够增加程序鲁棒性,阻止了它在错误的方向运行太久。</p>
+<div class="highlight"><pre><span></span><code>// 设置过滤后的输入源点云（第二次扫描数据）
+ndt.setInputSource (filtered_cloud);
+// 设置目标点云（第一次扫描数据），作为对其的目标。
+ndt.setInputTarget (target_cloud);
+</code></pre></div>
+
+<p>这里，我们把点云赋给 NDT 配准对象，目标点云的坐标系是被匹配的输入点云的参考坐标系，匹配完成后输入点云将被变换到与目标点云统一坐标系下，当加载目标点云后，NDT 算法的内部数据结构被初始化。</p>
+<div class="highlight"><pre><span></span><code>  ///设置使用机器人测距法得到的粗略初始变换矩阵
+  Eigen::AngleAxisf init_rotation (0.6931, Eigen::Vector3f::UnitZ());
+  Eigen::Translation3f init_translation (1.79387, 0, 0);
+  Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix();
+</code></pre></div>
+
+<p>在这部分的代码块中我们创建了一个点云配准变换矩阵的初始估计，虽然算法运行并不需要这样的一个初始变换矩阵，但是有了它易于得到更好的结果，尤其是当参考坐标系之间有较大差异时（本例即是）， 在机器人应用程序（例如用于生成此数据集的应用程序）中，通常使用里程表数据生成初始转换。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 计算所需的刚体变换，以使输入云与目标云对齐。</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">output_cloud</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+<span class="n">ndt</span><span class="p">.</span><span class="n">align</span> <span class="p">(</span><span class="o">*</span><span class="n">output_cloud</span><span class="p">,</span> <span class="n">init_guess</span><span class="p">);</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Normal Distributions Transform has converged:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ndt</span><span class="p">.</span><span class="n">hasConverged</span><span class="p">()</span>
+    <span class="o">&lt;&lt;</span> <span class="s">&quot; score: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">ndt</span><span class="p">.</span><span class="n">getFitnessScore</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+</code></pre></div>
+
+<p>最后，我们准备对齐点云。生成的转换后的输入云存储在输出云中。然后，我们显示对齐的结果以及欧几里得适合度得分FitnessScore，该分数计算为从输出云到目标云中最近点的距离的平方。</p>
+<div class="highlight"><pre><span></span><code><span class="c1">// 使用找到的变换矩阵，来对未过滤的输入云进行变换。</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span> <span class="p">(</span><span class="o">*</span><span class="n">input_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">output_cloud</span><span class="p">,</span> <span class="n">ndt</span><span class="p">.</span><span class="n">getFinalTransformation</span><span class="p">());</span>
+
+<span class="c1">// 保存变换后的输入点云</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">savePCDFileASCII</span> <span class="p">(</span><span class="s">&quot;room_scan2_transformed.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">output_cloud</span><span class="p">);</span>
+</code></pre></div>
+
+<p>在对齐之后，输出云output_cloud将立即包含过滤后的输入云的转换版本，因为我们向算法传递了过滤后的点云，而不是原始输入云。为了获得原始云的对齐版本，我们从NDT算法中提取最终转换矩阵并转换原始输入云。现在，我们可以将该云保存到文件<code>room_scan2_transformed.pcd</code>中，以备将来使用。</p>
+<p>配准收敛过程轨迹 RegistrationVisualizer ，pcl_registration_visualizer</p>
+<h2 id="_9">刚性物体的鲁棒姿态估计<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>Robust pose estimation of rigid objects</p>
+<p>在本教程中，我们将展示如何在具有杂波和遮挡的场景中找到刚体的对齐姿势。</p>
+<h3 id="_10">代码实现<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>资源准备：<a href="../res/chef.pcd">对象模型</a> 和 <a href="../res/rs1.pcd">场景模型</a></p>
+<p>创建文件：<code>alignment_prerejective.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;Eigen/Core&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_cloud.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/common/time.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/console/print.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/normal_3d_omp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/fpfh_omp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/filter.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/voxel_grid.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/icp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/sample_consensus_prerejective.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/segmentation/sac_segmentation.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+
+<span class="c1">// 首先从定义类型开始，以免使代码混乱</span>
+<span class="c1">// Types</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointNormal</span> <span class="n">PointNT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="n">PointCloudT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">FPFHSignature33</span> <span class="n">FeatureT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">FPFHEstimationOMP</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="p">,</span><span class="n">PointNT</span><span class="p">,</span><span class="n">FeatureT</span><span class="o">&gt;</span> <span class="n">FeatureEstimationT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">FeatureT</span><span class="o">&gt;</span> <span class="n">FeatureCloudT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="n">ColorHandlerT</span><span class="p">;</span>
+
+<span class="c1">// Align a rigid object to a scene with clutter and occlusions</span>
+<span class="kt">int</span>
+<span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span>
+<span class="p">{</span>
+  <span class="c1">// 然后，我们实例化必要的数据容器，检查输入参数并加载对象和场景点云。 </span>
+  <span class="c1">// Point clouds</span>
+  <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">object</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>
+  <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">object_aligned</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>
+  <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">scene</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>
+  <span class="n">FeatureCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">object_features</span> <span class="p">(</span><span class="k">new</span> <span class="n">FeatureCloudT</span><span class="p">);</span>
+  <span class="n">FeatureCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">scene_features</span> <span class="p">(</span><span class="k">new</span> <span class="n">FeatureCloudT</span><span class="p">);</span>
+
+  <span class="c1">// Get input object and scene</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_error</span> <span class="p">(</span><span class="s">&quot;Syntax is: %s object.pcd scene.pcd</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Load object and scene</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Loading point clouds...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="n">object</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="o">||</span>
+      <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="o">*</span><span class="n">scene</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+  <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_error</span> <span class="p">(</span><span class="s">&quot;Error loading object/scene file!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Downsample</span>
+  <span class="c1">// 为了加快处理速度，我们使用PCL的：pcl::VoxelGrid类将对象和场景点云的采样率下采样至5 mm。</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Downsampling...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">VoxelGrid</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="n">grid</span><span class="p">;</span>
+  <span class="k">const</span> <span class="kt">float</span> <span class="n">leaf</span> <span class="o">=</span> <span class="mf">0.005f</span><span class="p">;</span>
+  <span class="n">grid</span><span class="p">.</span><span class="n">setLeafSize</span> <span class="p">(</span><span class="n">leaf</span><span class="p">,</span> <span class="n">leaf</span><span class="p">,</span> <span class="n">leaf</span><span class="p">);</span>
+  <span class="n">grid</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">grid</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">grid</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">grid</span><span class="p">.</span><span class="n">filter</span> <span class="p">(</span><span class="o">*</span><span class="n">scene</span><span class="p">);</span>
+
+  <span class="c1">// Estimate normals for scene</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Estimating scene normals...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">NormalEstimationOMP</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="p">,</span><span class="n">PointNT</span><span class="o">&gt;</span> <span class="n">nest</span><span class="p">;</span>
+  <span class="n">nest</span><span class="p">.</span><span class="n">setRadiusSearch</span> <span class="p">(</span><span class="mf">0.01</span><span class="p">);</span>
+  <span class="n">nest</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">nest</span><span class="p">.</span><span class="n">compute</span> <span class="p">(</span><span class="o">*</span><span class="n">scene</span><span class="p">);</span>
+
+  <span class="c1">// Estimate features</span>
+  <span class="c1">// 对于下采样点云中的每个点，我们现在使用PCL的pcl::FPFHEstimationOMP&lt;&gt;类来计算用于对齐过程中用于匹配的快速点特征直方图（FPFH）描述符。</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Estimating features...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">FeatureEstimationT</span> <span class="n">fest</span><span class="p">;</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">setRadiusSearch</span> <span class="p">(</span><span class="mf">0.025</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">setInputNormals</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">compute</span> <span class="p">(</span><span class="o">*</span><span class="n">object_features</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">setInputCloud</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">setInputNormals</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">fest</span><span class="p">.</span><span class="n">compute</span> <span class="p">(</span><span class="o">*</span><span class="n">scene_features</span><span class="p">);</span>
+
+  <span class="c1">// Perform alignment</span>
+  <span class="c1">// SampleConsensusPrerejective 实现了有效的RANSAC姿势估计循环</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Starting alignment...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">SampleConsensusPrerejective</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="p">,</span><span class="n">PointNT</span><span class="p">,</span><span class="n">FeatureT</span><span class="o">&gt;</span> <span class="n">align</span><span class="p">;</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInputSource</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setSourceFeatures</span> <span class="p">(</span><span class="n">object_features</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInputTarget</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setTargetFeatures</span> <span class="p">(</span><span class="n">scene_features</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setMaximumIterations</span> <span class="p">(</span><span class="mi">50000</span><span class="p">);</span> <span class="c1">// Number of RANSAC iterations</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setNumberOfSamples</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// Number of points to sample for generating/prerejecting a pose</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setCorrespondenceRandomness</span> <span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// Number of nearest features to use</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setSimilarityThreshold</span> <span class="p">(</span><span class="mf">0.9f</span><span class="p">);</span> <span class="c1">// Polygonal edge length similarity threshold</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setMaxCorrespondenceDistance</span> <span class="p">(</span><span class="mf">2.5f</span> <span class="o">*</span> <span class="n">leaf</span><span class="p">);</span> <span class="c1">// Inlier threshold</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInlierFraction</span> <span class="p">(</span><span class="mf">0.25f</span><span class="p">);</span> <span class="c1">// Required inlier fraction for accepting a pose hypothesis</span>
+  <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ScopeTime</span> <span class="n">t</span><span class="p">(</span><span class="s">&quot;Alignment&quot;</span><span class="p">);</span>
+    <span class="n">align</span><span class="p">.</span><span class="n">align</span> <span class="p">(</span><span class="o">*</span><span class="n">object_aligned</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">align</span><span class="p">.</span><span class="n">hasConverged</span> <span class="p">())</span>
+  <span class="p">{</span>
+    <span class="c1">// Print results</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span> <span class="n">transformation</span> <span class="o">=</span> <span class="n">align</span><span class="p">.</span><span class="n">getFinalTransformation</span> <span class="p">();</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;R = | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;t = &lt; %0.3f, %0.3f, %0.3f &gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;Inliers: %i/%i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">align</span><span class="p">.</span><span class="n">getInliers</span> <span class="p">().</span><span class="n">size</span> <span class="p">(),</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">());</span>
+
+    <span class="c1">// Show alignment</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">visu</span><span class="p">(</span><span class="s">&quot;Alignment&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">ColorHandlerT</span> <span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="s">&quot;scene&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">object_aligned</span><span class="p">,</span> <span class="n">ColorHandlerT</span> <span class="p">(</span><span class="n">object_aligned</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">),</span> <span class="s">&quot;object_aligned&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">spin</span> <span class="p">();</span>
+  <span class="p">}</span>
+  <span class="k">else</span>
+  <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_error</span> <span class="p">(</span><span class="s">&quot;Alignment failed!</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>执行命令运行程序</li>
+</ul>
+<div class="highlight"><pre><span></span><code>./alignment-prerejective ./data/chef.pcd ./data/rs1.pcd
+</code></pre></div>
+
+<h3 id="_11">代码详解<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p><strong>对齐配准对象创建与配置</strong></p>
+<div class="highlight"><pre><span></span><code> <span class="c1">// Perform alignment</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_highlight</span> <span class="p">(</span><span class="s">&quot;Starting alignment...</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+  <span class="n">pcl</span><span class="o">::</span><span class="n">SampleConsensusPrerejective</span><span class="o">&lt;</span><span class="n">PointNT</span><span class="p">,</span><span class="n">PointNT</span><span class="p">,</span><span class="n">FeatureT</span><span class="o">&gt;</span> <span class="n">align</span><span class="p">;</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInputSource</span> <span class="p">(</span><span class="n">object</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setSourceFeatures</span> <span class="p">(</span><span class="n">object_features</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInputTarget</span> <span class="p">(</span><span class="n">scene</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setTargetFeatures</span> <span class="p">(</span><span class="n">scene_features</span><span class="p">);</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setMaximumIterations</span> <span class="p">(</span><span class="mi">50000</span><span class="p">);</span> <span class="c1">// Number of RANSAC iterations</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setNumberOfSamples</span> <span class="p">(</span><span class="mi">3</span><span class="p">);</span> <span class="c1">// Number of points to sample for generating/prerejecting a pose</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setCorrespondenceRandomness</span> <span class="p">(</span><span class="mi">5</span><span class="p">);</span> <span class="c1">// Number of nearest features to use</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setSimilarityThreshold</span> <span class="p">(</span><span class="mf">0.9f</span><span class="p">);</span> <span class="c1">// Polygonal edge length similarity threshold</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setMaxCorrespondenceDistance</span> <span class="p">(</span><span class="mf">2.5f</span> <span class="o">*</span> <span class="n">leaf</span><span class="p">);</span> <span class="c1">// Inlier threshold</span>
+  <span class="n">align</span><span class="p">.</span><span class="n">setInlierFraction</span> <span class="p">(</span><span class="mf">0.25f</span><span class="p">);</span> <span class="c1">// Required inlier fraction for accepting a pose hypothesis</span>
+</code></pre></div>
+
+<p>除了常用的输入点云和功能以外，此类还包含一些其他运行时参数，这些参数对对齐算法的性能有很大影响。 前两个与对齐类<code>pcl::SampleConsensusInitialAlignment</code>作用相同</p>
+<ul>
+<li>
+<p>样本数-setNumberOfSamples()</p>
+<blockquote>
+<p>在对象和场景之间进行采样的点对应数。 至少需要3个点才能计算姿势。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>
+<p>对应随机性-setCorrespondenceRandomness()</p>
+<blockquote>
+<p>我们可以在N个最佳匹配之间随机选择，而不是将每个对象FPFH描述符匹配到场景中最接近的匹配特征。 这增加了必要的迭代，但也使算法对异常匹配具有鲁棒性。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>
+<p>多边形相似度阈值-setSimilarityThreshold()</p>
+<blockquote>
+<p>对齐类使用<code>pcl::registration::CorrespondenceRejectorPoly</code>类，根据采样点之间距离的位置不变的几何一致性，尽早消除不良姿势。 </p>
+<p>在物体和场景上， 将该值设置为越接近1，则贪婪程度越高，从而使算法变得更快。 但是，这也会增加存在噪音时消除好姿势的风险。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>
+<p>内在阈值-setMaxCorrespondenceDistance()</p>
+<blockquote>
+<p>这是欧几里德距离阈值，用于确定变换后的对象点是否正确对齐到最近的场景点。 </p>
+<p>在此示例中，我们使用的启发式值为点云分辨率的1.5倍。</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>
+<p>Inlier分数-setInlierFraction()</p>
+<blockquote>
+<p>在许多实际情况下，由于混乱，遮挡或两者兼而有之，场景中观察到的对象的大部分都不可见。 </p>
+<p>在这种情况下，我们需要考虑不会将所有对象点都用于对准场景的姿势假设（猜想）。 </p>
+<p>正确对齐的点的绝对数量是使用inlier阈值确定的，并且如果该数量与对象中总点数的比大于指定的inlier分数，则我们接受姿势假设（猜想）为有效。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>执行配准并输出结果</strong></p>
+<p>最后，我们执行对齐配准过程：</p>
+<div class="highlight"><pre><span></span><code><span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ScopeTime</span> <span class="n">t</span><span class="p">(</span><span class="s">&quot;Alignment&quot;</span><span class="p">);</span>
+    <span class="n">align</span><span class="p">.</span><span class="n">align</span> <span class="p">(</span><span class="o">*</span><span class="n">object_aligned</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>对齐的对象存储在点云<code>object_aligned</code>中。 如果找到了一个具有足够inliers的姿势（占对象点总数的25％以上），则该算法会收敛，并且我们可以打印并可视化结果。</p>
+<div class="highlight"><pre><span></span><code>    <span class="c1">// Print results</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span> <span class="n">transformation</span> <span class="o">=</span> <span class="n">align</span><span class="p">.</span><span class="n">getFinalTransformation</span> <span class="p">();</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;R = | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;t = &lt; %0.3f, %0.3f, %0.3f &gt;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">transformation</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">));</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">print_info</span> <span class="p">(</span><span class="s">&quot;Inliers: %i/%i</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">align</span><span class="p">.</span><span class="n">getInliers</span> <span class="p">().</span><span class="n">size</span> <span class="p">(),</span> <span class="n">object</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">());</span>
+
+    <span class="c1">// Show alignment</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">visu</span><span class="p">(</span><span class="s">&quot;Alignment&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">ColorHandlerT</span> <span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">),</span> <span class="s">&quot;scene&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">object_aligned</span><span class="p">,</span> <span class="n">ColorHandlerT</span> <span class="p">(</span><span class="n">object_aligned</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">),</span> <span class="s">&quot;object_aligned&quot;</span><span class="p">);</span>
+    <span class="n">visu</span><span class="p">.</span><span class="n">spin</span> <span class="p">();</span>
+</code></pre></div>
+
+<h3 id="_12">输出结果<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>可视化窗口应该如下图所示。场景显示为绿色，对齐的对象模型显示为蓝色。注意大量不可见的对象点。</p>
+<ul>
+<li>前视图</li>
+</ul>
+<p><img alt="" src="../assets/alignment_prerejective_1.png" /></p>
+<ul>
+<li>侧视图</li>
+</ul>
+<p><img alt="" src="../assets/alignment_prerejective_2.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../registration_intro/" title="02-点云配准原理概述" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                02-点云配准原理概述
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../registration_interactive_icp/" title="04-配准之交互式ICP" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                04-配准之交互式ICP
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

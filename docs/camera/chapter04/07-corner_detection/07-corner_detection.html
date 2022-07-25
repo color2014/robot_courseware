@@ -1,0 +1,1221 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="相机标定 物体检测 3d相机原理 双目相机 结构光相机 TOF相机 三维扫描仪 3D相机编程 相机标定 去畸变 位姿估计 三维重建 相机模型 小孔成像模型">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>07-角点检测 - 黑马机器人 | 相机标定&物体检测</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#07-" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo"> -->
+        <a href="/docs" title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | 相机标定&物体检测</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                07-角点检测
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | 相机标定&物体检测" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | 相机标定&物体检测
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、相机基础知识
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、相机基础知识
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-camera/" title="01-相机基础" class="md-nav__link">
+      01-相机基础
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-3D_camera/" title="02-3D相机及分类" class="md-nav__link">
+      02-3D相机及分类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-pinhole_camera_model/" title="03-相机模型" class="md-nav__link">
+      03-相机模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-coordinates/" title="04-坐标变换" class="md-nav__link">
+      04-坐标变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-distortions/" title="05-相机透镜及畸变" class="md-nav__link">
+      05-相机透镜及畸变
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/06-undistortion/" title="06-相机标定与去畸变" class="md-nav__link">
+      06-相机标定与去畸变
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、相机标定&去畸变
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、相机标定&去畸变
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-calibration_board/" title="01-相机标定&标定板" class="md-nav__link">
+      01-相机标定&标定板
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-calibration_camera/" title="02-标定实现" class="md-nav__link">
+      02-标定实现
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-undistortion/" title="03-去畸变(矫正)" class="md-nav__link">
+      03-去畸变(矫正)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-pose_estimation/" title="04-位置估计及3D重建" class="md-nav__link">
+      04-位置估计及3D重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/exercise/" title="作业" class="md-nav__link">
+      作业
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、双目相机原理与应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、双目相机原理与应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/01-stereo_theory/" title="01-双目相机原理" class="md-nav__link">
+      01-双目相机原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/02-stereo_drivers/" title="02-双目相机驱动" class="md-nav__link">
+      02-双目相机驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/03-stereo_calibration/" title="03-双目相机标定" class="md-nav__link">
+      03-双目相机标定
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/04-stereo_point_cloud/" title="04-双目相机生成点云" class="md-nav__link">
+      04-双目相机生成点云
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/05-stereo_other/" title="05-其他操作" class="md-nav__link">
+      05-其他操作
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      四、2D图像处理实战
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、2D图像处理实战
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-obj_detect/" title="01-物体检测概述" class="md-nav__link">
+      01-物体检测概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-line_detect/" title="02-直线检测" class="md-nav__link">
+      02-直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-box_detect/" title="03-牙膏盒检测" class="md-nav__link">
+      03-牙膏盒检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-common_detect/" title="04-多阈值检测多边形" class="md-nav__link">
+      04-多阈值检测多边形
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-template_match/" title="05-模板匹配多个物体" class="md-nav__link">
+      05-模板匹配多个物体
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../06-feature_detection_description/" title="06-特征检测及描述" class="md-nav__link">
+      06-特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        07-角点检测
+      </label>
+    
+    <a href="./" title="07-角点检测" class="md-nav__link md-nav__link--active">
+      07-角点检测
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#harris" class="md-nav__link">
+    Harris角点检测原理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harris_1" class="md-nav__link">
+    Harris特征值分析
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harris_2" class="md-nav__link">
+    Harris算法实现步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    代码实现
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    哈里斯角点检测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    史-托马斯角点检测
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../07-feature_detection/" title="07-实现特征检测及描述" class="md-nav__link">
+      07-实现特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../08-feature_matching/" title="08-特征匹配" class="md-nav__link">
+      08-特征匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../09-feature_matching2/" title="09-使用特征匹配查找目标" class="md-nav__link">
+      09-使用特征匹配查找目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../10-feature_matching3/" title="10-特征匹配恢复目标" class="md-nav__link">
+      10-特征匹配恢复目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../exercise/" title="作业&练习" class="md-nav__link">
+      作业&练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/01-opencv/" title="编译安装OpenCV依赖库" class="md-nav__link">
+      编译安装OpenCV依赖库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/02-CMakeLists/" title="CMakeLists配置模板" class="md-nav__link">
+      CMakeLists配置模板
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#harris" class="md-nav__link">
+    Harris角点检测原理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harris_1" class="md-nav__link">
+    Harris特征值分析
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#harris_2" class="md-nav__link">
+    Harris算法实现步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    代码实现
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    哈里斯角点检测
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-" class="md-nav__link">
+    史-托马斯角点检测
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="07-">07-角点检测<a class="headerlink" href="#07-" title="Permanent link">&para;</a></h1>
+<p>我们已经了解<strong>角</strong>是图像中各个方向上强度变化最大的区域。</p>
+<p>克里斯·哈里斯（Chris Harris）和迈克·史蒂芬斯（Mike Stephens）在1988年的论文《组合式拐角和边缘检测器》（《A Combined Corner and Edge Detector》）中做了一次找到这些拐角的尝试，所以现在将其称为哈里斯拐角检测器。这篇论文把这个简单的想法变成了数学形式。它基本上找到了在所有方向上位移的强度差异。</p>
+<h3 id="harris">Harris角点检测原理<a class="headerlink" href="#harris" title="Permanent link">&para;</a></h3>
+<p>以一个点为中心，取一个窗口（5x5、7x7）区域，如下图，如果一个窗口往任何方向移动，都会引起比较大的灰度变化，那么往往这就是我们要找的角点。</p>
+<p><img alt="img" src="../assets/995848-20160817033339625-1102563933.png" /></p>
+<p>以下是Harris角点的数学模型，将图像窗口平移<span><span class="MathJax_Preview">[u,v]</span><script type="math/tex">[u,v]</script></span>产生的灰度变化<span><span class="MathJax_Preview">E(u,v)</span><script type="math/tex">E(u,v)</script></span>：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+\mathrm{E}(\mathrm{u}, v)=
+\sum_{\mathrm{x}, \mathrm{y}} 
+\underbrace{w(x, y)}_{\text {window function }} 
+\underbrace{[\mathrm{I}(x+\mathrm{u}, y+v)}_{\text {shifted intensity }}-\underbrace{\mathrm{I}(x, y)}_{\text {intensity }}]^{2} 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+\mathrm{E}(\mathrm{u}, v)=
+\sum_{\mathrm{x}, \mathrm{y}} 
+\underbrace{w(x, y)}_{\text {window function }} 
+\underbrace{[\mathrm{I}(x+\mathrm{u}, y+v)}_{\text {shifted intensity }}-\underbrace{\mathrm{I}(x, y)}_{\text {intensity }}]^{2} 
+\end{equation}
+</script>
+</div>
+<ol>
+<li>窗口函数<span><span class="MathJax_Preview">w(x,y)</span><script type="math/tex">w(x,y)</script></span>，可以是加权函数（取值全1），也可以是高斯函数</li>
+</ol>
+<p><img alt="img" src="../assets/995848-20160817051607343-1302549651.png" /></p>
+<ol>
+<li>
+<p>平移后的图像灰度<span><span class="MathJax_Preview">\mathrm{I}(x+\mathrm{u}, y+v)</span><script type="math/tex">\mathrm{I}(x+\mathrm{u}, y+v)</script></span></p>
+</li>
+<li>
+<p>像素所在区域的图像灰度<span><span class="MathJax_Preview">\mathrm{I}(x+\mathrm{u})</span><script type="math/tex">\mathrm{I}(x+\mathrm{u})</script></span></p>
+</li>
+</ol>
+<p><span><span class="MathJax_Preview">-K \le u,v \le K</span><script type="math/tex">-K \le u,v \le K</script></span>，K为我们选取的邻域个数。</p>
+<p>对于中括号内的值，在图像强度稳定的区域，差值会接近于0，而在位于强度突变的区域，得到的差值会比较大；我们希望得到比较大的差异区域，以确定角点部分，故而我们希望最大化<span><span class="MathJax_Preview">E(u,v)</span><script type="math/tex">E(u,v)</script></span></p>
+<p>所以我们对后半部分进行优化：</p>
+<div>
+<div class="MathJax_Preview">\sum_{x, y}[I(x+u, y+v)-I(x, y)]^{2}</div>
+<script type="math/tex; mode=display">\sum_{x, y}[I(x+u, y+v)-I(x, y)]^{2}</script>
+</div>
+<p>使用泰勒级数进行公式简化并展开：</p>
+<div>
+<div class="MathJax_Preview">\approx \sum_{x, y}\left[I(x, y)+u I_{x}+v I_{y}-I(x, y)\right]^{2}</div>
+<script type="math/tex; mode=display">\approx \sum_{x, y}\left[I(x, y)+u I_{x}+v I_{y}-I(x, y)\right]^{2}</script>
+</div>
+<div>
+<div class="MathJax_Preview"> \approx \sum_{x, y} (u^{2} I_{x}^{2}+2 u v I_{x} I_{y}+v^{2} I_{y}^{2}) </div>
+<script type="math/tex; mode=display"> \approx \sum_{x, y} (u^{2} I_{x}^{2}+2 u v I_{x} I_{y}+v^{2} I_{y}^{2}) </script>
+</div>
+<div>
+<div class="MathJax_Preview"> \approx \sum_{x, y}\left( \left[\begin{array}{ll}u &amp; v\end{array}\right]\left[\begin{array}{cc}I_{x}^{2} &amp; I_{x} I_{y} \\ I_{x} I_{y} &amp; I_{y}^{2}\end{array}\right]\left[\begin{array}{l}u \\ v\end{array}\right]\right) </div>
+<script type="math/tex; mode=display"> \approx \sum_{x, y}\left( \left[\begin{array}{ll}u & v\end{array}\right]\left[\begin{array}{cc}I_{x}^{2} & I_{x} I_{y} \\ I_{x} I_{y} & I_{y}^{2}\end{array}\right]\left[\begin{array}{l}u \\ v\end{array}\right]\right) </script>
+</div>
+<p>其中变换使用到矩阵的二次型变换规则：</p>
+<div>
+<div class="MathJax_Preview">ax^2+2bxy+cy^2= \left[\begin{array}{ll}\boldsymbol{x} &amp; \boldsymbol{y}\end{array}\right]\left[\begin{array}{ll}a &amp; b \\ b &amp; c\end{array}\right]\left[\begin{array}{l}\boldsymbol{x} \\ \boldsymbol{y}\end{array}\right] </div>
+<script type="math/tex; mode=display">ax^2+2bxy+cy^2= \left[\begin{array}{ll}\boldsymbol{x} & \boldsymbol{y}\end{array}\right]\left[\begin{array}{ll}a & b \\ b & c\end{array}\right]\left[\begin{array}{l}\boldsymbol{x} \\ \boldsymbol{y}\end{array}\right] </script>
+</div>
+<p>则可以得到新的表示方式：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+ E(u, v) \approx\left[\begin{array}{ll}u &amp; v\end{array}\right]\left(\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} &amp; I_{x} I_{y} \\ I_{x} I_{y} &amp; I_{y}^{2}\end{array}\right]\right)\left[\begin{array}{l}u \\ v\end{array}\right] 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+ E(u, v) \approx\left[\begin{array}{ll}u & v\end{array}\right]\left(\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} & I_{x} I_{y} \\ I_{x} I_{y} & I_{y}^{2}\end{array}\right]\right)\left[\begin{array}{l}u \\ v\end{array}\right] 
+\end{equation}
+</script>
+</div>
+<p>这里的<span><span class="MathJax_Preview">I_x，I_y</span><script type="math/tex">I_x，I_y</script></span>分别是x,y方向的梯度，可以通过<code>cv2.Sobel()</code>得到。</p>
+<p>简化为：</p>
+<div>
+<div class="MathJax_Preview">
+\begin{equation}
+ E(u, v) \approx\left[\begin{array}{ll}u &amp; v\end{array}\right]M\left[\begin{array}{l}u \\ v\end{array}\right] 
+\end{equation}
+</div>
+<script type="math/tex; mode=display">
+\begin{equation}
+ E(u, v) \approx\left[\begin{array}{ll}u & v\end{array}\right]M\left[\begin{array}{l}u \\ v\end{array}\right] 
+\end{equation}
+</script>
+</div>
+<p>其中：</p>
+<div>
+<div class="MathJax_Preview">
+M=\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} &amp; I_{x} I_{y} \\ I_{x} I_{y} &amp; I_{y}^{2}\end{array}\right]
+</div>
+<script type="math/tex; mode=display">
+M=\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} & I_{x} I_{y} \\ I_{x} I_{y} & I_{y}^{2}\end{array}\right]
+</script>
+</div>
+<h3 id="harris_1">Harris特征值分析<a class="headerlink" href="#harris_1" title="Permanent link">&para;</a></h3>
+<p><span><span class="MathJax_Preview">M</span><script type="math/tex">M</script></span>为梯度的协方差矩阵，可以把二次项看成一个椭圆函数，我们对M进行特征值分析有<span><span class="MathJax_Preview">λ1，λ2</span><script type="math/tex">λ1，λ2</script></span></p>
+<p><img alt="img" src="../assets/995848-20160817071907484-972739621.png" /></p>
+<p>如下图，根据λ1，λ2的值我们可以把其分为三类：</p>
+<ol>
+<li>
+<p>λ1，λ2都很小且近似，E在所有方向接近于常数；</p>
+</li>
+<li>
+<p>λ1&gt;&gt;λ2,或者λ2&gt;&gt;λ1, E将在某一方向上很大；</p>
+</li>
+<li>
+<p>λ1，λ2都很大且近似，E将在所有方向上很大；</p>
+</li>
+</ol>
+<p><img alt="img" src="../assets/995848-20160817072647953-1515493698.png" /></p>
+<p>即如下图：</p>
+<p><img alt="img" src="../assets/harris_lambda.png" /></p>
+<p>在代码实现上为了简化，为了避免直接计算矩阵M的特征值<span><span class="MathJax_Preview">λ_1，λ_2</span><script type="math/tex">λ_1，λ_2</script></span>（使用SVD奇异值分解比较消耗时间），我们利用二阶矩阵的行列式<span><span class="MathJax_Preview">det(M)=λ_1λ_2</span><script type="math/tex">det(M)=λ_1λ_2</script></span>和矩阵的迹<span><span class="MathJax_Preview">trace(M)=λ_1+λ_2</span><script type="math/tex">trace(M)=λ_1+λ_2</script></span>，我们定义一个角点响应值<span><span class="MathJax_Preview">R</span><script type="math/tex">R</script></span>来判断是否是角点。</p>
+<div>
+<div class="MathJax_Preview">
+\mathrm{R}=\operatorname{det}(M)-\mathrm{k}(\operatorname{trace}(M))^{2}
+</div>
+<script type="math/tex; mode=display">
+\mathrm{R}=\operatorname{det}(M)-\mathrm{k}(\operatorname{trace}(M))^{2}
+</script>
+</div>
+<p>其中：</p>
+<ul>
+<li>
+<div>
+<div class="MathJax_Preview">\operatorname{det}(M)=\lambda_{1} \lambda_{2}</div>
+<script type="math/tex; mode=display">\operatorname{det}(M)=\lambda_{1} \lambda_{2}</script>
+</div>
+</li>
+<li>
+<div>
+<div class="MathJax_Preview">\operatorname{trace}(M)=\lambda_{1}+\lambda_{2}</div>
+<script type="math/tex; mode=display">\operatorname{trace}(M)=\lambda_{1}+\lambda_{2}</script>
+</div>
+</li>
+<li><span><span class="MathJax_Preview">λ_1，λ_2</span><script type="math/tex">λ_1，λ_2</script></span>为矩阵M的特征值</li>
+<li><span><span class="MathJax_Preview">M=\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} &amp; I_{x} I_{y} \\ I_{x} I_{y} &amp; I_{y}^{2}\end{array}\right]</span><script type="math/tex">M=\sum_{x, y} w(x, y)\left[\begin{array}{cc}I_{x}^{2} & I_{x} I_{y} \\ I_{x} I_{y} & I_{y}^{2}\end{array}\right]</script></span></li>
+<li>k为系数，通常取0.04~0.06，</li>
+</ul>
+<p><span><span class="MathJax_Preview">λ_1，λ_2</span><script type="math/tex">λ_1，λ_2</script></span>同时取得较大值时，R才能得到较大值。k越小，检测子越敏感，得到的角点越多，最后为了得到局部最大值，并且避免重复检测，要进行非极大值抑制（Non-maximal Suppression）</p>
+<h3 id="harris_2">Harris算法实现步骤<a class="headerlink" href="#harris_2" title="Permanent link">&para;</a></h3>
+<p><strong>1、</strong>计算图像x,y方向的梯度<span><span class="MathJax_Preview">I_x, I_y</span><script type="math/tex">I_x, I_y</script></span></p>
+<div>
+<div class="MathJax_Preview"> I_{x}=G_{\sigma}^{x} * I \quad I_{y}=G_{\sigma}^{y} * I</div>
+<script type="math/tex; mode=display"> I_{x}=G_{\sigma}^{x} * I \quad I_{y}=G_{\sigma}^{y} * I</script>
+</div>
+<p>x方向卷积核<span><span class="MathJax_Preview">\begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}</span><script type="math/tex">\begin{bmatrix} -1 & 0 & 1 \\ -1 & 0 & 1 \\ -1 & 0 & 1 \end{bmatrix}</script></span>，y方向卷积核<span><span class="MathJax_Preview">\begin{bmatrix} -1 &amp; -1 &amp; -1 \\ 0 &amp; 0 &amp; 0 \\ 1 &amp; 1 &amp; 1 \end{bmatrix}</span><script type="math/tex">\begin{bmatrix} -1 & -1 & -1 \\ 0 & 0 & 0 \\ 1 & 1 & 1 \end{bmatrix}</script></span></p>
+<p><strong>2、</strong>计算每个像素点的梯度平方</p>
+<div>
+<div class="MathJax_Preview"> I_{x 2}=I_{x} . I_{x} \quad I_{y 2}=I_{y} \cdot I_{y} \quad I_{x y}=I_{x} \cdot I_{y} </div>
+<script type="math/tex; mode=display"> I_{x 2}=I_{x} . I_{x} \quad I_{y 2}=I_{y} \cdot I_{y} \quad I_{x y}=I_{x} \cdot I_{y} </script>
+</div>
+<p><strong>3、</strong>计算梯度在每个像素点的和</p>
+<div>
+<div class="MathJax_Preview"> S_{x 2}=G_{\sigma^{\prime}} * I_{x 2} \quad S_{y 2}=G_{\sigma^{\prime}} * I_{y 2} \quad S_{x y}=G_{\sigma^{\prime}} * I_{x y} </div>
+<script type="math/tex; mode=display"> S_{x 2}=G_{\sigma^{\prime}} * I_{x 2} \quad S_{y 2}=G_{\sigma^{\prime}} * I_{y 2} \quad S_{x y}=G_{\sigma^{\prime}} * I_{x y} </script>
+</div>
+<p><strong>4、</strong>定义在每个像素点的矩阵H，也就是前面的M</p>
+<div>
+<div class="MathJax_Preview">H(x, y)=\left[\begin{array}{ll}S_{x^2}(x, y) &amp; S_{x y}(x, y) \\ S_{x y}(x, y) &amp; S_{y^2}(x, y)\end{array}\right]</div>
+<script type="math/tex; mode=display">H(x, y)=\left[\begin{array}{ll}S_{x^2}(x, y) & S_{x y}(x, y) \\ S_{x y}(x, y) & S_{y^2}(x, y)\end{array}\right]</script>
+</div>
+<p><strong>5、</strong>计算每个像素的角点响应R</p>
+<div>
+<div class="MathJax_Preview">\mathrm{R}=\operatorname{det}(M)-\mathrm{k}(\operatorname{trace}(M))^{2}</div>
+<script type="math/tex; mode=display">\mathrm{R}=\operatorname{det}(M)-\mathrm{k}(\operatorname{trace}(M))^{2}</script>
+</div>
+<p><strong>6、</strong>设置阈值找出可能点，并进行非极大值抑制</p>
+<p>去掉那些强度比最大值的<span><span class="MathJax_Preview">1\%</span><script type="math/tex">1\%</script></span>还小的点</p>
+<p>Harris ⻆探测器对图像尺度的变化非常敏感。因此，对于不同尺度的图像匹配， Harris 的⻆探测器并不能满足我们的需求。</p>
+<h2 id="_1">代码实现<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<h3 id="_2">哈里斯角点检测<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>Harris Corner Detection</p>
+<ul>
+<li>待检测图</li>
+</ul>
+<p><img alt="src" src="../assets/chessboard.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Harris Corner Detector</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;./data/chessboard.png&#39;</span>
+<span class="c1"># filename = &#39;./data/3d-modern-building-design-18.jpg&#39;</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+
+<span class="c1"># 将颜色值转成float32格式</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">(</span><span class="n">gray</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">img: 输入图像，必须是灰度图、float32类型</span>
+<span class="sd">blockSize：角点检测要考虑的邻域的大小</span>
+<span class="sd">ksize：索贝尔算子的大小</span>
+<span class="sd">k：harris检测等式中的参数变量, 值越小，检测出的点越多</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cornerHarris</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mf">0.04</span><span class="p">)</span>
+<span class="c1"># 膨胀检测到的结果，用于显示（可选）</span>
+<span class="n">dst</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">dilate</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Threshold for an optimal value, it may vary depending on the image.</span>
+<span class="c1"># 将img中的对应位置设置为红色</span>
+<span class="n">dst_max</span> <span class="o">=</span> <span class="n">dst</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="n">img</span><span class="p">[</span><span class="n">dst</span> <span class="o">&gt;</span> <span class="mf">0.01</span> <span class="o">*</span> <span class="n">dst_max</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">]</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;dst&#39;</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">,</span> <span class="n">img</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xff</span> <span class="o">==</span> <span class="mi">27</span><span class="p">:</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div>
+
+<ul>
+<li>结果输出</li>
+</ul>
+<p><img alt="dst" src="../assets/chessboard_corners.png" /></p>
+<h3 id="-">史-托马斯角点检测<a class="headerlink" href="#-" title="Permanent link">&para;</a></h3>
+<p>Shi-Tomasi Corner Detector</p>
+<p>1994年年末， J. Shi 和 C. Tomasi 在其论文 <strong>《Good Features to Track》</strong> 中对其进行了小的修改，与Harris Corner Detector相比，该方法表现出出更好的结果。</p>
+<div class="highlight"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+<span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;./data/blox.jpg&#39;</span><span class="p">)</span>
+<span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span><span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">maxCorners 最大角点数</span>
+<span class="sd">qualityLevel 最低接受质量百分比 </span>
+<span class="sd">minDistance 点之间的最小距离</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">goodFeaturesToTrack</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mf">0.01</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">corners</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int0</span><span class="p">(</span><span class="n">corners</span><span class="p">)</span>
+
+<span class="n">img_rgb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">corners</span><span class="p">:</span>
+    <span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span><span class="mi">3</span><span class="p">,(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img_rgb</span><span class="p">),</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div>
+
+<ul>
+<li>结果输出</li>
+</ul>
+<p><img alt="dst" src="../assets/shitomasi_block.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../06-feature_detection_description/" title="06-特征检测及描述" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                06-特征检测及描述
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../07-feature_detection/" title="07-实现特征检测及描述" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                07-实现特征检测及描述
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

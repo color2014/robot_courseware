@@ -1,0 +1,1147 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 正则表达式">
+      
+      
+        <link rel="canonical" href="https://www.czxy.com/docs/01_opencv_basic/03_quickstart/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>入门案例 - 黑马机器人—OpenCV机器视觉：让机器看见世界！</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="https://www.czxy.com/docs" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" aria-label="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-header-nav__button md-logo"> -->
+        <a href="/" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" aria-label="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="https://www.czxy.com/docs">黑马机器人—OpenCV机器视觉：让机器看见世界！</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                入门案例
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="https://www.czxy.com/docs" title="黑马机器人—OpenCV机器视觉：让机器看见世界！" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—OpenCV机器视觉：让机器看见世界！
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../.." title="Home" class="md-nav__link">
+      Home
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2" checked>
+    
+    <label class="md-nav__link" for="nav-2">
+      01_OpenCV基础
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        01_OpenCV基础
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="概述" class="md-nav__link">
+      概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01_challenge/" title="面临的挑战" class="md-nav__link">
+      面临的挑战
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02_install/" title="OpenCV安装" class="md-nav__link">
+      OpenCV安装
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        入门案例
+      </label>
+    
+    <a href="./" title="入门案例" class="md-nav__link md-nav__link--active">
+      入门案例
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    读取图片
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    写入文件
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    理解像素
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    操作像素
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04_jihebianhuan/" title="图片的几何变换" class="md-nav__link">
+      图片的几何变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05_texiao/" title="图像特效" class="md-nav__link">
+      图像特效
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../06_meihua/" title="图片美化" class="md-nav__link">
+      图片美化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../07_shipin/" title="视频处理" class="md-nav__link">
+      视频处理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      02_OpenCV高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        02_OpenCV高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/01_facedeteaction/" title="人脸识别" class="md-nav__link">
+      人脸识别
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/02_hsv/" title="HSV颜色模型" class="md-nav__link">
+      HSV颜色模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/03_inrange/" title="颜色过滤" class="md-nav__link">
+      颜色过滤
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/04_binary/" title="图像的二值化" class="md-nav__link">
+      图像的二值化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../02_opencv_advance1/05_noise/" title="图像的噪声" class="md-nav__link">
+      图像的噪声
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      03_OpenCV进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        03_OpenCV进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/01_hist_match/" title="直方图匹配" class="md-nav__link">
+      直方图匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/02_juanji/" title="图片卷积" class="md-nav__link">
+      图片卷积
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/03_hough/" title="霍夫变换" class="md-nav__link">
+      霍夫变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/04_contours/" title="边缘与轮廓" class="md-nav__link">
+      边缘与轮廓
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/04_xingtai/" title="形态学变换" class="md-nav__link">
+      形态学变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/04_match/" title="模板匹配" class="md-nav__link">
+      模板匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/07_road_line/" title="案例:提取车道线" class="md-nav__link">
+      案例:提取车道线
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/05_bs/" title="案例:背景消除" class="md-nav__link">
+      案例:背景消除
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../03_opencv_advance2/06_birds/" title="案例:flappybird" class="md-nav__link">
+      案例:flappybird
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      04_CPP版OpenCV
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        04_CPP版OpenCV
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/01_install/" title="配置cpp环境" class="md-nav__link">
+      配置cpp环境
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/02_quickstart/" title="Mat类" class="md-nav__link">
+      Mat类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/03_histogram/" title="直方图" class="md-nav__link">
+      直方图
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/04_match/" title="模板匹配" class="md-nav__link">
+      模板匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/06_juanji/" title="图像的卷积" class="md-nav__link">
+      图像的卷积
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/07_xingtai/" title="形态学变换" class="md-nav__link">
+      形态学变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/08_perspective/" title="透视变换" class="md-nav__link">
+      透视变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/09_hough/" title="霍夫圆" class="md-nav__link">
+      霍夫圆
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/10_contours/" title="轮廓提取" class="md-nav__link">
+      轮廓提取
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/11_lianxi/" title="CPP操作小案例" class="md-nav__link">
+      CPP操作小案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/12_floodfill/" title="泛洪填充/漫水填充" class="md-nav__link">
+      泛洪填充/漫水填充
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/13_watershed/" title="图像分水岭" class="md-nav__link">
+      图像分水岭
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/14_distancechange/" title="距离变换" class="md-nav__link">
+      距离变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/15_example_inpaint/" title="0. 图片修复" class="md-nav__link">
+      0. 图片修复
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/16_example_qiebian/" title="1. 切边" class="md-nav__link">
+      1. 切边
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/17_example_qiebian2/" title="2. 切边+旋转" class="md-nav__link">
+      2. 切边+旋转
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/18_example_linedetect/" title="3. 直线检测" class="md-nav__link">
+      3. 直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/19_example_count/" title="4. 图像计数" class="md-nav__link">
+      4. 图像计数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/20_example_segement/" title="5. 图像分割" class="md-nav__link">
+      5.  图像分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../04_cpp_opencv/21_example_changebg/" title="6. 证件照换背景" class="md-nav__link">
+      6. 证件照换背景
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    读取图片
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    写入文件
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    理解像素
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    操作像素
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">入门案例<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">读取图片<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../../img/imread.jpg" /></p>
+<p>本节我们将来学习,如何使用opencv显示一张图片出来,我们首先需要掌握一条图片读取的api</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">cv</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;图片路径&quot;</span><span class="p">,</span><span class="s2">&quot;读取的方式&quot;</span><span class="p">)</span>
+<span class="c1"># 图片路径: 需要在工程目录中,或者一个文件的绝对路径</span>
+<span class="c1"># 读取方式: 分别有如下三种:</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">IMREAD_COLOR</span> <span class="p">:</span> <span class="n">以彩图的方式加载</span><span class="p">,</span><span class="n">会忽略透明度</span><span class="p">(</span><span class="n">默认方式</span><span class="p">)</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">:</span> <span class="n">以灰色图片方式加载</span>
+    <span class="n">cv</span><span class="o">.</span><span class="n">IMREAD_UNCHANGED</span><span class="p">:</span> <span class="n">直接加载</span><span class="p">,</span><span class="n">透明度会得到保留</span>    
+</code></pre></div>
+</td></tr></table>
+
+<p>示例代码如下:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">cv2</span> <span class="k">as</span> <span class="nn">cv</span>
+
+<span class="c1"># 读取图片 参数1：图片路径， 参数2：读取的方式 </span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;img/lena.png&quot;</span><span class="p">,</span><span class="n">cv</span><span class="o">.</span><span class="n">IMREAD_COLOR</span><span class="p">)</span>
+<span class="c1"># 显示窗口 参数1：窗口名称， 参数2：图片数据</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span><span class="n">img</span><span class="p">)</span>
+
+<span class="c1"># 让程序处于等待推出状态</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># 当程序推出时，释放所有窗口资源</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h2 id="_3">写入文件<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>刚才我们知道,如何读取文件,接下来,我们来学习如何将内存中的图片数据写入到磁盘中!</p>
+<p>暂时我们还没有学习,如何直接代码构建一张图片,为了演示,我们先读取一张图片,然后再将它写入到文件中,后面我们会学习如何直接内存中构建一张图片</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">cv2</span> <span class="k">as</span> <span class="nn">cv</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">&quot;img/lena.png&quot;</span><span class="p">,</span> <span class="n">cv</span><span class="o">.</span><span class="n">IMREAD_UNCHANGED</span><span class="p">)</span>
+
+<span class="c1"># 将图片写入到磁盘中,参数1： 图片写入路径，参数2： 图片数据</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s2">&quot;img/lena_copy.png&quot;</span><span class="p">,</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">cv</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<h2 id="_4">理解像素<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../../img/pixel.jpg" /></p>
+<p>当我们将一张图片不断放大之后,我们就可以看到这张图片上一个个小方块,这里面的每一个小方块我们就可以称之为像素点! 任何一张图片,都是有若干个这样的像素所构成的!</p>
+<h2 id="_5">操作像素<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p>为了便于大家能够理解像素,我们现在手工来创建一张图片,例如我们使用np.zeros这样的函数可以创建一个30x40的矩阵,那个这个矩阵其实就可以表示一张图片,矩阵中每一个元素都是一个像素点,每个像素点又由BGR三部分组成,这里我们需要强调一下Opencv中,颜色空间默认是BGR不是RGB,所以我们想表示红色需要使用(0,0,255),想表示绿色需要(0,255,0)</p>
+<p>下面我们就来操作图片,在图片的正中央增加一根红色的线!</p>
+<p><img alt="" src="../../img/xiangsu.jpg" /></p>
+<p>这里我直接给出示例代码,然后我们来看一下运行效果吧!</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">cv2</span> <span class="k">as</span> <span class="nn">cv</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># 构建一个空白的矩阵</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="c1"># 将第15行所有像素点全都改成红色</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">):</span>
+    <span class="c1"># 设置第15行颜色为红色</span>
+    <span class="n">img</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">)</span>
+
+<span class="c1"># 显示图片</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s2">&quot;src&quot;</span><span class="p">,</span><span class="n">img</span><span class="p">)</span>
+
+<span class="n">cv</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">cv</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>就这样我们的图片正中间就多了一根红色的线</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../02_install/" title="OpenCV安装" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                OpenCV安装
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../04_jihebianhuan/" title="图片的几何变换" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                图片的几何变换
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

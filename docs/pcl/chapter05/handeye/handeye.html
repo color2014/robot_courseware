@@ -1,0 +1,1467 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>02-手眼标定(外参标定) * - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                02-手眼标定(外参标定) *
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5" checked>
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        02-手眼标定(外参标定) *
+      </label>
+    
+    <a href="./" title="02-手眼标定(外参标定) *" class="md-nav__link md-nav__link--active">
+      02-手眼标定(外参标定) *
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、手眼标定的原理
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    眼在手上
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    眼在手外
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    二、手眼标定的操作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    三、自己动手实现手眼标定及验证
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、手眼标定的原理
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    眼在手上
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    眼在手外
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    二、手眼标定的操作
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    三、自己动手实现手眼标定及验证
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">手眼标定(外参标定) *<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">一、手眼标定的原理<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><strong>图例说明：</strong></p>
+<ul>
+<li><strong>{b}</strong>：base基座标系</li>
+<li><strong>{g}</strong>：gripper抓手坐标系</li>
+<li><strong>{t}</strong>：target标定板坐标系</li>
+<li><strong>{c}</strong>：camera相机坐标系</li>
+</ul>
+<p>正交矩阵的特性：</p>
+<p><span><span class="MathJax_Preview">T^{-1} = T^T</span><script type="math/tex">T^{-1} = T^T</script></span></p>
+<p><span><span class="MathJax_Preview">^tT_c = (^cT_t)^{-1} = (^cT_t)^T</span><script type="math/tex">^tT_c = (^cT_t)^{-1} = (^cT_t)^T</script></span></p>
+<p><span><span class="MathJax_Preview">^gT_b = (^bT_g)^{-1} = (^bT_g)^T</span><script type="math/tex">^gT_b = (^bT_g)^{-1} = (^bT_g)^T</script></span></p>
+<h3 id="_3">眼在手上<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p><strong>eye in hand，眼在手上，相机移动</strong>
+<img alt="" src="../assets/eye_in_hand.png" /></p>
+<p><span><span class="MathJax_Preview">^bT_t = {^bT_g}^{(1)} \cdot {^gT_c} \cdot {^cT_t}^{(1)}</span><script type="math/tex">^bT_t = {^bT_g}^{(1)} \cdot {^gT_c} \cdot {^cT_t}^{(1)}</script></span></p>
+<p><span><span class="MathJax_Preview">^bT_t = {^bT_g}^{(2)} \cdot {^gT_c} \cdot {^cT_t}^{(2)}</span><script type="math/tex">^bT_t = {^bT_g}^{(2)} \cdot {^gT_c} \cdot {^cT_t}^{(2)}</script></span></p>
+<p>联立以上两个等式：</p>
+<p><span><span class="MathJax_Preview">{^bT_g}^{(1)} \cdot {^gT_c} \cdot {^cT_t}^{(1)} = {^bT_g}^{(2)} \cdot {^gT_c} * {^cT_t}^{(2)}</span><script type="math/tex">{^bT_g}^{(1)} \cdot {^gT_c} \cdot {^cT_t}^{(1)} = {^bT_g}^{(2)} \cdot {^gT_c} * {^cT_t}^{(2)}</script></span></p>
+<p>把等式两边进行移动：</p>
+<p><span><span class="MathJax_Preview">(^bT_g^{(2)})^{-1} \cdot {^bT_g}^{(1)} \cdot {^gT_c}  = {^gT_c} \cdot {^cT_t}^{(2)} \cdot (^cT_t^{(1)})^{-1}</span><script type="math/tex">(^bT_g^{(2)})^{-1} \cdot {^bT_g}^{(1)} \cdot {^gT_c}  = {^gT_c} \cdot {^cT_t}^{(2)} \cdot (^cT_t^{(1)})^{-1}</script></span></p>
+<p>即解决：<span><span class="MathJax_Preview">AX=XB</span><script type="math/tex">AX=XB</script></span>问题</p>
+<p><img alt="" src="../assets/IMG_3946.png" /></p>
+<h3 id="_4">眼在手外<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<p><strong>eye to hand，眼在手外，相机固定</strong></p>
+<p><img alt="" src="../assets/eye_to_hand.png" /></p>
+<p><span><span class="MathJax_Preview">^gT_t =  ^gT_b^{(1)} \cdot ^bT_c \cdot ^cT_t^{(1)}</span><script type="math/tex">^gT_t =  ^gT_b^{(1)} \cdot ^bT_c \cdot ^cT_t^{(1)}</script></span></p>
+<p><span><span class="MathJax_Preview">^gT_t =  ^gT_b^{(2)} \cdot ^bT_c \cdot ^cT_t^{(2)}</span><script type="math/tex">^gT_t =  ^gT_b^{(2)} \cdot ^bT_c \cdot ^cT_t^{(2)}</script></span></p>
+<p>联立以上两个等式：</p>
+<p><span><span class="MathJax_Preview">^gT_b^{(1)} \cdot ^bT_c \cdot ^cT_t^{(1)} =  {^gT_b^{(2)}} \cdot ^bT_c \cdot ^cT_t^{(2)}</span><script type="math/tex">^gT_b^{(1)} \cdot ^bT_c \cdot ^cT_t^{(1)} =  {^gT_b^{(2)}} \cdot ^bT_c \cdot ^cT_t^{(2)}</script></span></p>
+<p>把等式两边进行移动：</p>
+<p><span><span class="MathJax_Preview">(^gT_b^{(2)})^{-1} \cdot ^gT_b^{(1)} \cdot ^bT_c =  {^bT_c} \cdot ^cT_t^{(2)} \cdot (^cT_t^{(1)})^{-1}</span><script type="math/tex">(^gT_b^{(2)})^{-1} \cdot ^gT_b^{(1)} \cdot ^bT_c =  {^bT_c} \cdot ^cT_t^{(2)} \cdot (^cT_t^{(1)})^{-1}</script></span></p>
+<p>即解决：<span><span class="MathJax_Preview">AX=XB</span><script type="math/tex">AX=XB</script></span>问题</p>
+<p><img alt="" src="../assets/IMG_3945.png" /></p>
+<h2 id="_5">二、手眼标定的操作<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../assets/webwxgetmsgimg.png" /></p>
+<ol>
+<li>将标定板固定在机械臂末端</li>
+<li>开启机械臂，开启摄像头</li>
+<li>在距离摄像头40、60、80cm的距离上，在摄像头可见范围内，使用各种角度各拍照15-20张照片，一共45-60张。</li>
+<li>同时保存照片以及对应拍照时机械臂位姿</li>
+<li>准备好之前标定的相机内参</li>
+<li>执行手眼标定API，得到相机在基坐标系的表达（旋转矩阵R+平移向量t）</li>
+</ol>
+<h2 id="_6">三、自己动手实现手眼标定及验证<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<ul>
+<li>从文件及图片读取照片</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// Created by poplar on 19-7-25.</span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv2/core.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv2/calib3d.hpp&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;boost/filesystem.hpp&quot;   // includes all needed Boost.Filesystem declarations</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;boost/algorithm/string/predicate.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv2/imgcodecs.hpp&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&quot;tinyxml/tinyxml2.h&quot;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;map&gt;</span><span class="cp"></span>
+
+<span class="c1">// Eigen 部分</span>
+<span class="cp">#include</span> <span class="cpf">&lt;Eigen/Core&gt;</span><span class="cp"></span>
+<span class="c1">// 稠密矩阵的代数运算（逆，特征值等）</span>
+<span class="cp">#include</span> <span class="cpf">&lt;Eigen/Dense&gt;</span><span class="cp"></span>
+<span class="c1">// Eigen 几何模块</span>
+<span class="cp">#include</span> <span class="cpf">&lt;Eigen/Geometry&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;rw/math/Rotation3D.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rw/math/Vector3D.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;rw/math/RPY.hpp&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/cxeigen.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;opencv/cv.hpp&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&quot;utils/Rotation3DUtils.h&quot;</span><span class="cp"></span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">boost</span><span class="o">::</span><span class="n">filesystem</span><span class="p">;</span>          <span class="c1">// for ease of tutorial presentation;</span>
+<span class="c1">//  a namespace alias is preferred practice in real code</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">tinyxml2</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">Eigen</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">rw</span><span class="o">::</span><span class="n">math</span><span class="p">;</span>
+
+<span class="c1">// Eigen</span>
+<span class="c1">// OpenCV</span>
+<span class="c1">// RobWork</span>
+
+<span class="k">const</span> <span class="n">string</span> <span class="n">prefix_path</span> <span class="o">=</span> <span class="s">&quot;/home/ty/Workspace/Robot/calibration-single&quot;</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">string</span> <span class="n">intrinsicsPath</span> <span class="o">=</span> <span class="n">prefix_path</span> <span class="o">+</span> <span class="s">&quot;/CaliResult/3DCameraInCailResult.xml&quot;</span><span class="p">;</span>
+
+<span class="k">const</span> <span class="n">string</span> <span class="n">pic_dir_path</span> <span class="o">=</span> <span class="n">prefix_path</span> <span class="o">+</span> <span class="s">&quot;/ImageFromCamera&quot;</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">string</span> <span class="n">exten</span> <span class="o">=</span> <span class="s">&quot;bmp&quot;</span><span class="p">;</span>
+<span class="k">const</span> <span class="n">string</span> <span class="n">extrinsic_params</span> <span class="o">=</span> <span class="n">prefix_path</span> <span class="o">+</span> <span class="s">&quot;/extrinsic_input_param.xml&quot;</span><span class="p">;</span>
+<span class="c1">// const string extrinsic_params = &quot;/home/poplar/Lesson/Cobot/Aubo/calibration-single/extrinsic_input_param_t.xml&quot;;</span>
+
+<span class="k">const</span> <span class="n">string</span> <span class="n">exCailFilePath</span> <span class="o">=</span> <span class="n">prefix_path</span> <span class="o">+</span> <span class="s">&quot;/CaliResult/3DCameraExCailResult.xml&quot;</span><span class="p">;</span>
+
+<span class="k">enum</span> <span class="n">Pattern</span> <span class="p">{</span>
+    <span class="n">CHESSBOARD</span><span class="p">,</span> <span class="n">CIRCLES_GRID</span><span class="p">,</span> <span class="n">ASYMMETRIC_CIRCLES_GRID</span>
+<span class="p">};</span>
+
+<span class="kt">void</span> <span class="nf">printPose</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">pose</span><span class="p">);</span>
+
+<span class="kt">void</span> <span class="nf">calcChessboardCorners</span><span class="p">(</span><span class="k">const</span> <span class="n">Size</span> <span class="o">&amp;</span><span class="n">boardSize</span><span class="p">,</span> <span class="kt">float</span> <span class="n">squareSize</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">corners</span><span class="p">,</span>
+                           <span class="n">Pattern</span> <span class="n">patternType</span> <span class="o">=</span> <span class="n">CHESSBOARD</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">corners</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+
+    <span class="k">switch</span> <span class="p">(</span><span class="n">patternType</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">CHESSBOARD</span><span class="p">:</span>
+        <span class="k">case</span> <span class="nl">CIRCLES_GRID</span><span class="p">:</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">boardSize</span><span class="p">.</span><span class="n">height</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>      <span class="c1">// 9</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">boardSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>   <span class="c1">// 6</span>
+                    <span class="n">corners</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="kt">float</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">),</span>
+                                         <span class="kt">float</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">case</span> <span class="nl">ASYMMETRIC_CIRCLES_GRID</span><span class="p">:</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">boardSize</span><span class="p">.</span><span class="n">height</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">boardSize</span><span class="p">.</span><span class="n">width</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+                    <span class="n">corners</span><span class="p">.</span><span class="n">emplace_back</span><span class="p">(</span><span class="kt">float</span><span class="p">((</span><span class="mi">2</span> <span class="o">*</span> <span class="n">j</span> <span class="o">+</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">),</span>
+                                         <span class="kt">float</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">squareSize</span><span class="p">),</span> <span class="mi">0</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+
+        <span class="k">default</span><span class="o">:</span>
+            <span class="n">CV_Error</span><span class="p">(</span><span class="n">Error</span><span class="o">::</span><span class="n">StsBadArg</span><span class="p">,</span> <span class="s">&quot;Unknown pattern type</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 通过图片集合 填充 旋转矩阵&amp;平移矩阵</span>
+<span class="cm"> * @param R_target2cam</span>
+<span class="cm"> * @param t_target2cam</span>
+<span class="cm"> * @param imgPaths</span>
+<span class="cm"> */</span>
+<span class="kt">bool</span> <span class="nf">fillFromImages</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">R_target2cam</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">t_target2cam</span><span class="p">,</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">imgPaths</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">const</span> <span class="n">Size</span> <span class="n">patternSize</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">);</span>
+    <span class="k">const</span> <span class="kt">float</span> <span class="n">squareSize</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span>
+
+    <span class="c1">//! [compute-poses]</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point3f</span><span class="o">&gt;</span> <span class="n">objectPoints</span><span class="p">;</span>
+<span class="c1">//  [</span>
+<span class="c1">//       [0, 0 , 0]</span>
+<span class="c1">//       [0, 20, 0]</span>
+<span class="c1">//       [0, 40, 0]</span>
+<span class="c1">//       ...</span>
+<span class="c1">//       [20, 0, 0]</span>
+<span class="c1">//       ...</span>
+<span class="c1">//  ]</span>
+    <span class="n">calcChessboardCorners</span><span class="p">(</span><span class="n">patternSize</span><span class="p">,</span> <span class="n">squareSize</span><span class="p">,</span> <span class="n">objectPoints</span><span class="p">);</span>
+
+    <span class="c1">// 通过内参进行矫正</span>
+    <span class="c1">// 检测角点</span>
+    <span class="c1">// 计算变换矩阵（旋转矩阵+平移矩阵）</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">FileStorage</span> <span class="n">fs</span><span class="p">(</span><span class="n">intrinsicsPath</span><span class="p">,</span> <span class="n">FileStorage</span><span class="o">::</span><span class="n">READ</span><span class="p">);</span>
+    <span class="n">Mat</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;cameraMatrix&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">cameraMatrix</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;distCoeffs&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">distCoeffs</span><span class="p">;</span>
+
+    <span class="c1">// 遍历图片</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="k">auto</span> <span class="o">&amp;</span><span class="nl">path</span><span class="p">:</span> <span class="n">imgPaths</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="n">string</span> <span class="o">&amp;</span><span class="n">s_path</span> <span class="o">=</span> <span class="n">path</span><span class="p">.</span><span class="n">string</span><span class="p">();</span>
+<span class="c1">//        std::cout &lt;&lt; s_path &lt;&lt; std::endl;</span>
+        <span class="k">const</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">img_mat</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="n">s_path</span><span class="p">,</span> <span class="n">IMREAD_UNCHANGED</span><span class="p">);</span>
+
+        <span class="c1">// 查找图片所有角点</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Point2f</span><span class="o">&gt;</span> <span class="n">corners</span><span class="p">;</span>
+        <span class="kt">bool</span> <span class="n">isFound</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">img_mat</span><span class="p">,</span> <span class="n">patternSize</span><span class="p">,</span> <span class="n">corners</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">isFound</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Image not found corners: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">s_path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+        <span class="p">}</span>
+<span class="c1">//        std::cout &lt;&lt; corners.size() &lt;&lt; std::endl;</span>
+
+        <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">rvec</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CV_64FC1</span><span class="p">);</span>
+        <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">tvec</span> <span class="o">=</span> <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">CV_64FC1</span><span class="p">);</span>
+        <span class="c1">// solveP3P</span>
+        <span class="c1">// 根据：</span>
+        <span class="c1">//      objectPoints（角点行列信息&amp;大小信息）</span>
+        <span class="c1">//      corners所有角点信息</span>
+        <span class="c1">//      内参</span>
+        <span class="c1">// 得到：</span>
+        <span class="c1">//      旋转向量，平移向量</span>
+        <span class="n">solvePnP</span><span class="p">(</span><span class="n">objectPoints</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="n">cameraMatrix</span><span class="p">,</span> <span class="n">distCoeffs</span><span class="p">,</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">);</span>
+
+<span class="c1">//        raux.convertTo(Rvec, CV_32F);    //旋转向量</span>
+<span class="c1">//        taux.convertTo(Tvec, CV_32F);   //平移向量</span>
+
+        <span class="n">Mat</span> <span class="n">R</span><span class="p">;</span> <span class="c1">// 旋转矩阵 &lt;-&gt; 旋转向量</span>
+        <span class="c1">// Transforms Rotation Vector to Matrix</span>
+        <span class="n">Rodrigues</span><span class="p">(</span><span class="n">rvec</span><span class="p">,</span> <span class="n">R</span><span class="p">);</span> <span class="c1">//  solvePnP返回的是旋转向量，故用罗德里格斯变换变成旋转矩阵</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;rotation vector rvec =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">rvec</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;rotation R =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">R</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;translation vector tvec =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">tvec</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="k">const</span> <span class="n">Vec3f</span> <span class="o">&amp;</span><span class="n">oulerAngles</span> <span class="o">=</span> <span class="n">rotationMatrixToEulerAngles</span><span class="p">(</span><span class="n">R</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;oulerAngles = </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">oulerAngles</span> <span class="o">*</span> <span class="n">RA2DE</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">// zyx (RPY)</span>
+<span class="c1">//        Rotation3D&lt;double&gt; rot(R);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Image path: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">s_path</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="n">R_target2cam</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">R</span><span class="p">);</span>
+<span class="c1">//        t_target2cam.push_back(tvec);</span>
+        <span class="n">t_target2cam</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tvec</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">);</span>
+
+<span class="c1">//        const Mat &amp;img_mat = imread(s_path, IMREAD_UNCHANGED);</span>
+<span class="c1">//        Mat smallImg;</span>
+<span class="c1">//        resize( img_mat, smallImg, Size(), 0.5, 0.5, INTER_LINEAR_EXACT);</span>
+<span class="c1">//        cv::imshow(&quot;img_chess&quot;, smallImg);</span>
+<span class="c1">//        std::cout &lt;&lt; s_path &lt;&lt; std::endl;</span>
+<span class="c1">//        waitKey(0);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 求齐次矩阵的逆矩阵</span>
+<span class="cm"> * @param T</span>
+<span class="cm"> * @return</span>
+<span class="cm"> */</span>
+<span class="k">static</span> <span class="n">Mat</span> <span class="nf">homogeneousInverse</span><span class="p">(</span><span class="k">const</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">T</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">CV_Assert</span><span class="p">(</span><span class="n">T</span><span class="p">.</span><span class="n">rows</span> <span class="o">==</span> <span class="mi">4</span> <span class="o">&amp;&amp;</span> <span class="n">T</span><span class="p">.</span><span class="n">cols</span> <span class="o">==</span> <span class="mi">4</span><span class="p">);</span>
+
+    <span class="n">Mat</span> <span class="n">R</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="n">Mat</span> <span class="n">t</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="n">Rect</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+    <span class="n">Mat</span> <span class="n">Rt</span> <span class="o">=</span> <span class="n">R</span><span class="p">.</span><span class="n">t</span><span class="p">();</span>
+    <span class="n">Mat</span> <span class="n">tinv</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rt</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+
+    <span class="n">Mat</span> <span class="n">Tinv</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">eye</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">T</span><span class="p">.</span><span class="n">type</span><span class="p">());</span>
+    <span class="n">Rt</span><span class="p">.</span><span class="n">copyTo</span><span class="p">(</span><span class="n">Tinv</span><span class="p">(</span><span class="n">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)));</span>
+    <span class="n">tinv</span><span class="p">.</span><span class="n">copyTo</span><span class="p">(</span><span class="n">Tinv</span><span class="p">(</span><span class="n">Rect</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)));</span>
+
+    <span class="k">return</span> <span class="n">Tinv</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 外参标定</span>
+<span class="cm"> *</span>
+<span class="cm"> * 输入：</span>
+<span class="cm"> *      60组：t2c</span>
+<span class="cm"> *          标定板在相机坐标系的表达（标定板到相机的转换矩阵-&gt;旋转矩阵R+平移向量t）</span>
+<span class="cm"> *          内参（用于求相机在标定板坐标系的表达）</span>
+<span class="cm"> *</span>
+<span class="cm"> *      60组：b2g  (g2b求逆)</span>
+<span class="cm"> *          末端gripper的x,y,z,r,p,y-&gt; 旋转矩阵R+平移向量t, 笛卡尔（RPY转旋转矩阵）</span>
+<span class="cm"> *          求逆(转置)，正交矩阵两个计算结果一致</span>
+<span class="cm"> *</span>
+<span class="cm"> * 输出：</span>
+<span class="cm"> *      外参 :</span>
+<span class="cm"> *          相机在Base坐标系的表达 (轴角对+平移向量t) (旋转矩阵R+平移向量t)</span>
+<span class="cm"> *</span>
+<span class="cm"> * 验证：</span>
+<span class="cm"> *      通过现有图片及标定结果进行验证</span>
+<span class="cm"> * @return</span>
+<span class="cm"> */</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="c1">// 相机坐标系下标定板（目标）的表达 (通过 彩图&amp;深度图&amp;内参 获得) ---------------1</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">R_target2cam</span><span class="p">,</span> <span class="n">t_target2cam</span><span class="p">;</span>
+    <span class="c1">// 读取照片&amp;深度图</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">exists</span><span class="p">(</span><span class="n">pic_dir_path</span><span class="p">))</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">pic_dir_path</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; not exist&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">counter</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+    <span class="c1">// 将所有外参标定的照片路径存到imgPaths</span>
+    <span class="n">vector</span><span class="o">&lt;</span><span class="n">path</span><span class="o">&gt;</span> <span class="n">imgPaths</span><span class="p">;</span>
+    <span class="n">directory_iterator</span> <span class="n">end_itr</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">directory_iterator</span> <span class="n">itr</span><span class="p">(</span><span class="n">pic_dir_path</span><span class="p">);</span> <span class="n">itr</span> <span class="o">!=</span> <span class="n">end_itr</span><span class="p">;</span> <span class="o">++</span><span class="n">itr</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">is_directory</span><span class="p">(</span><span class="n">itr</span><span class="o">-&gt;</span><span class="n">status</span><span class="p">()))</span> <span class="p">{</span>
+            <span class="n">path</span> <span class="n">file_path</span> <span class="o">=</span> <span class="n">itr</span><span class="o">-&gt;</span><span class="n">path</span><span class="p">();</span>
+            <span class="k">const</span> <span class="n">path</span> <span class="o">&amp;</span><span class="n">filename</span> <span class="o">=</span> <span class="n">file_path</span><span class="p">.</span><span class="n">filename</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">boost</span><span class="o">::</span><span class="n">starts_with</span><span class="p">(</span><span class="n">filename</span><span class="p">.</span><span class="n">string</span><span class="p">(),</span> <span class="s">&quot;raw_color_extrinsic_pose&quot;</span><span class="p">))</span> <span class="p">{</span>
+<span class="c1">//                std::cout &lt;&lt; filename.string() &lt;&lt; std::endl;</span>
+                <span class="n">imgPaths</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">file_path</span><span class="p">);</span>
+
+<span class="c1">//                counter++;</span>
+<span class="c1">//                if (counter &gt;= 5){</span>
+<span class="c1">//                    break;</span>
+<span class="c1">//                }</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// 通过识别图像及角点，得到相机到标定板的变换矩阵 (内参)</span>
+    <span class="kt">bool</span> <span class="n">rst</span> <span class="o">=</span> <span class="n">fillFromImages</span><span class="p">(</span><span class="n">R_target2cam</span><span class="p">,</span> <span class="n">t_target2cam</span><span class="p">,</span> <span class="n">imgPaths</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">rst</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;R_target2cam: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">R_target2cam</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;t_target2cam: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t_target2cam</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; --------------------------------------------- 相机坐标系下标定板（目标）的表达 OK -------------------------------------------- ↑&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="c1">// 基坐标Base下末端TCP(gripper)的表达 (通过设备获得) ---------------2</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">R_gripper2base</span><span class="p">,</span> <span class="n">t_gripper2base</span><span class="p">;</span>
+    <span class="c1">// 轴角对&amp;平移 -&gt; 旋转矩阵&amp;平移矩阵</span>
+
+    <span class="n">XMLDocument</span> <span class="n">doc</span><span class="p">;</span>
+    <span class="n">doc</span><span class="p">.</span><span class="n">LoadFile</span><span class="p">(</span><span class="n">extrinsic_params</span><span class="p">.</span><span class="n">c_str</span><span class="p">());</span>
+    <span class="n">XMLElement</span> <span class="o">*</span><span class="n">root</span> <span class="o">=</span> <span class="n">doc</span><span class="p">.</span><span class="n">RootElement</span><span class="p">();</span>
+    <span class="n">XMLElement</span> <span class="o">*</span><span class="n">extrinsics</span> <span class="o">=</span> <span class="n">root</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;extrinsic&quot;</span><span class="p">);</span>
+
+    <span class="n">map</span><span class="o">&lt;</span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">,</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;&gt;</span> <span class="n">map</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">extrinsics</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">image_path</span> <span class="o">=</span> <span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;Limage_color_path&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">();</span>
+        <span class="n">string</span> <span class="n">img_path</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="p">(</span><span class="n">image_path</span><span class="p">);</span>
+        <span class="n">string</span> <span class="n">img_name</span> <span class="o">=</span> <span class="n">img_path</span><span class="p">.</span><span class="n">substr</span><span class="p">(</span><span class="n">img_path</span><span class="p">.</span><span class="n">find_last_of</span><span class="p">(</span><span class="sc">&#39;/&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="c1">// std::cout &lt;&lt; image_path &lt;&lt; &quot; name: &quot; &lt;&lt; img_name &lt;&lt; std::endl;</span>
+        <span class="kt">double</span> <span class="n">pose1</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose1&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">pose2</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose2&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">pose3</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose3&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">pose4</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose4&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">pose5</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose5&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="kt">double</span> <span class="n">pose6</span> <span class="o">=</span> <span class="n">atof</span><span class="p">(</span><span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">FirstChildElement</span><span class="p">(</span><span class="s">&quot;pose6&quot;</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">GetText</span><span class="p">());</span>
+        <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">pose</span><span class="p">{</span><span class="n">pose1</span><span class="p">,</span> <span class="n">pose2</span><span class="p">,</span> <span class="n">pose3</span><span class="p">,</span> <span class="n">pose4</span><span class="p">,</span> <span class="n">pose5</span><span class="p">,</span> <span class="n">pose6</span><span class="p">};</span>
+
+        <span class="c1">// 字典map保存的图片文件名及对应的=位姿</span>
+        <span class="n">map</span><span class="p">[</span><span class="n">img_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">pose</span><span class="p">;</span>
+        <span class="n">extrinsics</span> <span class="o">=</span> <span class="n">extrinsics</span><span class="o">-&gt;</span><span class="n">NextSiblingElement</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="c1">// 将对应图片的机械臂笛卡尔空间坐标pose转成 旋转矩阵+平移矩阵</span>
+    <span class="k">for</span> <span class="p">(</span><span class="k">const</span> <span class="n">path</span> <span class="o">&amp;</span><span class="nl">p</span><span class="p">:</span> <span class="n">imgPaths</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">f_name</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">filename</span><span class="p">().</span><span class="n">string</span><span class="p">();</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="c1">// 取出每个图片对应的位姿</span>
+            <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">pose</span> <span class="o">=</span> <span class="n">map</span><span class="p">.</span><span class="n">at</span><span class="p">(</span><span class="n">f_name</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">pose</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span> <span class="p">{</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;pose empty&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+                <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+            <span class="p">}</span>
+<span class="c1">//            std::cout &lt;&lt; f_name &lt;&lt; &quot; -&gt; &quot;;printPose(pose);</span>
+
+            <span class="n">cv</span><span class="o">::</span><span class="n">Vec3f</span> <span class="n">eulerAngles</span><span class="p">(</span><span class="n">pose</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="n">pose</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="n">pose</span><span class="p">[</span><span class="mi">5</span><span class="p">]);</span>
+            <span class="k">const</span> <span class="n">Mat</span> <span class="o">&amp;</span><span class="n">R</span> <span class="o">=</span> <span class="n">eulerAnglesToRotationMatrix</span><span class="p">(</span><span class="n">eulerAngles</span><span class="p">);</span>
+
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;rotation matrix3 eulerAngles =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">eulerAngles</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;rotation matrix3 R =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">R</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+            <span class="n">cv</span><span class="o">::</span><span class="n">Mat</span> <span class="n">t</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv</span><span class="o">::</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="n">pose</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pose</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pose</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;translation matrix3 t =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+            <span class="n">R_gripper2base</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">R</span><span class="p">);</span>
+<span class="c1">//            t_gripper2base.push_back(t);</span>
+            <span class="n">t_gripper2base</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">t</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">);</span>
+
+
+<span class="c1">//            const string &amp;s_path = p.string();</span>
+<span class="c1">//            const Mat &amp;img_mat = imread(s_path, IMREAD_UNCHANGED);</span>
+<span class="c1">//            Mat smallImg;</span>
+<span class="c1">//            resize( img_mat, smallImg, Size(), 0.5, 0.5, INTER_LINEAR_EXACT);</span>
+<span class="c1">//            cv::imshow(&quot;img_chess&quot;, smallImg);</span>
+<span class="c1">//            std::cout &lt;&lt; s_path &lt;&lt; std::endl;</span>
+<span class="c1">//            waitKey(0);</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span> <span class="o">&amp;</span><span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">f_name</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; was not found.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; --------------------------------------------- 基坐标Base下末端TCP(gripper)的表达 -------------------------------------------- ↑&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+<span class="c1">//    return 0;</span>
+
+<span class="c1">//    std::cout &lt;&lt; map[&quot;raw_color_extrinsic_pose_07_26_17_01_59_965.bmp&quot;].size()&lt;&lt; std::endl;</span>
+
+    <span class="c1">// TCP坐标系下基坐标的表达</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">Mat</span><span class="o">&gt;</span> <span class="n">R_base2gripper</span><span class="p">,</span> <span class="n">t_base2gripper</span><span class="p">;</span>
+
+    <span class="c1">// 转换成逆矩阵</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">size</span> <span class="o">=</span> <span class="n">R_gripper2base</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="n">R_base2gripper</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    <span class="n">t_base2gripper</span><span class="p">.</span><span class="n">reserve</span><span class="p">(</span><span class="n">size</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 获取每个抓手的姿态（旋转矩阵）</span>
+        <span class="n">Mat</span> <span class="n">R</span> <span class="o">=</span> <span class="n">R_gripper2base</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">Mat</span> <span class="n">Rt</span> <span class="o">=</span> <span class="n">R</span><span class="p">.</span><span class="n">t</span><span class="p">();</span> <span class="c1">// 转置</span>
+        <span class="n">R_base2gripper</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">Rt</span><span class="p">);</span>
+
+        <span class="c1">// 获取每个抓手的位置</span>
+        <span class="n">Mat</span> <span class="n">t</span> <span class="o">=</span> <span class="n">t_gripper2base</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="n">Mat</span> <span class="n">tinv</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rt</span> <span class="o">*</span> <span class="n">t</span><span class="p">;</span>
+        <span class="n">t_base2gripper</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">tinv</span><span class="p">);</span>
+
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;base2gripper Rt=</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">Rt</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;base2gripper tinv =</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">tinv</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; --------------------------------------------- 末端TCP坐标下Base的表达 -------------------------------------------- ↑&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">R_target2cam</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>   <span class="o">&lt;&lt;</span> <span class="s">&quot;:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t_target2cam</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>   <span class="o">&lt;&lt;</span> <span class="sc">&#39;\n&#39;</span> <span class="o">&lt;&lt;</span>
+                 <span class="n">R_base2gripper</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;:&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t_base2gripper</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;---------------------calibrateHandEye start !---------------------&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="c1">// 求Base基坐标下相机Cam的表达</span>
+    <span class="n">Mat</span> <span class="n">R_cam2base_est</span><span class="p">,</span> <span class="n">t_cam2base_est</span><span class="p">;</span>
+    <span class="c1">// 进行手眼标定(外参)</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">calibrateHandEye</span><span class="p">(</span>
+             <span class="n">R_base2gripper</span><span class="p">,</span>  <span class="n">t_base2gripper</span><span class="p">,</span>
+             <span class="n">R_target2cam</span><span class="p">,</span>    <span class="n">t_target2cam</span><span class="p">,</span>
+             <span class="n">R_cam2base_est</span><span class="p">,</span>  <span class="n">t_cam2base_est</span><span class="p">,</span>
+             <span class="n">HandEyeCalibrationMethod</span><span class="o">::</span><span class="n">CALIB_HAND_EYE_DANIILIDIS</span><span class="p">);</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;旋转矩阵 est： </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">R_cam2base_est</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;平移矩阵 est： </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t_cam2base_est</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="kt">double</span> <span class="n">angle</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">axisX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">axisY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">axisZ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">translationX</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">translationY</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">translationZ</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">// 使用opencv读取文件</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">FileStorage</span> <span class="n">fs</span><span class="p">(</span><span class="n">exCailFilePath</span><span class="p">,</span> <span class="n">cv</span><span class="o">::</span><span class="n">FileStorage</span><span class="o">::</span><span class="n">READ</span><span class="p">);</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;Angle&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">angle</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;AxisX&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">axisX</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;AxisY&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">axisY</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;AxisZ&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">axisZ</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;TranslationX&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">translationX</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;TranslationY&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">translationY</span><span class="p">;</span>
+    <span class="n">fs</span><span class="p">[</span><span class="s">&quot;TranslationZ&quot;</span><span class="p">]</span> <span class="o">&gt;&gt;</span> <span class="n">translationZ</span><span class="p">;</span>
+    <span class="c1">// 轴角对</span>
+    <span class="n">Vector3d</span> <span class="n">axisMatrix</span><span class="p">(</span><span class="n">axisX</span><span class="p">,</span> <span class="n">axisY</span><span class="p">,</span> <span class="n">axisZ</span><span class="p">);</span>
+    <span class="n">AngleAxisd</span> <span class="n">angleAxisd</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">axisMatrix</span><span class="p">);</span>
+    <span class="c1">// 获取旋转矩阵</span>
+    <span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">AngleAxis</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;::</span><span class="n">Matrix3</span> <span class="o">&amp;</span><span class="n">rotationMatrix</span> <span class="o">=</span> <span class="n">angleAxisd</span><span class="p">.</span><span class="n">toRotationMatrix</span><span class="p">();</span>
+<span class="c1">//    cout &lt;&lt; &quot;旋转矩阵e：&quot; &lt;&lt; rotationMatrix &lt;&lt; endl;</span>
+    <span class="c1">// 获取平移矩阵</span>
+    <span class="n">Vector3d</span> <span class="n">t_cam2base_eigen</span><span class="p">(</span><span class="n">translationX</span><span class="p">,</span> <span class="n">translationY</span><span class="p">,</span> <span class="n">translationZ</span><span class="p">);</span>
+    <span class="c1">// 获取输出结果</span>
+<span class="c1">//    cout &lt;&lt; &quot;平移向量e:&quot; &lt;&lt; t_cam2base_eigen &lt;&lt; endl;</span>
+
+    <span class="c1">// 真实值，eigen转成cv</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">R_cam2base_true</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">);</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">eigen2cv</span><span class="p">(</span><span class="n">rotationMatrix</span><span class="p">,</span><span class="n">R_cam2base_true</span><span class="p">);</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">Mat_</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="n">t_cam2base_true</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="n">cv</span><span class="o">::</span><span class="n">eigen2cv</span><span class="p">(</span><span class="n">t_cam2base_eigen</span><span class="p">,</span><span class="n">t_cam2base_true</span><span class="p">);</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;旋转矩阵 true： </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">R_cam2base_true</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;平移矩阵 true： </span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">t_cam2base_true</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 估算的 旋转矩阵-&gt;旋转向量</span>
+<span class="c1">//    Mat rvec_cam2base_est;</span>
+<span class="c1">//    cv::Rodrigues(R_cam2base_est, rvec_cam2base_est);</span>
+
+    <span class="c1">// 真实的 旋转矩阵-&gt;旋转向量</span>
+<span class="c1">//    Mat rvec_cam2base_true;</span>
+<span class="c1">//    cv::Rodrigues(R_cam2base_true, rvec_cam2base_true);</span>
+<span class="c1">//    cout &lt;&lt; &quot;旋转矩阵 est： \n&quot; &lt;&lt; rvec_cam2base_est &lt;&lt; endl;</span>
+<span class="c1">//    cout &lt;&lt; &quot;平移向量 est： \n&quot; &lt;&lt; t_cam2base_true &lt;&lt; endl;</span>
+
+<span class="c1">//    double rvecDiff = norm(rvec_cam2base_true, rvec_cam2base_est, NormTypes::NORM_L2);</span>
+<span class="c1">//    double tvecDiff = norm(t_cam2base_true, t_cam2base_est, NormTypes::NORM_L2);</span>
+<span class="c1">//    std::cout &lt;&lt; &quot;rvecDiff:&quot; &lt;&lt; rvecDiff &lt;&lt; &quot; tvecDiff:&quot; &lt;&lt; tvecDiff &lt;&lt; std::endl;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="nf">printPose</span><span class="p">(</span><span class="k">const</span> <span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">pose</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;[&quot;</span> <span class="o">&lt;&lt;</span>
+         <span class="n">pose</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pose</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pose</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span>
+         <span class="n">pose</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pose</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">pose</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span> <span class="o">&lt;&lt;</span>
+         <span class="s">&quot;]&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>直接从摄像头拍照标定</li>
+</ul>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../2D_3D/" title="01-2D与3D融合 *" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                01-2D与3D融合 *
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../2D_3D_exercise/" title="03-2D与3D融合实践" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                03-2D与3D融合实践
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

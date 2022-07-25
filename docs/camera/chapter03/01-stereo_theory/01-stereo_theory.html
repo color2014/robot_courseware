@@ -1,0 +1,932 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="相机标定 物体检测 3d相机原理 双目相机 结构光相机 TOF相机 三维扫描仪 3D相机编程 相机标定 去畸变 位姿估计 三维重建 相机模型 小孔成像模型">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-双目相机原理 - 黑马机器人 | 相机标定&物体检测</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo"> -->
+        <a href="/docs" title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | 相机标定&物体检测</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-双目相机原理
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | 相机标定&物体检测" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | 相机标定&物体检测
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、相机基础知识
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、相机基础知识
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-camera/" title="01-相机基础" class="md-nav__link">
+      01-相机基础
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-3D_camera/" title="02-3D相机及分类" class="md-nav__link">
+      02-3D相机及分类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-pinhole_camera_model/" title="03-相机模型" class="md-nav__link">
+      03-相机模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-coordinates/" title="04-坐标变换" class="md-nav__link">
+      04-坐标变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-distortions/" title="05-相机透镜及畸变" class="md-nav__link">
+      05-相机透镜及畸变
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/06-undistortion/" title="06-相机标定与去畸变" class="md-nav__link">
+      06-相机标定与去畸变
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、相机标定&去畸变
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、相机标定&去畸变
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-calibration_board/" title="01-相机标定&标定板" class="md-nav__link">
+      01-相机标定&标定板
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-calibration_camera/" title="02-标定实现" class="md-nav__link">
+      02-标定实现
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-undistortion/" title="03-去畸变(矫正)" class="md-nav__link">
+      03-去畸变(矫正)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-pose_estimation/" title="04-位置估计及3D重建" class="md-nav__link">
+      04-位置估计及3D重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/exercise/" title="作业" class="md-nav__link">
+      作业
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、双目相机原理与应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、双目相机原理与应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-双目相机原理
+      </label>
+    
+    <a href="./" title="01-双目相机原理" class="md-nav__link md-nav__link--active">
+      01-双目相机原理
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    立体成像概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    三角测量模型
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-stereo_drivers/" title="02-双目相机驱动" class="md-nav__link">
+      02-双目相机驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-stereo_calibration/" title="03-双目相机标定" class="md-nav__link">
+      03-双目相机标定
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-stereo_point_cloud/" title="04-双目相机生成点云" class="md-nav__link">
+      04-双目相机生成点云
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-stereo_other/" title="05-其他操作" class="md-nav__link">
+      05-其他操作
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、2D图像处理实战
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、2D图像处理实战
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/01-obj_detect/" title="01-物体检测概述" class="md-nav__link">
+      01-物体检测概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/02-line_detect/" title="02-直线检测" class="md-nav__link">
+      02-直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/03-box_detect/" title="03-牙膏盒检测" class="md-nav__link">
+      03-牙膏盒检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/04-common_detect/" title="04-多阈值检测多边形" class="md-nav__link">
+      04-多阈值检测多边形
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/05-template_match/" title="05-模板匹配多个物体" class="md-nav__link">
+      05-模板匹配多个物体
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/06-feature_detection_description/" title="06-特征检测及描述" class="md-nav__link">
+      06-特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-corner_detection/" title="07-角点检测" class="md-nav__link">
+      07-角点检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-feature_detection/" title="07-实现特征检测及描述" class="md-nav__link">
+      07-实现特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/08-feature_matching/" title="08-特征匹配" class="md-nav__link">
+      08-特征匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/09-feature_matching2/" title="09-使用特征匹配查找目标" class="md-nav__link">
+      09-使用特征匹配查找目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/10-feature_matching3/" title="10-特征匹配恢复目标" class="md-nav__link">
+      10-特征匹配恢复目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/exercise/" title="作业&练习" class="md-nav__link">
+      作业&练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/01-opencv/" title="编译安装OpenCV依赖库" class="md-nav__link">
+      编译安装OpenCV依赖库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/02-CMakeLists/" title="CMakeLists配置模板" class="md-nav__link">
+      CMakeLists配置模板
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    立体成像概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    三角测量模型
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">双目相机原理<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">立体成像概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>我们对双眼的立体成像能力非常熟悉，但是在计算机软件中，我们可以模仿这种能力到什么程度呢？实际上，计算机是通过寻找两个成像仪上的对应点来完成这个任务。其原理是：<strong>查找某个点在两张图片的对应点，通过其和摄像机基线之间的距离进行计算，可以得到这个点的三维位置。</strong>尽管两张图片的对应点的搜索计算量比较高，但我们可以利用几何知识，限定搜索的范围，降低计算量。因此，使用双目相机进行立体成像包括以下4个步骤：</p>
+<ol>
+<li><strong>去畸变</strong>：使用数学方法消除径向和切向的畸变</li>
+<li><strong>机位标定</strong>：调整两个相机的角度和其之间的距离，保证两个相机输出的是帧行对齐的图像，尽可能保证两个图像是共面的。</li>
+<li>
+<p><strong>匹配</strong>：在左右相机图像中找到相同的特征，此步骤可以输出视差图，视差是指<strong>左右摄像机观察得到的相同特征在x方向上的差值：</strong> <span><span class="MathJax_Preview">x_l - x_r</span><script type="math/tex">x_l - x_r</script></span></p>
+</li>
+<li>
+<p><strong>重投影</strong>：如果相机的位置关系已知，则可以通过三角测量法将视差图像转换成距离，这一步骤称之为<strong>重投影</strong>，输出为一个深度图</p>
+</li>
+</ol>
+<h2 id="_3">三角测量模型<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<p>假如我们有一个这样的理想装置：一个完美的无畸变、已对准、已测量好的系统，两个摄像机的图像平面彼此完全共面，具有完全平行的光轴（从投影中心O发出，通过主点c的一条射线），他们之间的距离是已知的T，并且具有相等的焦距：<span><span class="MathJax_Preview">f_l=f_r</span><script type="math/tex">f_l=f_r</script></span>，且假设主点 <span><span class="MathJax_Preview">c^{left}_x , c^{right}_x</span><script type="math/tex">c^{left}_x , c^{right}_x</script></span> 已经被校准为在其各自的图像中具有相同的像素坐标。</p>
+<p><img alt="image-20200403161101821" src="../assets/image-20200403161101821.png" /></p>
+<p>假设我们在物理世界中找到一个点<span><span class="MathJax_Preview">P</span><script type="math/tex">P</script></span>，在左右图像上的成像点为<span><span class="MathJax_Preview">p_l</span><script type="math/tex">p_l</script></span>和<span><span class="MathJax_Preview">p_r</span><script type="math/tex">p_r</script></span>，对应的横坐标为<span><span class="MathJax_Preview">x_l</span><script type="math/tex">x_l</script></span>和<span><span class="MathJax_Preview">x_r</span><script type="math/tex">x_r</script></span>，在此种简化的情况下，我们可以发现<strong>深度<span><span class="MathJax_Preview">Z</span><script type="math/tex">Z</script></span>和视差 <span><span class="MathJax_Preview">x_l - x_r</span><script type="math/tex">x_l - x_r</script></span> 成反比</strong>。即越近的图像，视差越大。</p>
+<div>
+<div class="MathJax_Preview">\dfrac {T-\left( x_l-x_r\right) }{Z-f}=\dfrac {T}{Z}\Rightarrow Z=\dfrac {f\cdot T}{x_l-x_r}</div>
+<script type="math/tex; mode=display">\dfrac {T-\left( x_l-x_r\right) }{Z-f}=\dfrac {T}{Z}\Rightarrow Z=\dfrac {f\cdot T}{x_l-x_r}</script>
+</div>
+<p>由于深度与视差成反比，且显然，其之间存在非线性的关系，当视差趋近于零时，微小的视差变换会造成很大的深度变换。且当视差较大时，微小的视差变化不会对深度有太大的改变。则可得出以下结论：<strong>双目立体视觉系统只有在物体和摄像机距离较近时，才有比较高的深度分辨率。</strong>如下图所示：</p>
+<p><img alt="image-20200403164042854" src="../assets/image-20200403164042854.png" /></p>
+<ul>
+<li>下图为OpenCV立体视觉坐标系</li>
+</ul>
+<p>用于已进行去畸变的相机，图像左上角为像素坐标系原点，两个图像平面的行与行对齐，整个双目摄像机的坐标系以左目相机的投影中心为原点，采用右手坐标系法则。</p>
+<p><img alt="image-20200403164130848" src="../assets/image-20200403164130848.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../02-stereo_drivers/" title="02-双目相机驱动" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-双目相机驱动
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1447 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 Linux命令、Ubuntu系统、Shell脚本、ROS、ROS架构设计">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../../img/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>视觉位姿配置 - 机器人运动学</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../../.." title="机器人运动学" aria-label="机器人运动学" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              机器人运动学
+            </span>
+            <span class="md-header-nav__topic">
+              
+                视觉位姿配置
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../../.." title="机器人运动学" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    机器人运动学
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      向量基础
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        向量基础
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/base/" title="向量的基本概念" class="md-nav__link">
+      向量的基本概念
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/addition/" title="向量的加法" class="md-nav__link">
+      向量的加法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/scale/" title="向量的缩放" class="md-nav__link">
+      向量的缩放
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/dot/" title="向量的点乘" class="md-nav__link">
+      向量的点乘
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../vector/multi/" title="向量的叉乘" class="md-nav__link">
+      向量的叉乘
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      运动学理解
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        运动学理解
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../kinematics/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../kinematics/dof/" title="自由度理解" class="md-nav__link">
+      自由度理解
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../kinematics/joint/" title="关节类型" class="md-nav__link">
+      关节类型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../kinematics/frame/" title="坐标系理解" class="md-nav__link">
+      坐标系理解
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      坐标转换
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        坐标转换
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/relative/" title="相对坐标系" class="md-nav__link">
+      相对坐标系
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/2dtranslate/" title="2D坐标系平移原理(几何)" class="md-nav__link">
+      2D坐标系平移原理(几何)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/2dtranslateV/" title="2D坐标系平移原理(向量)" class="md-nav__link">
+      2D坐标系平移原理(向量)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/2drotate/" title="2D坐标系旋转原理" class="md-nav__link">
+      2D坐标系旋转原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/2d/" title="2D坐标系旋转平移总结" class="md-nav__link">
+      2D坐标系旋转平移总结
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3dtranslate/" title="3D坐标系平移" class="md-nav__link">
+      3D坐标系平移
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3drotatez/" title="3D坐标系旋转Z轴" class="md-nav__link">
+      3D坐标系旋转Z轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3drotatey/" title="3D坐标系旋转Y轴" class="md-nav__link">
+      3D坐标系旋转Y轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3drotatex/" title="3D坐标系旋转X轴" class="md-nav__link">
+      3D坐标系旋转X轴
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3drotate/" title="3D坐标系旋转综合" class="md-nav__link">
+      3D坐标系旋转综合
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/3dRT/" title="3D坐标系旋转平移叠加" class="md-nav__link">
+      3D坐标系旋转平移叠加
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/pose/" title="空间姿态描述" class="md-nav__link">
+      空间姿态描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../frames/demo/" title="2d案例" class="md-nav__link">
+      2d案例
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      URDF模型
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        URDF模型
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../intro/" title="URDF介绍" class="md-nav__link">
+      URDF介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../first/" title="URDF可视化" class="md-nav__link">
+      URDF可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-4" type="checkbox" id="nav-4-4" checked>
+    
+    <label class="md-nav__link" for="nav-4-4">
+      Link连杆配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-4">
+        Link连杆配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="连杆介绍" class="md-nav__link">
+      连杆介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../geometry/" title="视觉形状配置" class="md-nav__link">
+      视觉形状配置
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        视觉位姿配置
+      </label>
+    
+    <a href="./" title="视觉位姿配置" class="md-nav__link md-nav__link--active">
+      视觉位姿配置
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    位置
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    姿态
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    案例
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-xyz" class="md-nav__link">
+    1. 体会分别围绕x，y，z轴旋转
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-xyz" class="md-nav__link">
+    2. 体会绕X,Y,Z三个轴旋转
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../material/" title="视觉纹理配置" class="md-nav__link">
+      视觉纹理配置
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4-5" type="checkbox" id="nav-4-5">
+    
+    <label class="md-nav__link" for="nav-4-5">
+      Joint关节配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-4-5">
+        Joint关节配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../joint/" title="关节介绍" class="md-nav__link">
+      关节介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../joint/fixed/" title="Fixed关节" class="md-nav__link">
+      Fixed关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../joint/revolute/" title="Revolute关节" class="md-nav__link">
+      Revolute关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../joint/continuous/" title="Continuous关节" class="md-nav__link">
+      Continuous关节
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../joint/prismatic/" title="Prismatic关节" class="md-nav__link">
+      Prismatic关节
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../scara/" title="URDF案例:SCARA" class="md-nav__link">
+      URDF案例:SCARA
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../xacro/" title="xacro" class="md-nav__link">
+      xacro
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../scara2/" title="XACRO案例:SCARA" class="md-nav__link">
+      XACRO案例:SCARA
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      KDL库
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        KDL库
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../kdl/base/" title="kdl介绍" class="md-nav__link">
+      kdl介绍
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      写字案例
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        写字案例
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../write/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../write/intro/" title="案例介绍" class="md-nav__link">
+      案例介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../write/qt/" title="Qt界面" class="md-nav__link">
+      Qt界面
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      Moveit!
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        Moveit!
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/" title="学习内容" class="md-nav__link">
+      学习内容
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/intro/" title="Moveit!介绍" class="md-nav__link">
+      Moveit!介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/env/" title="环境搭建" class="md-nav__link">
+      环境搭建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/rviz/" title="UR3可视化构建" class="md-nav__link">
+      UR3可视化构建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-5" type="checkbox" id="nav-7-5">
+    
+    <label class="md-nav__link" for="nav-7-5">
+      路径规划
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-5">
+        路径规划
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/goal/rviz/" title="rviz可视化操作" class="md-nav__link">
+      rviz可视化操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/goal/move/" title="编码控制移动" class="md-nav__link">
+      编码控制移动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/goal/plan/" title="路点规划" class="md-nav__link">
+      路点规划
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7-6" type="checkbox" id="nav-7-6">
+    
+    <label class="md-nav__link" for="nav-7-6">
+      场景配置
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="2">
+      <label class="md-nav__title" for="nav-7-6">
+        场景配置
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/scene/gui/" title="GUI操作" class="md-nav__link">
+      GUI操作
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/scene/code/" title="编码构建场景" class="md-nav__link">
+      编码构建场景
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/visualtool/" title="Rviz虚拟调试工具" class="md-nav__link">
+      Rviz虚拟调试工具
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/auboi5/" title="Aubo i5真机" class="md-nav__link">
+      Aubo i5真机
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/ur/" title="UR3 真机" class="md-nav__link">
+      UR3 真机
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/panda/" title="Panda机械臂" class="md-nav__link">
+      Panda机械臂
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../../moveit/assistant/" title="moveit助理" class="md-nav__link">
+      moveit助理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    位置
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    姿态
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    案例
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-xyz" class="md-nav__link">
+    1. 体会分别围绕x，y，z轴旋转
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-xyz" class="md-nav__link">
+    2. 体会绕X,Y,Z三个轴旋转
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>视觉位姿配置</h1>
+                
+                <h2 id="_1">位置<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;robot</span> <span class="na">name=</span><span class="s">&quot;mybox&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;base_link&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;visual&gt;</span>
+<span class="hll">            <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0.1 0.2 0.3&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</span>            <span class="nt">&lt;geometry&gt;</span>
+                <span class="nt">&lt;box</span> <span class="na">size=</span><span class="s">&quot;0.2 0.4 0.6&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/geometry&gt;</span>
+        <span class="nt">&lt;/visual&gt;</span>
+    <span class="nt">&lt;/link&gt;</span>
+<span class="nt">&lt;/robot&gt;</span>
+</code></pre></div>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>通过<code>origin</code>标签来表示位置和姿态，其中<code>xyz</code>表示的是位置信息。</p>
+<p><code>xyz</code>属性值通过空格进行分隔，总共有三个值，分别代表了物体在<code>参考坐标系</code>中空间坐标(<code>x</code>,<code>y</code>,<code>z</code>)。</p>
+<p>值得注意的是，物体不是一个点，是一个有空间体积的物体，而我们的坐标描述是一个点。</p>
+<p>我们描述的坐标点，通常是物体的中心点坐标。</p>
+</div>
+<h2 id="_2">姿态<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;robot</span> <span class="na">name=</span><span class="s">&quot;mybox&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">name=</span><span class="s">&quot;base_link&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;visual&gt;</span>
+<span class="hll">            <span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0.785 0 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</span>            <span class="nt">&lt;geometry&gt;</span>
+                <span class="nt">&lt;box</span> <span class="na">size=</span><span class="s">&quot;0.2 0.4 0.6&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/geometry&gt;</span>
+        <span class="nt">&lt;/visual&gt;</span>
+    <span class="nt">&lt;/link&gt;</span>
+<span class="nt">&lt;/robot&gt;</span>
+</code></pre></div>
+
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>通过<code>origin</code>标签来表示位置和姿态，其中<code>rpy</code>表示的是姿态信息。</p>
+<p><code>rpy</code>属性值通过空格进行分隔，总共有三个值，分别代表了物体围绕<code>自身坐标系</code>的<code>x轴</code>，<code>y轴</code>，<code>z轴</code>旋转的弧度值。</p>
+<p><code>自身坐标系</code>在没有设置旋转和平移时，默认是和参考坐标系重合的。</p>
+</div>
+<h2 id="_3">案例<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-xyz">1. 体会分别围绕x，y，z轴旋转<a class="headerlink" href="#1-xyz" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0.785 0 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0.785 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0.785&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>体会出旋转的方向和角度</p>
+</div>
+<h3 id="2-xyz">2. 体会绕X,Y,Z三个轴旋转<a class="headerlink" href="#2-xyz" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;0 0 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<p><img alt="" src="../asserts/rpy0.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;1.57 0 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<p><img alt="" src="../asserts/rpy1.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;1.57 1.57 0&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<p><img alt="" src="../asserts/rpy2.png" /></p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;origin</span> <span class="na">xyz=</span><span class="s">&quot;0 0 0&quot;</span> <span class="na">rpy=</span><span class="s">&quot;1.57 1.57 1.57&quot;</span><span class="nt">&gt;&lt;/origin&gt;</span>
+</code></pre></div>
+
+<p><img alt="" src="../asserts/rpy3.png" /></p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>以上长方体模型使用的是自定义的纹理<code>cft.dae</code>文件。这个长方体的特点是，在长方体对应面会有箭头伸出来。主要是让我们对长方体在旋转过程中方位变化有立体感。</p>
+<p>上图中不带箭头细小的rgb三条线是参考坐标系。</p>
+<p>通过以上配置，要体会rpy旋转是围绕哪个轴转动。每转动一下，是围绕转动后的轴还是参考坐标系的轴进行旋转。</p>
+</div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../geometry/" title="视觉形状配置" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                视觉形状配置
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../material/" title="视觉纹理配置" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                视觉纹理配置
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+        powered by
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
+        and
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+          Material for MkDocs</a>
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../../.."}})</script>
+      
+        <script src="../../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../../js/baidu-tongji.js"></script>
+      
+        <script src="../../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

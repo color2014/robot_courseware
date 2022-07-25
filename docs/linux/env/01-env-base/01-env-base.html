@@ -1,0 +1,1852 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 Linux命令、Ubuntu系统、Shell脚本">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-基础环境配置</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | Linux命令、Ubuntu系统、Shell脚本" aria-label="黑马机器人 | Linux命令、Ubuntu系统、Shell脚本" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | Linux命令、Ubuntu系统、Shell脚本" aria-label="黑马机器人 | Linux命令、Ubuntu系统、Shell脚本" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | Linux命令、Ubuntu系统、Shell脚本</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-基础环境配置
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | Linux命令、Ubuntu系统、Shell脚本" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | Linux命令、Ubuntu系统、Shell脚本
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、Linux命令&Ubuntu系统
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、Linux命令&Ubuntu系统
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-os/" title="01-操作系统(科普)" class="md-nav__link">
+      01-操作系统(科普)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-os-history/" title="02-Linux系统发展史" class="md-nav__link">
+      02-Linux系统发展史
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-file-dir/" title="03-认识文件和目录" class="md-nav__link">
+      03-认识文件和目录
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-Linux-command/" title="04-Linux 命令入门" class="md-nav__link">
+      04-Linux 命令入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-Linux-command1/" title="05-Linux 常用命令" class="md-nav__link">
+      05-Linux 常用命令
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/06-Linux-user-permission/" title="06-Linux 用户及权限" class="md-nav__link">
+      06-Linux 用户及权限
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/07-Linux-command2/" title="07-Linux 高级命令" class="md-nav__link">
+      07-Linux 高级命令
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/08-Linux-software/" title="08-软件安装与卸载" class="md-nav__link">
+      08-软件安装与卸载
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、Shell脚本
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、Shell脚本
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-vim/" title="01-Vim 编辑器" class="md-nav__link">
+      01-Vim 编辑器
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-shell-introduce/" title="02-Shell 入门" class="md-nav__link">
+      02-Shell 入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-shell-basic-1/" title="03-Shell 基本语法1" class="md-nav__link">
+      03-Shell 基本语法1
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-shell-basic-2/" title="04-Shell 基本语法2" class="md-nav__link">
+      04-Shell 基本语法2
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/05-shell-case/" title="05-Shell 脚本案例" class="md-nav__link">
+      05-Shell 脚本案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/06-shell-task-cron/" title="06-Linux 定时任务cron" class="md-nav__link">
+      06-Linux 定时任务cron
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/07-exercise/" title="07-作业练习" class="md-nav__link">
+      07-作业练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、拓展
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、拓展
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../other/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../other/01-sshd/" title="01-使用ssh(Xshell)连接WSL" class="md-nav__link">
+      01-使用ssh(Xshell)连接WSL
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../other/02-wsl-user/" title="02-WSL默认设置修改" class="md-nav__link">
+      02-WSL默认设置修改
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../other/03-vim-quick-short/" title="03-vim常用快捷键" class="md-nav__link">
+      03-vim常用快捷键
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      四、附录-Linux开发环境搭建
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、附录-Linux开发环境搭建
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-基础环境配置
+      </label>
+    
+    <a href="./" title="01-基础环境配置" class="md-nav__link md-nav__link--active">
+      01-基础环境配置
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    无线网卡驱动安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、编译无线网卡驱动方案(推荐)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    二、升级内核并手动安装驱动方案
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    系统全局镜像配置
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    搜狗输入法安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fctix" class="md-nav__link">
+    1. 确认fctix环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sogou" class="md-nav__link">
+    2. 安装搜狗sogou拼音
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    方式一：安装包安装(推荐)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    方式二：在线安装
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-fcitx" class="md-nav__link">
+    3. 开启fcitx环境，搜狗输入法
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    用户目录中英文修改
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    独立显卡驱动
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    联网安装（推荐）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    离线安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 下载显卡驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-nouveau" class="md-nav__link">
+    2. 禁用nouveau通用驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 安装驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 测试驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5. 安装设置工具
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    确认独显已安装成功
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    循环登陆，或无登陆页面
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    显卡无法安装解决
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 升级内核
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gcc" class="md-nav__link">
+    2. Gcc升级
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    3. 联网安装显卡
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    显卡安装成功后的一些问题
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-pip" class="md-nav__link">
+    python-pip镜像源
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    配置Python安装源
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    临时指定安装源
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    永久指定安装源
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pip" class="md-nav__link">
+    pip依赖修复
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    开机禁用触摸板
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    使用命令
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    自动禁用&amp;启用触摸板
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    开机启用小键盘
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-linux-trick/" title="02-好用的Linux技巧" class="md-nav__link">
+      02-好用的Linux技巧
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-linux-problem/" title="03-各种常见头疼Linux问题" class="md-nav__link">
+      03-各种常见头疼Linux问题
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../04-linux-software/" title="04-Linux好用软件及安装" class="md-nav__link">
+      04-Linux好用软件及安装
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-os-install-ubuntu/" title="05-Windows+Ubuntu双系统" class="md-nav__link">
+      05-Windows+Ubuntu双系统
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../06-conda-env/" title="06-Conda虚拟环境" class="md-nav__link">
+      06-Conda虚拟环境
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    无线网卡驱动安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一、编译无线网卡驱动方案(推荐)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    二、升级内核并手动安装驱动方案
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    系统全局镜像配置
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    搜狗输入法安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-fctix" class="md-nav__link">
+    1. 确认fctix环境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-sogou" class="md-nav__link">
+    2. 安装搜狗sogou拼音
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    方式一：安装包安装(推荐)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    方式二：在线安装
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-fcitx" class="md-nav__link">
+    3. 开启fcitx环境，搜狗输入法
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    用户目录中英文修改
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    独立显卡驱动
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    联网安装（推荐）
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    离线安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 下载显卡驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-nouveau" class="md-nav__link">
+    2. 禁用nouveau通用驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 安装驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 测试驱动
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#5" class="md-nav__link">
+    5. 安装设置工具
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    确认独显已安装成功
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    循环登陆，或无登陆页面
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    显卡无法安装解决
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 升级内核
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-gcc" class="md-nav__link">
+    2. Gcc升级
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3_1" class="md-nav__link">
+    3. 联网安装显卡
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_15" class="md-nav__link">
+    显卡安装成功后的一些问题
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#python-pip" class="md-nav__link">
+    python-pip镜像源
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#python" class="md-nav__link">
+    配置Python安装源
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_16" class="md-nav__link">
+    临时指定安装源
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_17" class="md-nav__link">
+    永久指定安装源
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pip" class="md-nav__link">
+    pip依赖修复
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_18" class="md-nav__link">
+    开机禁用触摸板
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_19" class="md-nav__link">
+    使用命令
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_20" class="md-nav__link">
+    自动禁用&amp;启用触摸板
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_21" class="md-nav__link">
+    开机启用小键盘
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                  <h1>01-基础环境配置</h1>
+                
+                <h2 id="_1">无线网卡驱动安装<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>大部分软件安装与配置，都需要网络，如果网络都没处理好，下边的环境配置也就无从谈起了。</p>
+<p>有线网卡的驱动一般都会自动装好，但是无线网卡的驱动经常因为版本或内核问题，或是网卡太新导致系统里的旧版无线网卡驱动不兼容。以下提供两种解决方案：</p>
+<h3 id="_2">一、编译无线网卡驱动方案(推荐)<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h3>
+<p>如果以上不能解决你的无线网卡问题，找不到无线网卡或是搜不到wifi信号，那请看终极解决方案：下载无线网卡驱动自行编译安装即可。</p>
+<ol>
+<li>下载源码（确保有git）：</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo apt install git
+git clone https://gitee.com/tangyang/backport-iwlwifi.git
+
+<span class="c1">#或直接从原始位置获取</span>
+<span class="c1"># git clone https://git.kernel.org/pub/scm/linux/kernel/git/iwlwifi/backport-iwlwifi.git</span>
+</code></pre></div>
+
+<ol>
+<li>编译源码</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> backport-iwlwifi
+sudo make defconfig-iwlwifi-public
+
+<span class="c1"># 这个sed修改.config操作是可选的，先不执行他，如果最后你sudo make install重启之后还不行，再试试加上这句话来一遍</span>
+<span class="c1"># sudo sed -i &#39;s/CPTCFG_IWLMVM_VENDOR_CMDS=y/# CPTCFG_IWLMVM_VENDOR_CMDS is not set/&#39; .config</span>
+
+sudo make -j4
+</code></pre></div>
+
+<ol>
+<li>安装刚刚编译好的驱动</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo make install
+</code></pre></div>
+
+<p>最后重启电脑，顺利的话，应该就解决了你的问题啦。</p>
+<p>参考的是kernel官方文档：https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi/core_release#core_release</p>
+<h3 id="_3">二、升级内核并手动安装驱动方案<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>查看自己的网卡型号</strong></li>
+</ul>
+<p>在Ubuntu下目前因为没有驱动，不好找无线网卡型号，可以尝试以下命令<code>lspci | grep -i net</code>或<code>iwconfig</code>，或直接到品牌电脑官网查看对应型号。</p>
+<p>如果能进入Windows，可以到<code>控制面板-设备管理器-网络适配器</code>中查看包含<code>Wireless</code>的项目，比如<code>Intel Dual Band Wireless-AC 8265</code></p>
+<ul>
+<li><strong>打开网卡驱动下载页面：</strong></li>
+</ul>
+<p><a href="https://www.intel.com/content/www/us/en/support/articles/000005511/network-and-i-o/wireless-networking.html">intel官网（推荐）</a> 或 <a href="https://wireless.wiki.kernel.org/en/users/drivers/iwlwifi">kernel官网</a></p>
+<p>找到自己网卡对应固件程序并下载，本例为8265，把文件<code>iwlwifi-8265-ucode-22.361476.0.tgz</code>保存好，一定要主要找自己的网卡设备对应的固件！并留意Kernels的版本，后边要用</p>
+<table>
+<thead>
+<tr>
+<th>Device</th>
+<th>Kernels</th>
+<th>Firmware</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intel® Dual Band Wireless-AC 8265</td>
+<td>4.6+</td>
+<td><a href="https://wireless.wiki.kernel.org/_media/en/users/drivers/iwlwifi-8265-ucode-22.361476.0.tgz">iwlwifi-8265-ucode-22.361476.0.tgz</a></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>查看内核版本</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>uname -r
+</code></pre></div>
+
+<p><strong>如果显示的数字开头&gt;=4.6，则可直接进行下一步</strong>！说明你的内核已经满足这个无线网卡驱动了！不用再更新内核啦！不用再更新内核啦！不用再更新内核啦！重要的事情说3遍！！！</p>
+<p>否则说明你硬件太新，系统太老，需要更新系统内核，才能安装运行你的新网卡，按照如下步骤更新内核：</p>
+<ul>
+<li>确认要下载的版本，&gt;=4.6即可，我们更新为4.8的。（本例以64位OS为例）</li>
+<li>打开内核下载网站，<a href="https://kernel.ubuntu.com/~kernel-ppa/mainline/">链接在此</a></li>
+<li>在终端执行下载命令</li>
+</ul>
+<div class="highlight"><pre><span></span><code>wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8/linux-headers-4.8.0-040800_4.8.0-040800.201610022031_all.deb
+
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8/linux-headers-4.8.0-040800-generic_4.8.0-040800.201610022031_amd64.deb
+
+wget http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.8/linux-image-4.8.0-040800-generic_4.8.0-040800.201610022031_amd64.deb
+</code></pre></div>
+
+<ul>
+<li>安装这些deb包，完毕后重启电脑</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo dpkg -i *.deb
+</code></pre></div>
+
+<ul>
+<li>再次检查确定内核已升级为4.8+</li>
+</ul>
+<div class="highlight"><pre><span></span><code>uname -r
+</code></pre></div>
+
+<p>重启电脑后，有可能此时无线网卡已经可以使用，如果还不行，再往下走：</p>
+<ul>
+<li>解压刚刚下载的iwlwifi-8265-ucode-22.361476.0.tgz并复制驱动到<code>/lib/firmware</code>**</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1"># 先解压压缩包</span>
+tar -zxvf iwlwifi-*.tgz
+<span class="c1"># 进入解压目录后，拷贝文件到/lib/firmware目录</span>
+sudo cp iwlwifi-*.ucode /lib/firmware
+</code></pre></div>
+
+<ul>
+<li><strong>更新grub并重启</strong></li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo update-grub
+sudo update-pciids
+sudo reboot
+</code></pre></div>
+
+<h2 id="_4">系统全局镜像配置<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>配置镜像的目的是可以在更新系统组件，安装各种软件工具时，不需要访问默认国外的下载地址。而是访问国内同步过来的镜像。配置阿里云镜像源<code>Ubuntu18.04</code>版，其他版本可自行到阿里云镜像官网查找。</p>
+<p><a href="https://developer.aliyun.com/mirror/">阿里云镜像源官网</a>  或 <a href="http://mirrors.hust.edu.cn/links.html">国内高校开源镜像站友情链接</a></p>
+<p>当然，你也可以通过<code>设置-&gt;软件&amp;更新-&gt;</code>来选择中国的服务器，这里不作展开介绍。</p>
+<ul>
+<li>备份系统配置</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo cp /etc/apt/sources.list /etc/apt/sources.list.bak
+</code></pre></div>
+
+<ul>
+<li>编辑配置</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo gedit /etc/apt/sources.list
+</code></pre></div>
+
+<ul>
+<li>修改内容如下（适用于Ubuntu18.04）</li>
+</ul>
+<div class="highlight"><pre><span></span><code>deb http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-security main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-updates main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-proposed main restricted universe multiverse
+
+deb http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+deb-src http://mirrors.aliyun.com/ubuntu/ bionic-backports main restricted universe multiverse
+</code></pre></div>
+
+<ul>
+<li>修改完保存，进行更新</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo apt-get update
+</code></pre></div>
+
+<h2 id="_5">搜狗输入法安装<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<h3 id="1-fctix">1. 确认fctix环境<a class="headerlink" href="#1-fctix" title="Permanent link">&para;</a></h3>
+<p>Ctrl+Alt+T，打开终端Terminal；</p>
+<p>首先确定有没有fcitx，在终端输入<code>fcitx</code>回车，如果提示未找到命令，则安装：</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get install fcitx
+</code></pre></div>
+
+<h3 id="2-sogou">2. 安装搜狗sogou拼音<a class="headerlink" href="#2-sogou" title="Permanent link">&para;</a></h3>
+<h4 id="_6">方式一：安装包安装(推荐)<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h4>
+<ol>
+<li>
+<p>点击立即下载64bit，链接<a href="https://pinyin.sogou.com/linux/?r=pinyin">https://pinyin.sogou.com/linux/?r=pinyin</a></p>
+</li>
+<li>
+<p>到下载目录中执行安装命令：</p>
+</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo dpkg -i sogoupinyin_*.deb
+</code></pre></div>
+
+<ol>
+<li>如果安装过程提示有依赖问题，使用以下命令解决：</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo apt-get install -f
+</code></pre></div>
+
+<h4 id="_7">方式二：在线安装<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h4>
+<p>直接联网在线安装：</p>
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:fcitx-team/nightly
+sudo apt-get update
+sudo apt-get install fcitx-sogoupinyin 
+</code></pre></div>
+
+<h3 id="3-fcitx">3. 开启fcitx环境，搜狗输入法<a class="headerlink" href="#3-fcitx" title="Permanent link">&para;</a></h3>
+<p>在命令行输入<code>im-config</code>，点“确定”-&gt;"yes"-&gt;选择fcitx-&gt;"确定"，随后<strong>重启机器</strong>即可。</p>
+<div class="admonition warning">
+<p class="admonition-title">注意</p>
+<p>如果重启后仍旧无法通过<code>Ctrl+空格</code>切出搜狗输入法：</p>
+<p>可输入<code>fcitx-config-gtk3</code>搜索并将sogou添加到列表中。注意把<code>Only Show Current Language(只显示当前语言)</code>前边的勾勾去掉。</p>
+<p>如果没有<code>im-config</code>和<code>fcitx-config-gtk3</code>命令,可通过以下命令安装，仍旧注意确保fcitx已安装： </p>
+<p><code>sudo apt-get install im-config fcitx-config-gtk</code></p>
+</div>
+<h2 id="_8">用户目录中英文修改<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h2>
+<p>用户目录里的<strong>“下载”</strong>，<strong>“桌面”</strong>如果是中文，使用命令打开他们就十分的费劲，可以使用以下方法快速的修改为英文。</p>
+<p><strong>Ctrl+Alt+T</strong> （默认终端快捷键）打开终端，输入以下命令：</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 首先更改系统语言环境为英文</span>
+<span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>en_US
+xdg-user-dirs-gtk-update
+</code></pre></div>
+
+<p>此时会弹出界面，选择带有<strong>“update”</strong>字样的选项或者是<strong>“更新名称”</strong></p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 接着更改回中文语言环境</span>
+<span class="nb">export</span> <span class="nv">LANG</span><span class="o">=</span>zh_CN.UTF-8
+xdg-user-dirs-gtk-update
+<span class="c1"># 此时再次弹出界面，选择“保留旧的名称”</span>
+</code></pre></div>
+
+<h2 id="_9">独立显卡驱动<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h2>
+<p>目前只有Nvidia英伟达显卡的教程，AMD的因用户较少，暂未支持，可上网自行搜索。</p>
+<p>可以选择离线安装或在线联网安装，推荐在线安装！</p>
+<p>推荐提前更新本地源及软件包环境, 确保当前系统用的是比较新的内核</p>
+<div class="highlight"><pre><span></span><code>sudo apt update
+<span class="c1"># 更新适合当前系统版本及硬件内核\固件\系统工具. 大概下载500M+内容</span>
+sudo apt upgrade
+<span class="c1"># sudo apt dist-upgrade</span>
+</code></pre></div>
+
+<h3 id="_10">联网安装（推荐）<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h3>
+<p>如果你的网络还不错，也可直接输入以下命令安装，记得先配置全局镜像源。</p>
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:graphics-drivers/ppa <span class="c1">#添加ppa源</span>
+sudo apt-get update
+ubuntu-drivers devices <span class="c1">#选择合适的驱动版本</span>
+<span class="c1"># 以下的nvidia-430是以上命令中，后边标注recommend推荐的，你的可能不同</span>
+ubuntu-drivers autoinstall
+<span class="c1">#sudo apt-get install nvidia-430 nvidia-settings nvidia-prime</span>
+</code></pre></div>
+
+<h3 id="_11">离线安装<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>如果你电脑连不了网络，或网络较慢，可使用以下方式安装。</p>
+<h4 id="1">1. 下载显卡驱动<a class="headerlink" href="#1" title="Permanent link">&para;</a></h4>
+<ul>
+<li>准备一个能上网的设备，下载你电脑的驱动</li>
+<li>确认自己的显卡型号，在Windows设备管理器里，或电脑的品牌官网根据型号查</li>
+<li>显卡驱动下载地址：https://www.geforce.cn/drivers</li>
+</ul>
+<p>如果目前Ubuntu可以在界面操作则直接下载驱动，进入第二步；</p>
+<p><strong>如果进不到主界面</strong>，可以先按<code>Ctrl + Alt + F1</code>进入纯命令行界面，输入用户名密码，然后输入：</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/X11
+sudo cp xorg.conf.failsafe xorg.conf
+sudo reboot
+</code></pre></div>
+
+<p>这时可以进入Ubuntu，可以先下载nvidia显卡驱动。但是显示会很卡，而且只能单屏显示。</p>
+<h4 id="2-nouveau">2. 禁用nouveau通用驱动<a class="headerlink" href="#2-nouveau" title="Permanent link">&para;</a></h4>
+<ul>
+<li>先禁用<strong>nouveau</strong>通用显卡驱动，在安装官方驱动前要禁用该驱动</li>
+<li>查看<code>nouveau</code>是否禁用</li>
+</ul>
+<div class="highlight"><pre><span></span><code>lsmod <span class="p">|</span> grep nouveau
+</code></pre></div>
+
+<p>无任何输出为禁用成功.</p>
+<p>将开源的Nouveau驱动加入黑名单，禁止其启动；</p>
+<div class="highlight"><pre><span></span><code>sudo gedit /etc/modprobe.d/blacklist.conf
+</code></pre></div>
+
+<p>在文件末尾添加</p>
+<div class="highlight"><pre><span></span><code>blacklist nouveau
+</code></pre></div>
+
+<ul>
+<li>执行更新</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo ldconfig -n
+sudo update-initramfs -u
+</code></pre></div>
+
+<h4 id="3">3. 安装驱动<a class="headerlink" href="#3" title="Permanent link">&para;</a></h4>
+<ul>
+<li>卸载原有驱动</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo apt-get remove --purge nvidia-*
+</code></pre></div>
+
+<ul>
+<li>在这个页面确认已关闭界面</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo service lightdm stop
+</code></pre></div>
+
+<p>此时界面会进入纯命令行状态，不用慌张！，按<code>Ctrl + Alt + F1</code>进入纯命令行界面。输入用户名，再输入密码，继续向下执行代码就是了</p>
+<ul>
+<li>安装</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo chmod a+x NVIDIA-Linux-x86_64-xxx.run
+
+sudo ./NVIDIA-Linux-x86_64-xxx.run -no-x-check -no-nouveau-check -no-opengl-files
+</code></pre></div>
+
+<ul>
+<li>删除xorg.conf文件，</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/X11
+sudo rm -rf xorg.conf
+</code></pre></div>
+
+<p>然后重启reboot就好了</p>
+<h4 id="4">4. 测试驱动<a class="headerlink" href="#4" title="Permanent link">&para;</a></h4>
+<p>若列出GPU的信息列表，表示驱动安装成功</p>
+<div class="highlight"><pre><span></span><code>nvidia-smi 
+</code></pre></div>
+
+<p>或</p>
+<div class="highlight"><pre><span></span><code>nvidia-settings
+</code></pre></div>
+
+<h4 id="5">5. 安装设置工具<a class="headerlink" href="#5" title="Permanent link">&para;</a></h4>
+<ul>
+<li>安装nvidia设置中心</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo apt-get install nvidia-settings nvidia-prime
+</code></pre></div>
+
+<ul>
+<li>安装Nvida Prime 双显卡切换指示器，用于在系统托盘中轻点鼠标即可切换显卡，而不必使用命令。</li>
+</ul>
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:nilarimogard/webupd8
+sudo apt-get update
+sudo apt-get install prime-indicator
+</code></pre></div>
+
+<h3 id="_12">确认独显已安装成功<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<p>屏幕右上角 <code>设置</code>-<code>关于这台计算机</code>里边图形后边，如果描述的是GeForce开头的内容，说明你的NVIDIA显卡已成功安装。</p>
+<h3 id="_13">循环登陆，或无登陆页面<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<p>说明显卡安装失败，且之前的页面也无法进入，则需要升级内核及GCC，但此时因为没有界面，操作比较麻烦，可进行以下步骤临时恢复之前的页面：</p>
+<p><strong>尝试一：</strong></p>
+<p>恢复<code>xorg.conf</code>文件，并重启</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cd</span> /etc/X11
+sudo cp xorg.conf.failsafe xorg.conf
+sudo reboot
+</code></pre></div>
+
+<p>如果仍无法进入界面，可继续进行尝试二</p>
+<p><strong>尝试二：</strong></p>
+<p>卸载刚刚安装的<code>nvidia</code>显卡，并重启</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get remove --purge nvidia-*
+sudo reboot
+</code></pre></div>
+
+<h2 id="_14">显卡无法安装解决<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h2>
+<h3 id="1_1">1. 升级内核<a class="headerlink" href="#1_1" title="Permanent link">&para;</a></h3>
+<p>查看当前内核：<code>uname -a</code></p>
+<p>建议内核升级到5.4.0+<code>, 此教程选择的内核版本为</code>v5.4.55`
+打开内核下载网站，链接在此<a href="https://kernel.ubuntu.com/~kernel-ppa/mainline/"></a></p>
+<p>下载对应的内核
+<div class="highlight"><pre><span></span><code>wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.55/amd64/linux-headers-5.4.55-050455-generic_5.4.55-050455.202007311340_amd64.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.55/amd64/linux-headers-5.4.55-050455_5.4.55-050455.202007311340_all.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.55/amd64/linux-image-unsigned-5.4.55-050455-generic_5.4.55-050455.202007311340_amd64.deb
+
+wget -c https://kernel.ubuntu.com/~kernel-ppa/mainline/v5.4.55/amd64/linux-modules-5.4.55-050455-generic_5.4.55-050455.202007311340_amd64.deb
+</code></pre></div></p>
+<p>安装内核：
+<div class="highlight"><pre><span></span><code>sudo dpkg -i linux-*.deb
+</code></pre></div></p>
+<p>重启电脑：
+<div class="highlight"><pre><span></span><code>sudo reboot
+</code></pre></div></p>
+<p>重启后, 确认当前内核版本:</p>
+<div class="highlight"><pre><span></span><code>uname -a
+</code></pre></div>
+
+<h3 id="2-gcc">2. Gcc升级<a class="headerlink" href="#2-gcc" title="Permanent link">&para;</a></h3>
+<p>gcc版本建议升级到<code>7+</code>，因为显卡编译要求的gcc版本为<code>7+</code>
+添加gccd的ppa官方源:
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:ubuntu-toolchain-r/test
+</code></pre></div>
+更新源:
+<div class="highlight"><pre><span></span><code>sudo apt-get update
+</code></pre></div>
+安装gcc 和 g++，版本选择 <code>gcc-7</code>和<code>g++7</code>
+<div class="highlight"><pre><span></span><code>sudo apt-get install gcc-7 g++-7
+</code></pre></div></p>
+<div class="admonition note">
+<p class="admonition-title">注意</p>
+<p>通常此时的gcc 版本显示为 <code>4.8.x</code>，不是自己刚刚安装的gcc版本</p>
+</div>
+<div class="admonition success">
+<p class="admonition-title">确认版本</p>
+<p>gcc版本显示为 <code>7+</code>版本，此时说明已经切换到了gcc-7版本</p>
+</div>
+<h3 id="3_1">3. 联网安装显卡<a class="headerlink" href="#3_1" title="Permanent link">&para;</a></h3>
+<p>先卸载之前安装的显卡:
+<div class="highlight"><pre><span></span><code>sudo apt-get remove --purge nvidia*
+</code></pre></div>
+添加显卡安装源:
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:graphics-drivers/ppa
+</code></pre></div>
+更新源:
+<div class="highlight"><pre><span></span><code>sudo apt-get update
+</code></pre></div>
+查询可供下载的显卡:
+<div class="highlight"><pre><span></span><code>ubuntu-drivers devices
+</code></pre></div></p>
+<div class="admonition info">
+<p class="admonition-title">注意</p>
+<p>后面标注 recommend 的是推荐下载版本</p>
+</div>
+<p>安装推荐版本的显卡驱动：</p>
+<p>这里一定要把<code>nvidia-xxx</code>换成刚刚命令里提示推荐下载的版本，如<code>nvidia-430</code></p>
+<div class="highlight"><pre><span></span><code>sudo apt-get install nvidia-xxx nvidia-settings nvidia-prime
+<span class="c1"># 或执行</span>
+sudo ubuntu-drivers autoinstall
+</code></pre></div>
+
+<p>安装完成后重启：
+<div class="highlight"><pre><span></span><code>sudo reboot
+</code></pre></div></p>
+<h3 id="_15">显卡安装成功后的一些问题<a class="headerlink" href="#_15" title="Permanent link">&para;</a></h3>
+<p>clion的c++complier无法找到, 运行以下命名：
+<div class="highlight"><pre><span></span><code>sudo apt-get install --reinstall g++
+</code></pre></div></p>
+<h2 id="python-pip">python-pip镜像源<a class="headerlink" href="#python-pip" title="Permanent link">&para;</a></h2>
+<h3 id="python">配置Python安装源<a class="headerlink" href="#python" title="Permanent link">&para;</a></h3>
+<h4 id="_16">临时指定安装源<a class="headerlink" href="#_16" title="Permanent link">&para;</a></h4>
+<p>如安装opencv-python的3.4.0.12版本，可直接使用<code>-i</code>参数指定源</p>
+<div class="highlight"><pre><span></span><code>pip3 install -i https://pypi.douban.com/simple opencv-python<span class="o">==</span><span class="m">3</span>.4.0.12
+</code></pre></div>
+
+<h4 id="_17">永久指定安装源<a class="headerlink" href="#_17" title="Permanent link">&para;</a></h4>
+<p>每次临时指定源地址比较麻烦，可以通过以下方式配置永久源</p>
+<p>在主目录创建.pip文件夹</p>
+<div class="highlight"><pre><span></span><code>mkdir ~/.pip
+</code></pre></div>
+
+<p>编写~/.pip/pip.conf
+<div class="highlight"><pre><span></span><code>sudo gedit ~/.pip/pip.conf
+</code></pre></div>
+并添加以下内容</p>
+<p><div class="highlight"><pre><span></span><code><span class="o">[</span>global<span class="o">]</span>
+trusted-host<span class="o">=</span>pypi.douban.com
+index-url<span class="o">=</span>https://pypi.douban.com/simple/
+<span class="nv">timeout</span><span class="o">=</span><span class="m">6000</span>
+</code></pre></div>
+此时，默认<code>pip install xxx</code>已经可以自动走镜像地址， 但是sudo模式下的pip和pip3并不能使用此镜像。所以要把这个pip.conf复制到<code>/root/.pip</code>目录下
+<div class="highlight"><pre><span></span><code>sudo mkdir -p /root/.pip
+sudo cp ~/.pip/pip.conf /root/.pip/
+</code></pre></div></p>
+<p>可用的源有:</p>
+<div class="highlight"><pre><span></span><code>清华大学：https://pypi.tuna.tsinghua.edu.cn/simple 
+阿里云：http://mirrors.aliyun.com/pypi/simple/ 
+中国科技大学 https://pypi.mirrors.ustc.edu.cn/simple/ 
+华中理工大学：http://pypi.hustunique.com/ 
+山东理工大学：http://pypi.sdutlinux.org/ 
+豆瓣：https://pypi.douban.com/simple/
+</code></pre></div>
+
+<h3 id="pip">pip依赖修复<a class="headerlink" href="#pip" title="Permanent link">&para;</a></h3>
+<p>如果安装过程中遇到pip环境工具问题，可以通过以下命令重装pip和pip3</p>
+<div class="highlight"><pre><span></span><code>sudo apt-get install --reinstall python3-pip
+sudo apt-get install --reinstall python-pip
+</code></pre></div>
+
+<h2 id="_18">开机禁用触摸板<a class="headerlink" href="#_18" title="Permanent link">&para;</a></h2>
+<h3 id="_19">使用命令<a class="headerlink" href="#_19" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="c1"># 关闭触摸板</span>
+sudo modprobe -r psmouse
+<span class="c1"># 打开触摸板</span>
+sudo modprobe psmouse
+</code></pre></div>
+
+<p>可将关闭命令加到<a href="../02-linux-trick/#开机启动软件-执行命令">开机执行</a>的脚本中</p>
+<h3 id="_20">自动禁用&amp;启用触摸板<a class="headerlink" href="#_20" title="Permanent link">&para;</a></h3>
+<p><a href="https://launchpad.net/touchpad-indicator">Touchpad Indicator</a>能够在插入鼠标时自动禁用触摸板，在鼠标移除后重新启用。</p>
+<p>在命令终端下运行如下命令安装：</p>
+<div class="highlight"><pre><span></span><code>sudo add-apt-repository ppa:atareao/atareao
+sudo apt-get update
+sudo apt-get install touchpad-indicator
+</code></pre></div>
+
+<h2 id="_21">开机启用小键盘<a class="headerlink" href="#_21" title="Permanent link">&para;</a></h2>
+<ol>
+<li>安装软件包<code>numlockx</code></li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo apt-get install numlockx
+</code></pre></div>
+
+<ol>
+<li>将脚本追加到配置文件<code>50-unity-greeter.conf</code>：</li>
+</ol>
+<div class="highlight"><pre><span></span><code>sudo gedit /usr/share/lightdm/lightdm.conf.d/50-unity-greeter.conf 
+</code></pre></div>
+
+<p>添加以下内容</p>
+<p><code>greeter-setup-script=/usr/bin/numlockx on</code></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="前言" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                前言
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../02-linux-trick/" title="02-好用的Linux技巧" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-好用的Linux技巧
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

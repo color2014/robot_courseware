@@ -1,0 +1,1088 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="相机标定 物体检测 3d相机原理 双目相机 结构光相机 TOF相机 三维扫描仪 3D相机编程 相机标定 去畸变 位姿估计 三维重建 相机模型 小孔成像模型">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>04-双目相机生成点云 - 黑马机器人 | 相机标定&物体检测</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo"> -->
+        <a href="/docs" title="黑马机器人 | 相机标定&物体检测" aria-label="黑马机器人 | 相机标定&物体检测" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | 相机标定&物体检测</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                04-双目相机生成点云
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | 相机标定&物体检测" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | 相机标定&物体检测
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、相机基础知识
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、相机基础知识
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-camera/" title="01-相机基础" class="md-nav__link">
+      01-相机基础
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-3D_camera/" title="02-3D相机及分类" class="md-nav__link">
+      02-3D相机及分类
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-pinhole_camera_model/" title="03-相机模型" class="md-nav__link">
+      03-相机模型
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-coordinates/" title="04-坐标变换" class="md-nav__link">
+      04-坐标变换
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-distortions/" title="05-相机透镜及畸变" class="md-nav__link">
+      05-相机透镜及畸变
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/06-undistortion/" title="06-相机标定与去畸变" class="md-nav__link">
+      06-相机标定与去畸变
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、相机标定&去畸变
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、相机标定&去畸变
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-calibration_board/" title="01-相机标定&标定板" class="md-nav__link">
+      01-相机标定&标定板
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-calibration_camera/" title="02-标定实现" class="md-nav__link">
+      02-标定实现
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-undistortion/" title="03-去畸变(矫正)" class="md-nav__link">
+      03-去畸变(矫正)
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-pose_estimation/" title="04-位置估计及3D重建" class="md-nav__link">
+      04-位置估计及3D重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/exercise/" title="作业" class="md-nav__link">
+      作业
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、双目相机原理与应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、双目相机原理与应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01-stereo_theory/" title="01-双目相机原理" class="md-nav__link">
+      01-双目相机原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-stereo_drivers/" title="02-双目相机驱动" class="md-nav__link">
+      02-双目相机驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-stereo_calibration/" title="03-双目相机标定" class="md-nav__link">
+      03-双目相机标定
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        04-双目相机生成点云
+      </label>
+    
+    <a href="./" title="04-双目相机生成点云" class="md-nav__link md-nav__link--active">
+      04-双目相机生成点云
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1、启动驱动
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2、启动立体影像处理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3rviz" class="md-nav__link">
+    3、启动rviz
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4tf" class="md-nav__link">
+    4、启动tf转换
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5launch" class="md-nav__link">
+    5、编辑launch文件
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05-stereo_other/" title="05-其他操作" class="md-nav__link">
+      05-其他操作
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、2D图像处理实战
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、2D图像处理实战
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/01-obj_detect/" title="01-物体检测概述" class="md-nav__link">
+      01-物体检测概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/02-line_detect/" title="02-直线检测" class="md-nav__link">
+      02-直线检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/03-box_detect/" title="03-牙膏盒检测" class="md-nav__link">
+      03-牙膏盒检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/04-common_detect/" title="04-多阈值检测多边形" class="md-nav__link">
+      04-多阈值检测多边形
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/05-template_match/" title="05-模板匹配多个物体" class="md-nav__link">
+      05-模板匹配多个物体
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/06-feature_detection_description/" title="06-特征检测及描述" class="md-nav__link">
+      06-特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-corner_detection/" title="07-角点检测" class="md-nav__link">
+      07-角点检测
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/07-feature_detection/" title="07-实现特征检测及描述" class="md-nav__link">
+      07-实现特征检测及描述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/08-feature_matching/" title="08-特征匹配" class="md-nav__link">
+      08-特征匹配
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/09-feature_matching2/" title="09-使用特征匹配查找目标" class="md-nav__link">
+      09-使用特征匹配查找目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/10-feature_matching3/" title="10-特征匹配恢复目标" class="md-nav__link">
+      10-特征匹配恢复目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/exercise/" title="作业&练习" class="md-nav__link">
+      作业&练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/01-opencv/" title="编译安装OpenCV依赖库" class="md-nav__link">
+      编译安装OpenCV依赖库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/02-CMakeLists/" title="CMakeLists配置模板" class="md-nav__link">
+      CMakeLists配置模板
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1、启动驱动
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2、启动立体影像处理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3rviz" class="md-nav__link">
+    3、启动rviz
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4tf" class="md-nav__link">
+    4、启动tf转换
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5launch" class="md-nav__link">
+    5、编辑launch文件
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">双目相机生成点云<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="1">1、启动驱动<a class="headerlink" href="#1" title="Permanent link">&para;</a></h2>
+<p>由于为了生成点云相关的数据，我们必须按照<code>stereo_image_proc</code>节点所需要的数据进行发布。这里假设我们以<code>stereo</code>作为ROS命名空间，则应该向以下四个topic发布数据，</p>
+<div class="highlight"><pre><span></span><code>/stereo/left/image_raw      # 左目图像
+/stereo/left/camera_info    # 左目相机元信息
+/stereo/right/image_raw     # 右目图像
+/stereo/right/camera_info   # 右目相机元信息
+</code></pre></div>
+
+<p>所以我们需要将之前标定得到的left.yaml和right.yaml读取出来。</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># 导入依赖</span>
+<span class="kn">from</span> <span class="nn">sensor_msgs.msg</span> <span class="kn">import</span> <span class="n">CameraInfo</span>
+
+<span class="c1"># 声明Topic发布者</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">left_image_info_pub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s2">&quot;stereo/left/camera_info&quot;</span><span class="p">,</span> <span class="n">CameraInfo</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">right_image_info_pub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s2">&quot;stereo/right/camera_info&quot;</span><span class="p">,</span> <span class="n">CameraInfo</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># 准备好标定结果文件</span>
+<span class="n">dir_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">left_yaml_file</span> <span class="o">=</span> <span class="n">dir_path</span> <span class="o">+</span> <span class="s2">&quot;/../calibration/left.yaml&quot;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">right_yaml_file</span> <span class="o">=</span> <span class="n">dir_path</span> <span class="o">+</span> <span class="s2">&quot;/../calibration/right.yaml&quot;</span>
+
+<span class="k">def</span> <span class="nf">yaml_to_camera_info</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaml_file</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    将文件内容解析为CameraInfo对象</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span> <span class="s2">&quot;file_path:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">calib_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+    <span class="n">camera_info_msg</span> <span class="o">=</span> <span class="n">CameraInfo</span><span class="p">()</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">width</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;image_width&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">height</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;image_height&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">K</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;camera_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">D</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;distortion_coefficients&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">R</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;rectification_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">P</span> <span class="o">=</span> <span class="n">calib_data</span><span class="p">[</span><span class="s2">&quot;projection_matrix&quot;</span><span class="p">][</span><span class="s2">&quot;data&quot;</span><span class="p">]</span>
+    <span class="n">camera_info_msg</span><span class="o">.</span><span class="n">distortion_model</span> <span class="o">=</span> <span class="s2">&quot;plumb_bob&quot;</span>
+    <span class="c1"># print camera_info_msg</span>
+    <span class="k">return</span> <span class="n">camera_info_msg</span>
+
+<span class="c1"># 从yaml读取相机信息，包含相机内参、畸变系数</span>
+<span class="n">left_cam_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaml_to_camera_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">left_yaml_file</span><span class="p">)</span>
+<span class="n">right_cam_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">yaml_to_camera_info</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">right_yaml_file</span><span class="p">)</span>
+
+<span class="bp">self</span><span class="o">.</span><span class="n">msg_header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s1">&#39;stereo_image&#39;</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">msg_header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+<span class="c1">#　添加头信息</span>
+<span class="n">left_cam_info</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_header</span>
+<span class="n">right_cam_info</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_header</span>
+<span class="c1"># 发布话题数据</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">left_image_info_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">left_cam_info</span><span class="p">)</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">right_image_info_pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">right_cam_info</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="2">2、启动立体影像处理<a class="headerlink" href="#2" title="Permanent link">&para;</a></h2>
+<p>在控制台执行：</p>
+<div class="highlight"><pre><span></span><code>$ <span class="nv">ROS_NAMESPACE</span><span class="o">=</span>stereo rosrun stereo_image_proc stereo_image_proc
+</code></pre></div>
+
+<p>将<a href="http://wiki.ros.org/stereo_image_proc">stereo_image_proc</a>节点，设置到stereo的命名空间中，其节点会自动订阅相机发布的left和right图像，此方式，等同于将两个<a href="http://wiki.ros.org/image_proc">image_proc</a>实例分别运行在<code>stereo/left</code> 和<code>stereo/right</code>命名空间。此外，此节点会额外输出视差图像（stereo/disparity）和点云图（stereo/points2）</p>
+<ul>
+<li>查看单目图像：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ rosrun image_view image_view image:<span class="o">=</span>/stereo/left/image_rect_color
+</code></pre></div>
+
+<ul>
+<li>查看双目图像及视差图像：</li>
+</ul>
+<div class="highlight"><pre><span></span><code>$ rosrun image_view stereo_view stereo:<span class="o">=</span>/stereo image:<span class="o">=</span>image_rect_color
+</code></pre></div>
+
+<p>点云图我们可以使用rviz查看</p>
+<ul>
+<li>stereo_image_proc节点简介</li>
+</ul>
+<p><img alt="stereo_image_proc.png" src="../assets/stereo_image_proc.png" /></p>
+<p>stereo_image_proc节点，可以对原始立体相机的图像，进行矫正和去马赛克处理。也可以执行立体2D-3D处理以生成视差图像和点云图。在生成的主题名称中，节点分别解析了左和右，因此这些Topic话题名称分别对应在 left/<em>和right/</em>。</p>
+<p>所有图像处理都是按需进行的，例如仅当有颜色image_color主题的订阅者时，才执行颜色处理。仅当有矫正image_rect话题的订阅者时才执行矫正。视差和点云也是如此。当没有订阅者时，stereo_image_proc节点则不再订阅image_raw和camera_info话题。</p>
+<p>点云的输出结果数据是的基于左目相机的，X指向右目，Y向下，Z朝外</p>
+<p><img alt="stereo_frames.png" src="../assets/stereo_frames.png" /></p>
+<h2 id="3rviz">3、启动rviz<a class="headerlink" href="#3rviz" title="Permanent link">&para;</a></h2>
+<p>执行<code>rviz</code>或<code>rosrun rviz rviz</code></p>
+<ul>
+<li>已有rviz配置文件</li>
+</ul>
+<blockquote>
+<p><code>rviz -d src/little_stereo_camera/rviz/stereo_pcl.rviz</code></p>
+<p>or</p>
+<p><code>rosrun rviz rviz -d src/little_stereo_camera/rviz/stereo_pcl.rviz</code></p>
+</blockquote>
+<h2 id="4tf">4、启动tf转换<a class="headerlink" href="#4tf" title="Permanent link">&para;</a></h2>
+<p>ROS的静态TF转换发布者：<a href="http://wiki.ros.org/tf#static_transform_publisher">static_transform_publisher</a>，目的是发布一个全局的tf转换，帮助我们旋转rviz中的点云图像内容</p>
+<p>格式1：<code>static_transform_publisher x y z yaw pitch roll frame_id child_frame_id period_in_ms</code></p>
+<p>格式2：<code>static_transform_publisher x y z qx qy qz qw frame_id child_frame_id period_in_ms</code></p>
+<p>以格式1为例：发布一个静态变换，x、y、z为以m为单位的偏移量，yaw、pitch、roll为单位为弧度的旋转变量，period_in_ms为单位是毫秒的变换发布频率，推荐100ms（10hz）</p>
+<p>例如：<code>`static_transform_publisher 1 0 0 1.57 0 0 link1_parent link1 100</code></p>
+<div class="highlight"><pre><span></span><code>rosrun tf static_transform_publisher 0 0 1 0 0 -1.57 map stereo_image 100
+</code></pre></div>
+
+<p>也可以将此转换配置到roslaunch文件，例如：</p>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;launch&gt;</span>
+<span class="nt">&lt;node</span> <span class="na">pkg=</span><span class="s">&quot;tf&quot;</span> <span class="na">type=</span><span class="s">&quot;static_transform_publisher&quot;</span> <span class="na">name=</span><span class="s">&quot;link1_broadcaster&quot;</span> <span class="na">args=</span><span class="s">&quot;1 0 0 1.57 0 0 link1_parent link1 100&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/launch&gt;</span>
+</code></pre></div>
+
+<div class="admonition tip">
+<p class="admonition-title">小工具</p>
+</div>
+<p>​   我们可以使用一个在线的工具，方便的将rpy和四元数进行转换</p>
+<p>​   https://www.andre-gaschler.com/rotationconverter/</p>
+<p>参考：<a href="http://wiki.ros.org/tf/Tutorials">ROS的TF转换</a></p>
+<h2 id="5launch">5、编辑launch文件<a class="headerlink" href="#5launch" title="Permanent link">&para;</a></h2>
+<ul>
+<li>导出rviz文件</li>
+<li>编写launch</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="nt">&lt;launch&gt;</span>
+<span class="c">&lt;!--    &lt;param name=&quot;use_sim_time&quot; value=&quot;true&quot;/&gt;--&gt;</span>
+
+    <span class="nt">&lt;node</span> <span class="na">pkg=</span><span class="s">&quot;my_stereo_camera&quot;</span> <span class="na">type=</span><span class="s">&quot;stereo.py&quot;</span> <span class="na">name=</span><span class="s">&quot;stereo_camera&quot;</span> <span class="na">output =</span> <span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;param</span> <span class="na">name=</span><span class="s">&quot;cam_id&quot;</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/node&gt;</span>
+
+    <span class="nt">&lt;group</span> <span class="na">ns =</span> <span class="s">&quot;stereo&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;node</span> <span class="na">pkg=</span><span class="s">&quot;stereo_image_proc&quot;</span> <span class="na">type=</span><span class="s">&quot;stereo_image_proc&quot;</span> <span class="na">name=</span><span class="s">&quot;stereo_image_proc&quot;</span> <span class="na">output =</span> <span class="s">&quot;screen&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;/node&gt;</span>
+    <span class="nt">&lt;/group&gt;</span>
+
+    <span class="nt">&lt;node</span> <span class="na">pkg=</span><span class="s">&quot;rviz&quot;</span> <span class="na">type=</span><span class="s">&quot;rviz&quot;</span> <span class="na">name=</span><span class="s">&quot;rviz&quot;</span>  <span class="na">args=</span><span class="s">&quot;-d $(find my_stereo_camera)/rviz/stereo_pcl.rviz&quot;</span> <span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;node</span> <span class="na">pkg=</span><span class="s">&quot;tf&quot;</span> <span class="na">type=</span><span class="s">&quot;static_transform_publisher&quot;</span> <span class="na">name=</span><span class="s">&quot;tf_map_cam&quot;</span> <span class="na">args=</span><span class="s">&quot;0 0 1.0 -1.57 0 0 map stereo_image 100&quot;</span> <span class="na">output =</span> <span class="s">&quot;screen&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/launch&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>调用launch</li>
+</ul>
+<div class="highlight"><pre><span></span><code>roslaunch my_stereo_camera stereo.launch
+</code></pre></div>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../03-stereo_calibration/" title="03-双目相机标定" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                03-双目相机标定
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../05-stereo_other/" title="05-其他操作" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                05-其他操作
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,1206 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>04-配准之交互式ICP - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#icp" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                04-配准之交互式ICP
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        04-配准之交互式ICP
+      </label>
+    
+    <a href="./" title="04-配准之交互式ICP" class="md-nav__link md-nav__link--active">
+      04-配准之交互式ICP
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    使用方式
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    使用方式
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="icp">交互式ICP<a class="headerlink" href="#icp" title="Permanent link">&para;</a></h1>
+<p>本教程将教您如何编写交互式ICP查看器。 该程序将加载点云并对其施加刚性变换。 之后，ICP算法会将变换后的点云与原始对齐。 每次用户按下“空格”，都会进行一次ICP迭代，并刷新查看器。</p>
+<h2 id="_1">代码实现<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>代码文件<code>interactive_icp.cpp</code></p>
+<p>资源准备 <a href="../assets/monkey.ply">monkey.ply</a></p>
+<div class="highlight"><pre><span></span><code><span class="c1">//</span>
+<span class="c1">// Created by ty on 20-5-29.</span>
+<span class="c1">//</span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;string&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/ply_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/registration/icp.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/console/time.h&gt;   // TicToc</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">PointT</span><span class="p">;</span>
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">PointCloudT</span><span class="p">;</span>
+
+<span class="kt">bool</span> <span class="n">next_iteration</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+
+<span class="kt">void</span>
+<span class="nf">print4x4Matrix</span> <span class="p">(</span><span class="k">const</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4d</span> <span class="o">&amp;</span> <span class="n">matrix</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Rotation matrix :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;R = | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;    | %6.3f %6.3f %6.3f | </span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">));</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Translation vector :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;t = &lt; %6.3f, %6.3f, %6.3f &gt;</span><span class="se">\n\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">matrix</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">));</span>
+<span class="p">}</span>
+<span class="cm">/**</span>
+<span class="cm"> * 此函数是查看器的回调。 当查看器窗口位于顶部时，只要按任意键，就会调用此函数。 如果碰到“空格”； 将布尔值设置为true。</span>
+<span class="cm"> * @param event</span>
+<span class="cm"> * @param nothing</span>
+<span class="cm"> */</span>
+<span class="kt">void</span>
+<span class="nf">keyboardEventOccurred</span> <span class="p">(</span><span class="k">const</span> <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">KeyboardEvent</span><span class="o">&amp;</span> <span class="n">event</span><span class="p">,</span>
+                       <span class="kt">void</span><span class="o">*</span> <span class="n">nothing</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">getKeySym</span> <span class="p">()</span> <span class="o">==</span> <span class="s">&quot;space&quot;</span> <span class="o">&amp;&amp;</span> <span class="n">event</span><span class="p">.</span><span class="n">keyDown</span> <span class="p">())</span>
+        <span class="n">next_iteration</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span>
+<span class="nf">main</span> <span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span>
+      <span class="kt">char</span><span class="o">*</span> <span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="c1">// The point clouds we will be using</span>
+    <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">cloud_in</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>  <span class="c1">// Original point cloud</span>
+    <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">cloud_tr</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>  <span class="c1">// Transformed point cloud</span>
+    <span class="n">PointCloudT</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">cloud_icp</span> <span class="p">(</span><span class="k">new</span> <span class="n">PointCloudT</span><span class="p">);</span>  <span class="c1">// ICP output point cloud</span>
+
+<span class="c1">//    我们检查程序的参数，设置初始ICP迭代的次数，然后尝试加载PLY文件。</span>
+    <span class="c1">// Checking program arguments</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;Usage :</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\t\t</span><span class="s">%s file.ply number_of_ICP_iterations</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Provide one ply file.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">int</span> <span class="n">iterations</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>  <span class="c1">// Default number of ICP iterations</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="c1">// If the user passed the number of iteration as an argument</span>
+        <span class="n">iterations</span> <span class="o">=</span> <span class="n">atoi</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">iterations</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Number of initial iterations must be &gt;= 1</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+            <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">console</span><span class="o">::</span><span class="n">TicToc</span> <span class="n">time</span><span class="p">;</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">tic</span> <span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPLYFile</span> <span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="n">cloud_in</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Error loading cloud %s.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">Loaded file &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; (&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_in</span><span class="o">-&gt;</span><span class="n">size</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; points) in &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span><span class="p">.</span><span class="n">toc</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ms</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 我们使用刚性矩阵变换来变换原始点云。</span>
+    <span class="c1">// cloud_in包含原始点云。</span>
+    <span class="c1">// cloud_tr和cloud_icp包含平移/旋转的点云。</span>
+    <span class="c1">// cloud_tr是我们将用于显示的备份（绿点云）。</span>
+
+    <span class="c1">// Defining a rotation matrix and translation vector</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4d</span> <span class="n">transformation_matrix</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4d</span><span class="o">::</span><span class="n">Identity</span> <span class="p">();</span>
+
+    <span class="c1">// A rotation matrix (see https://en.wikipedia.org/wiki/Rotation_matrix)</span>
+    <span class="kt">double</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="mi">8</span><span class="p">;</span>  <span class="c1">// The angle of rotation in radians</span>
+    <span class="n">transformation_matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">cos</span> <span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transformation_matrix</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="n">sin</span> <span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transformation_matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">sin</span> <span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transformation_matrix</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">cos</span> <span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+
+    <span class="c1">// A translation on Z axis (0.4 meters)</span>
+    <span class="n">transformation_matrix</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.4</span><span class="p">;</span>
+
+    <span class="c1">// Display in terminal the transformation matrix</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Applying this rigid transformation to: cloud_in -&gt; cloud_icp&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">print4x4Matrix</span> <span class="p">(</span><span class="n">transformation_matrix</span><span class="p">);</span>
+
+    <span class="c1">// Executing the transformation</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_in</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud_icp</span><span class="p">,</span> <span class="n">transformation_matrix</span><span class="p">);</span>
+    <span class="o">*</span><span class="n">cloud_tr</span> <span class="o">=</span> <span class="o">*</span><span class="n">cloud_icp</span><span class="p">;</span>  <span class="c1">// We backup cloud_icp into cloud_tr for later use</span>
+
+    <span class="c1">// 这是ICP对象的创建。 我们设置ICP算法的参数。</span>
+    <span class="c1">// setMaximumIterations（iterations）设置要执行的初始迭代次数（默认值为1）。</span>
+    <span class="c1">// 然后，我们将点云转换为cloud_icp。 第一次对齐后，我们将在下一次使用该ICP对象时（当用户按下“空格”时）将ICP最大迭代次数设置为1。</span>
+
+    <span class="c1">// The Iterative Closest Point algorithm</span>
+    <span class="n">time</span><span class="p">.</span><span class="n">tic</span> <span class="p">();</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">IterativeClosestPoint</span><span class="o">&lt;</span><span class="n">PointT</span><span class="p">,</span> <span class="n">PointT</span><span class="o">&gt;</span> <span class="n">icp</span><span class="p">;</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setMaximumIterations</span> <span class="p">(</span><span class="n">iterations</span><span class="p">);</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setInputSource</span> <span class="p">(</span><span class="n">cloud_icp</span><span class="p">);</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setInputTarget</span> <span class="p">(</span><span class="n">cloud_in</span><span class="p">);</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">align</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_icp</span><span class="p">);</span>
+    <span class="n">icp</span><span class="p">.</span><span class="n">setMaximumIterations</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>  <span class="c1">// We set this variable to 1 for the next time we will call .align () function</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Applied &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iterations</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ICP iteration(s) in &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span><span class="p">.</span><span class="n">toc</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ms&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// 检查ICP算法是否收敛； 否则退出程序。 如果返回true，我们将转换矩阵存储在4x4矩阵中，然后打印刚性矩阵转换。</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">icp</span><span class="p">.</span><span class="n">hasConverged</span> <span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP has converged, score is &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">icp</span><span class="p">.</span><span class="n">getFitnessScore</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP transformation &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">iterations</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : cloud_icp -&gt; cloud_in&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">transformation_matrix</span> <span class="o">=</span> <span class="n">icp</span><span class="p">.</span><span class="n">getFinalTransformation</span> <span class="p">().</span><span class="n">cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">();</span>
+        <span class="n">print4x4Matrix</span> <span class="p">(</span><span class="n">transformation_matrix</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP has not converged.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Visualization</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span> <span class="p">(</span><span class="s">&quot;ICP demo&quot;</span><span class="p">);</span>
+    <span class="c1">// Create two vertically separated viewports</span>
+    <span class="kt">int</span> <span class="n">v1</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="kt">int</span> <span class="n">v2</span> <span class="p">(</span><span class="mi">1</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">createViewPort</span> <span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">createViewPort</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="c1">// The color we will be using</span>
+    <span class="kt">float</span> <span class="n">bckgr_gray_level</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>  <span class="c1">// Black</span>
+    <span class="kt">float</span> <span class="n">txt_gray_lvl</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">bckgr_gray_level</span><span class="p">;</span>
+
+    <span class="c1">// Original point cloud is white</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">cloud_in_color_h</span> <span class="p">(</span><span class="n">cloud_in</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">txt_gray_lvl</span><span class="p">,</span>
+                                                                               <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="mi">255</span> <span class="o">*</span> <span class="n">txt_gray_lvl</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">cloud_in</span><span class="p">,</span> <span class="n">cloud_in_color_h</span><span class="p">,</span> <span class="s">&quot;cloud_in_v1&quot;</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">cloud_in</span><span class="p">,</span> <span class="n">cloud_in_color_h</span><span class="p">,</span> <span class="s">&quot;cloud_in_v2&quot;</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="c1">// Transformed point cloud is green</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">cloud_tr_color_h</span> <span class="p">(</span><span class="n">cloud_tr</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">cloud_tr</span><span class="p">,</span> <span class="n">cloud_tr_color_h</span><span class="p">,</span> <span class="s">&quot;cloud_tr_v1&quot;</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+
+    <span class="c1">// ICP aligned point cloud is red</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">cloud_icp_color_h</span> <span class="p">(</span><span class="n">cloud_icp</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span> <span class="p">(</span><span class="n">cloud_icp</span><span class="p">,</span> <span class="n">cloud_icp_color_h</span><span class="p">,</span> <span class="s">&quot;cloud_icp_v2&quot;</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="c1">// Adding text descriptions in each viewport</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addText</span> <span class="p">(</span><span class="s">&quot;White: Original point cloud</span><span class="se">\n</span><span class="s">Green: Matrix transformed point cloud&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="s">&quot;icp_info_1&quot;</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addText</span> <span class="p">(</span><span class="s">&quot;White: Original point cloud</span><span class="se">\n</span><span class="s">Red: ICP aligned point cloud&quot;</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="s">&quot;icp_info_2&quot;</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">iterations</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">iterations_cnt</span> <span class="o">=</span> <span class="s">&quot;ICP iterations = &quot;</span> <span class="o">+</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span> <span class="p">();</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addText</span> <span class="p">(</span><span class="n">iterations_cnt</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="s">&quot;iterations_cnt&quot;</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="c1">// Set background color</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span> <span class="p">(</span><span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">v1</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span> <span class="p">(</span><span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">bckgr_gray_level</span><span class="p">,</span> <span class="n">v2</span><span class="p">);</span>
+
+    <span class="c1">// Set camera position and orientation</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setCameraPosition</span> <span class="p">(</span><span class="o">-</span><span class="mf">3.68332</span><span class="p">,</span> <span class="mf">2.94092</span><span class="p">,</span> <span class="mf">5.71266</span><span class="p">,</span> <span class="mf">0.289847</span><span class="p">,</span> <span class="mf">0.921947</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.256907</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setSize</span> <span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">1024</span><span class="p">);</span>  <span class="c1">// Visualiser window size</span>
+
+    <span class="c1">// Register keyboard callback :</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">registerKeyboardCallback</span> <span class="p">(</span><span class="o">&amp;</span><span class="n">keyboardEventOccurred</span><span class="p">,</span> <span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="nb">NULL</span><span class="p">);</span>
+
+    <span class="c1">// Display the visualiser</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span> <span class="p">())</span>
+    <span class="p">{</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span> <span class="p">();</span>
+
+        <span class="c1">// The user pressed &quot;space&quot; :</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">next_iteration</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// The Iterative Closest Point algorithm</span>
+            <span class="n">time</span><span class="p">.</span><span class="n">tic</span> <span class="p">();</span>
+            <span class="c1">// 如果用户按下键盘上的任意键，则会调用keyboardEventOccurred函数。 此功能检查键是否为“空格”。</span>
+            <span class="c1">// 如果是，则全局布尔值next_iteration设置为true，从而允许查看器循环输入代码的下一部分：调用ICP对象以进行对齐。</span>
+            <span class="c1">// 记住，我们已经配置了该对象输入/输出云，并且之前通过setMaximumIterations将最大迭代次数设置为1。</span>
+
+            <span class="n">icp</span><span class="p">.</span><span class="n">align</span> <span class="p">(</span><span class="o">*</span><span class="n">cloud_icp</span><span class="p">);</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Applied 1 ICP iteration in &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">time</span><span class="p">.</span><span class="n">toc</span> <span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; ms&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+            <span class="c1">// 和以前一样，我们检查ICP是否收敛，如果不收敛，则退出程序。</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">icp</span><span class="p">.</span><span class="n">hasConverged</span> <span class="p">())</span>
+            <span class="p">{</span>
+                <span class="c1">// printf（“ 033 [11A”）; 在终端增加11行以覆盖显示的最后一个矩阵是一个小技巧。</span>
+                <span class="c1">// 简而言之，它允许替换文本而不是编写新行； 使输出更具可读性。 我们增加迭代次数以更新可视化器中的文本值。</span>
+                <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\033</span><span class="s">[11A&quot;</span><span class="p">);</span>  <span class="c1">// Go up 11 lines in terminal output.</span>
+                <span class="n">printf</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP has converged, score is %+.0e</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">icp</span><span class="p">.</span><span class="n">getFitnessScore</span> <span class="p">());</span>
+
+                <span class="c1">// 这意味着，如果您已经完成了10次迭代，则此函数返回矩阵以将点云从迭代10转换为11。</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP transformation &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">iterations</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; : cloud_icp -&gt; cloud_in&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+                <span class="c1">// 函数getFinalTransformation（）返回在迭代过程中完成的刚性矩阵转换（此处为1次迭代）。</span>
+                <span class="n">transformation_matrix</span> <span class="o">*=</span> <span class="n">icp</span><span class="p">.</span><span class="n">getFinalTransformation</span> <span class="p">().</span><span class="n">cast</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="p">();</span>  <span class="c1">// WARNING /!\ This is not accurate! For &quot;educational&quot; purpose only!</span>
+                <span class="n">print4x4Matrix</span> <span class="p">(</span><span class="n">transformation_matrix</span><span class="p">);</span>  <span class="c1">// Print the transformation between original pose and current pose</span>
+
+                <span class="n">ss</span><span class="p">.</span><span class="n">str</span> <span class="p">(</span><span class="s">&quot;&quot;</span><span class="p">);</span>
+                <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="n">iterations</span><span class="p">;</span>
+                <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">iterations_cnt</span> <span class="o">=</span> <span class="s">&quot;ICP iterations = &quot;</span> <span class="o">+</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span> <span class="p">();</span>
+                <span class="n">viewer</span><span class="p">.</span><span class="n">updateText</span> <span class="p">(</span><span class="n">iterations_cnt</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="n">txt_gray_lvl</span><span class="p">,</span> <span class="s">&quot;iterations_cnt&quot;</span><span class="p">);</span>
+                <span class="n">viewer</span><span class="p">.</span><span class="n">updatePointCloud</span> <span class="p">(</span><span class="n">cloud_icp</span><span class="p">,</span> <span class="n">cloud_icp_color_h</span><span class="p">,</span> <span class="s">&quot;cloud_icp_v2&quot;</span><span class="p">);</span>
+            <span class="p">}</span>
+            <span class="k">else</span>
+            <span class="p">{</span>
+                <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">ICP has not converged.</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+                <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+            <span class="p">}</span>
+
+            <span class="c1">//这不是我们想要的。 如果我们将最后一个矩阵与新矩阵相乘，那么结果就是从开始到当前迭代的转换矩阵。</span>
+        <span class="p">}</span>
+        <span class="n">next_iteration</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<p>添加环境配置</p>
+<div class="highlight"><pre><span></span><code><span class="nb">add_executable</span> <span class="p">(</span><span class="s">interactive_icp</span> <span class="s">interactive_icp.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span> <span class="p">(</span><span class="s">interactive_icp</span> <span class="o">${</span><span class="nv">PCL_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+</code></pre></div>
+
+<h2 id="_2">使用方式<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>执行以下命令：</p>
+<div class="highlight"><pre><span></span><code>./interactive_icp monkey.ply <span class="m">1</span>
+</code></pre></div>
+
+<p>请记住，如果您过多的通过按“空格”进行多次迭代，则显示的矩阵可能不是很准确。</p>
+<p>如果ICP表现出色，则两个矩阵的值应完全相同，并且ICP找到的矩阵的对角线外的符号应相反。 例如</p>
+<div class="highlight"><pre><span></span><code>    |  0.924 -0.383  0.000 |
+R = |  0.383  0.924  0.000 |
+    |  0.000  0.000  1.000 |
+Translation vector :
+t = &lt;  0.000,  0.000,  0.400 &gt;
+
+    |  0.924  0.383  0.000 |
+R = | -0.383  0.924  0.000 |
+    |  0.000  0.000  1.000 |
+Translation vector :
+t = &lt;  0.000,  0.000, -0.400 &gt;
+</code></pre></div>
+
+<p>随着迭代次数增加，效果如下：</p>
+<p><img alt="_images/animation.gif" src="../assets/animation.gif" /></p>
+<p>官方文档：https://pcl-tutorials.readthedocs.io/en/latest/interactive_icp.html</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../registration/" title="03-点云配准流程示例 *" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                03-点云配准流程示例 *
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../registration_theory/" title="05-点云配准数学原理" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                05-点云配准数学原理
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

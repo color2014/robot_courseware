@@ -1,0 +1,1605 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-点云分割 - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-点云分割
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/intro/" title="01-点云及其可视化" class="md-nav__link">
+      01-点云及其可视化
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4" checked>
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-点云分割
+      </label>
+    
+    <a href="./" title="01-点云分割" class="md-nav__link md-nav__link--active">
+      01-点云分割
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    平面模型分割
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    圆柱体模型分割
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    欧式聚类提取
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    实现详解
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    平面模型分割
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    圆柱体模型分割
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    欧式聚类提取
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    代码实现
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    实现详解
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_13" class="md-nav__link">
+    输出结果
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_14" class="md-nav__link">
+    实现效果
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">点云分割 *<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<p>点云分割是根据空间、几何和纹理等特征对点云进行划分，使得同一划分区域内的点云拥有相似的特征 。 点云的有效分割往往是许多应用的前提。例如，在逆向工程CAD/CAM 领域，对零件的不同扫描表面进行分割，然后才能更好地进行孔洞修复、曲面重建、特征描述和提取，进而进行基于 3D内容的检索、组合重用等。在激光遥感领域，同样需要对地面、物体首先进行分类处理，然后才能进行后期地物的识别、重建 。</p>
+<p>总之，分割采用分而治之的思想，在点云处理中和滤波一样属于重要的基础操作，在PCL 中目前实现了进行分割的基础架构，为后期更多的扩展奠定了基础，现有实现的分割算法是鲁棒性比较好的Cluster聚类分割和RANSAC基于随机采样一致性的分割。</p>
+<p>PCL分割库包含多种算法，这些算法用于将点云分割为不同簇。适合处理由多个隔离区域空间组成的点云。将点云分解成其组成部分，然后可以对其进行独立处理。 可以在<a href="http://pointclouds.org/documentation/tutorials/cluster_extraction.php#cluster-extraction">集群提取教程</a>中找到理论入门，以解释集群方法的工作原理。这两个图说明了平面模型分割（上）和圆柱模型分割（下）的结果。</p>
+<p><img alt="_images/cylinder_model_seg.jpg" src="../assets/cylinder_model_seg.jpg" /></p>
+<p><img alt="_images/plane_model_seg.jpg" src="../assets/plane_model_seg.jpg" /></p>
+<h2 id="_2">平面模型分割<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<h3 id="_3">代码实现<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<p>文件名<code>planar_segmentation.cpp</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/ModelCoefficients.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/method_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/model_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/segmentation/sac_segmentation.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+
+    <span class="cm">/***</span>
+<span class="cm">     * 生成15个无序点云，x,y为随机数，z为1.0</span>
+<span class="cm">     * 将points中0、3、6索引位置的z值进行修改，将之作为离群值</span>
+<span class="cm">     */</span>
+    <span class="c1">// Fill in the cloud data</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">resize</span><span class="p">(</span><span class="n">cloud</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">*</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">height</span><span class="p">);</span>
+
+    <span class="c1">// Generate the data</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">=</span> <span class="mi">1024</span> <span class="o">*</span> <span class="n">rand</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="n">RAND_MAX</span> <span class="o">+</span> <span class="mf">1.0f</span><span class="p">);</span>
+        <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Set a few outliers</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mf">2.0</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">3</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">;</span>
+    <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="mi">6</span><span class="p">].</span><span class="n">z</span> <span class="o">=</span> <span class="mf">4.0</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Point cloud data: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; points&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * 创建分割时所需要的模型系数对象 coefficients 及存储内点的点索引集合对象 inliers .</span>
+<span class="cm">     * 这也是我们指定“阈值距离DistanceThreshold”的地方，该距离阈值确定点必须与模型有多远才能被视为离群点。</span>
+<span class="cm">     * 这里距离阔值是 0.01m ,即只要点到 z=1 平面距离小于该阈值的点都作为内部点看待,而大于该阁值的则看做离群点。</span>
+<span class="cm">     * 我们将使用RANSAC方法（`pcl::SAC_RANSAC`）作为可靠的估计器。因为RANSAC比较简单（其他强大的估算工具也以此为基础，并添加了其他更复杂的概念）。</span>
+<span class="cm">     */</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">coefficients</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">inliers</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">);</span>
+    <span class="c1">// Create the segmentation object</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">SACSegmentation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">seg</span><span class="p">;</span>
+    <span class="c1">// 可选配置：是否优化模型系数</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="c1">// 必选配置：设置分割的模型类型、分割算法、距离阈值、输入点云</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_PLANE</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span><span class="p">(</span><span class="mf">0.01</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="c1">// 执行分割操作，并存储分割结果保存到点集合 inliers 及存储平面模型系数 coefficients</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">segment</span><span class="p">(</span><span class="o">*</span><span class="n">inliers</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients</span><span class="p">);</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">PCL_ERROR</span> <span class="p">(</span><span class="s">&quot;Could not estimate a planar model for the given dataset.&quot;</span><span class="p">);</span>
+        <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="c1">//    此段代码用来打印出估算的平面模型的参数（以 ax+by+ca+d=0 形式）,详见RANSAC采样一致性算法的SACMODEL_PLANE平面模型</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Model coefficients: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">coefficients</span><span class="o">-&gt;</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">coefficients</span><span class="o">-&gt;</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">coefficients</span><span class="o">-&gt;</span><span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">coefficients</span><span class="o">-&gt;</span><span class="n">values</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Model inliers: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;    &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; &quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">[</span><span class="n">i</span><span class="p">]].</span><span class="n">z</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_4">输出结果<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>/home/ty/Lesson/PCL/Code/PCLDemo/build/Debug/bin/planar_segmentation
+Point cloud data: 15 points
+    0.352222 -0.151883 2
+    -0.106395 -0.397406 1
+    -0.473106 0.292602 1
+    -0.731898 0.667105 -2
+    0.441304 -0.734766 1
+    0.854581 -0.0361733 1
+    -0.4607 -0.277468 4
+    -0.916762 0.183749 1
+    0.968809 0.512055 1
+    -0.998983 -0.463871 1
+    0.691785 0.716053 1
+    0.525135 -0.523004 1
+    0.439387 0.56706 1
+    0.905417 -0.579787 1
+    0.898706 -0.504929 1
+Model coefficients: 0 0 1 -1
+Model inliers: 12
+1    -0.106395 -0.397406 1
+2    -0.473106 0.292602 1
+4    0.441304 -0.734766 1
+5    0.854581 -0.0361733 1
+7    -0.916762 0.183749 1
+8    0.968809 0.512055 1
+9    -0.998983 -0.463871 1
+10    0.691785 0.716053 1
+11    0.525135 -0.523004 1
+12    0.439387 0.56706 1
+13    0.905417 -0.579787 1
+14    0.898706 -0.504929 1
+</code></pre></div>
+
+<h3 id="_5">实现效果<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h3>
+<p>坐标轴表示为红色（x），绿色（y）和蓝色（z）。这些点以红色表示为离群值，绿色表示为平面模型内的内部值。</p>
+<p><img alt="_images/planar_segmentation_2.png" src="../assets/planar_segmentation_2.png" /></p>
+<h2 id="_6">圆柱体模型分割<a class="headerlink" href="#_6" title="Permanent link">&para;</a></h2>
+<p>本节举例说明了如何采用随机采样一致性估计从带有噪声的点云中提取一个圆柱体模型，整个程序处理流程如下 :</p>
+<ol>
+<li>过滤掉远于 1. 5 m 的数据点 </li>
+<li>估计每个点的表面法线 </li>
+<li>分割出平面模型 （数据集中的桌面）并保存到磁盘中。</li>
+<li>分割圆出柱体模型（数据集中的杯子）并保存到磁盘中。</li>
+</ol>
+<p>注意：由于数据中包含噪声，圆柱体模型并不十分严格 。</p>
+<h3 id="_7">代码实现<a class="headerlink" href="#_7" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/ModelCoefficients.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/extract_indices.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/passthrough.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/normal_3d.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/method_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/model_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/segmentation/sac_segmentation.h&gt;</span><span class="cp"></span>
+
+<span class="k">typedef</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">PointT</span><span class="p">;</span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// All the objects needed</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PCDReader</span> <span class="n">reader</span><span class="p">;</span>                          <span class="c1">// PCD文件读取对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PassThrough</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">pass</span><span class="p">;</span>                  <span class="c1">// 直通滤波器</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">NormalEstimation</span><span class="o">&lt;</span><span class="n">PointT</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span> <span class="n">ne</span><span class="p">;</span>  <span class="c1">// 法线估算对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">SACSegmentationFromNormals</span><span class="o">&lt;</span><span class="n">PointT</span><span class="p">,</span> <span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span> <span class="n">seg</span><span class="p">;</span>   <span class="c1">// 分割器</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PCDWriter</span> <span class="n">writer</span><span class="p">;</span>                                      <span class="c1">// PCD文件写出对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ExtractIndices</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span> <span class="n">extract</span><span class="p">;</span>                        <span class="c1">// 点提取对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ExtractIndices</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span> <span class="n">extract_normals</span><span class="p">;</span>           <span class="c1">// 法线提取对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">tree</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">());</span>
+
+    <span class="c1">// Datasets</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_filtered</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_normals</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_filtered2</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_normals2</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">Normal</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">coefficients_plane</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">),</span> <span class="n">coefficients_cylinder</span><span class="p">(</span>
+            <span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">inliers_plane</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">),</span> <span class="n">inliers_cylinder</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">);</span>
+
+    <span class="c1">// Read in the cloud data 读取点云数据</span>
+    <span class="n">reader</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;./data/table_scene_mug_stereo_textured.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud has: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Build a passthrough filter to remove spurious NaNs</span>
+    <span class="n">pass</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">pass</span><span class="p">.</span><span class="n">setFilterFieldName</span><span class="p">(</span><span class="s">&quot;z&quot;</span><span class="p">);</span>
+    <span class="n">pass</span><span class="p">.</span><span class="n">setFilterLimits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span>
+    <span class="n">pass</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_filtered</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud after filtering has: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Estimate point normals</span>
+    <span class="n">ne</span><span class="p">.</span><span class="n">setSearchMethod</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>
+    <span class="n">ne</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+    <span class="n">ne</span><span class="p">.</span><span class="n">setKSearch</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+    <span class="n">ne</span><span class="p">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_normals</span><span class="p">);</span>
+
+    <span class="c1">// Create the segmentation object for the planar model and set all the parameters</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_NORMAL_PLANE</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setNormalDistanceWeight</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMaxIterations</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span><span class="p">(</span><span class="mf">0.03</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputNormals</span><span class="p">(</span><span class="n">cloud_normals</span><span class="p">);</span>
+    <span class="c1">// Obtain the plane inliers and coefficients</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">segment</span><span class="p">(</span><span class="o">*</span><span class="n">inliers_plane</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients_plane</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Plane coefficients: &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">coefficients_plane</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Extract the planar inliers from the input cloud</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">inliers_plane</span><span class="p">);</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+    <span class="c1">// Write the planar inliers to disk</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_plane</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_plane</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud representing the planar component: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_plane</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="n">writer</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;table_scene_mug_stereo_textured_plane.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud_plane</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+
+    <span class="c1">// Remove the planar inliers, extract the rest</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_filtered2</span><span class="p">);</span>
+    <span class="n">extract_normals</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">extract_normals</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_normals</span><span class="p">);</span>
+    <span class="n">extract_normals</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">inliers_plane</span><span class="p">);</span>
+    <span class="n">extract_normals</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_normals2</span><span class="p">);</span>
+
+    <span class="c1">// Create the segmentation object for cylinder segmentation and set all the parameters</span>
+    <span class="c1">// 设置圆柱体分割对象参数</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_CYLINDER</span><span class="p">);</span>   <span class="c1">// 设置分割模型为圆柱体</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>         <span class="c1">// 设置采用RANSAC算法进行参数估计</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setNormalDistanceWeight</span><span class="p">(</span><span class="mf">0.1</span><span class="p">);</span>           <span class="c1">// 设置表面法线权重系数</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMaxIterations</span><span class="p">(</span><span class="mi">10000</span><span class="p">);</span>                <span class="c1">// 设置最大迭代次数10000</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span><span class="p">(</span><span class="mf">0.05</span><span class="p">);</span>             <span class="c1">// 设置内点到模型的最大距离 0.05m</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setRadiusLimits</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">);</span>                <span class="c1">// 设置圆柱体的半径范围0 -&gt; 0.1m</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered2</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setInputNormals</span><span class="p">(</span><span class="n">cloud_normals2</span><span class="p">);</span>
+
+    <span class="c1">// Obtain the cylinder inliers and coefficients</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">segment</span><span class="p">(</span><span class="o">*</span><span class="n">inliers_cylinder</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients_cylinder</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Cylinder coefficients: &quot;</span> <span class="o">&lt;&lt;</span> <span class="o">*</span><span class="n">coefficients_cylinder</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Write the cylinder inliers to disk</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered2</span><span class="p">);</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">inliers_cylinder</span><span class="p">);</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_cylinder</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">PointT</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">extract</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_cylinder</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">cloud_cylinder</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Can&#39;t find the cylindrical component.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+    <span class="k">else</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cerr</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud representing the cylindrical component: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_cylinder</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span>
+                  <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="n">writer</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;table_scene_mug_stereo_textured_cylinder.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud_cylinder</span><span class="p">,</span> <span class="nb">false</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_8">输出结果<a class="headerlink" href="#_8" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>/home/ty/Lesson/PCL/Code/PCLDemo/build/Debug/bin/cylinder_segmentation
+PointCloud has: 307200 data points.
+PointCloud after filtering has: 139897 data points.
+Plane coefficients: header: 
+seq: 0 stamp: 0 frame_id: 
+values[]
+  values[0]:   0.0161879
+  values[1]:   -0.837661
+  values[2]:   -0.54595
+  values[3]:   0.528869
+
+PointCloud representing the planar component: 116388 data points.
+Cylinder coefficients: header: 
+seq: 0 stamp: 0 frame_id: 
+values[]
+  values[0]:   0.0543093
+  values[1]:   0.0913138
+  values[2]:   0.781736
+  values[3]:   -0.0182814
+  values[4]:   0.834237
+  values[5]:   0.551104
+  values[6]:   0.0387101
+
+PointCloud representing the cylindrical component: 11474 data points.
+</code></pre></div>
+
+<p>此时以下两个文件已保存到当前目录：</p>
+<p><code>table_scene_mug_stereo_textured_plane.pcd</code> </p>
+<p><code>table_scene_mug_stereo_textured_cylinder.pcd</code></p>
+<h3 id="_9">实现效果<a class="headerlink" href="#_9" title="Permanent link">&para;</a></h3>
+<p>执行此命令，将三个点云在一个窗口内显示：</p>
+<div class="highlight"><pre><span></span><code>pcl_viewer ./data/table_scene_mug_stereo_textured.pcd table_scene_mug_stereo_textured_plane.pcd table_scene_mug_stereo_textured_cylinder.pcd
+</code></pre></div>
+
+<p><img alt="" src="../assets/table_scene_mug.png" /></p>
+<h2 id="_10">欧式聚类提取<a class="headerlink" href="#_10" title="Permanent link">&para;</a></h2>
+<h3 id="_11">代码实现<a class="headerlink" href="#_11" title="Permanent link">&para;</a></h3>
+<p>创建文件：<code>cluster_extraction.cpp</code></p>
+<p>准备资源：<code>./data/tabletop.pcd</code></p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/ModelCoefficients.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/extract_indices.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/filters/voxel_grid.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/features/normal_3d.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/kdtree/kdtree.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/method_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/sample_consensus/model_types.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/segmentation/sac_segmentation.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/segmentation/extract_clusters.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Read in the cloud data</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PCDReader</span> <span class="n">reader</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">),</span> <span class="n">cloud_f</span><span class="p">(</span>
+            <span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">reader</span><span class="p">.</span><span class="n">read</span><span class="p">(</span><span class="s">&quot;./data/tabletop.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud before filtering has: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//*</span>
+
+    <span class="c1">// Create the filtering object: downsample the dataset using a leaf size of 1cm</span>
+    <span class="c1">// 执行降采样滤波，叶子大小1cm</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">VoxelGrid</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">vg</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_filtered</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">vg</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">vg</span><span class="p">.</span><span class="n">setLeafSize</span><span class="p">(</span><span class="mf">0.01f</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">,</span> <span class="mf">0.01f</span><span class="p">);</span>
+    <span class="n">vg</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_filtered</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud after filtering has: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span>
+              <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span> <span class="c1">//*</span>
+
+    <span class="c1">// Create the segmentation object for the planar model and set all the parameters</span>
+    <span class="c1">// 创建平面模型分割器并初始化参数</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">SACSegmentation</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">seg</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">inliers</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">coefficients</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">ModelCoefficients</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_plane</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PCDWriter</span> <span class="n">writer</span><span class="p">;</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setOptimizeCoefficients</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setModelType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SACMODEL_PLANE</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMethodType</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">SAC_RANSAC</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setMaxIterations</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>
+    <span class="n">seg</span><span class="p">.</span><span class="n">setDistanceThreshold</span><span class="p">(</span><span class="mf">0.02</span><span class="p">);</span>
+
+    <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">nr_points</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span><span class="p">)</span> <span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mf">0.3</span> <span class="o">*</span> <span class="n">nr_points</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// Segment the largest planar component from the remaining cloud</span>
+        <span class="c1">// 移除剩余点云中最大的平面</span>
+        <span class="n">seg</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+        <span class="c1">// 执行分割，将分割出来的平面点云索引保存到inliers中</span>
+        <span class="n">seg</span><span class="p">.</span><span class="n">segment</span><span class="p">(</span><span class="o">*</span><span class="n">inliers</span><span class="p">,</span> <span class="o">*</span><span class="n">coefficients</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">inliers</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Could not estimate a planar model for the given dataset.&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Extract the planar inliers from the input cloud</span>
+        <span class="c1">// 从输入点云中取出平面内点</span>
+        <span class="n">pcl</span><span class="o">::</span><span class="n">ExtractIndices</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">extract</span><span class="p">;</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">setIndices</span><span class="p">(</span><span class="n">inliers</span><span class="p">);</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">false</span><span class="p">);</span>
+
+        <span class="c1">// Get the points associated with the planar surface</span>
+        <span class="c1">// 得到与平面相关的点cloud_plane</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_plane</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud representing the planar component: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_plane</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+        <span class="c1">// Remove the planar inliers, extract the rest</span>
+        <span class="c1">// 从点云中剔除这些平面内点，提取出剩下的点保存到cloud_f中，并重新赋值给cloud_filtered。</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">setNegative</span><span class="p">(</span><span class="nb">true</span><span class="p">);</span>
+        <span class="n">extract</span><span class="p">.</span><span class="n">filter</span><span class="p">(</span><span class="o">*</span><span class="n">cloud_f</span><span class="p">);</span>
+        <span class="o">*</span><span class="n">cloud_filtered</span> <span class="o">=</span> <span class="o">*</span><span class="n">cloud_f</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Creating the KdTree object for the search method of the extraction</span>
+    <span class="c1">// 为提取算法的搜索方法创建一个KdTree对象</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">tree</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">search</span><span class="o">::</span><span class="n">KdTree</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">tree</span><span class="o">-&gt;</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * 在这里，我们创建一个PointIndices的vector，该vector在vector &lt;int&gt;中包含实际的索引信息。</span>
+<span class="cm">     * 每个检测到的簇的索引都保存在这里-请注意，cluster_indices是一个vector，包含多个检测到的簇的PointIndices的实例。</span>
+<span class="cm">     * 因此，cluster_indices[0]包含我们点云中第一个 cluster(簇)的所有索引。</span>
+<span class="cm">     *</span>
+<span class="cm">     * 从点云中提取簇（集群）,并将点云索引保存在 cluster_indices 中。</span>
+<span class="cm">     */</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">&gt;</span> <span class="n">cluster_indices</span><span class="p">;</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">EuclideanClusterExtraction</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">ec</span><span class="p">;</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">setClusterTolerance</span><span class="p">(</span><span class="mf">0.02</span><span class="p">);</span> <span class="c1">// 设置临近搜索的搜索半径（搜索容差）为2cm</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">setMinClusterSize</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>    <span class="c1">// 每个簇（集群）的最小大小</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">setMaxClusterSize</span><span class="p">(</span><span class="mi">25000</span><span class="p">);</span>  <span class="c1">// 每个簇（集群）的最大大小</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">setSearchMethod</span><span class="p">(</span><span class="n">tree</span><span class="p">);</span>     <span class="c1">// 设置点云搜索算法</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">setInputCloud</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="p">);</span>   <span class="c1">// 设置输入点云</span>
+    <span class="n">ec</span><span class="p">.</span><span class="n">extract</span><span class="p">(</span><span class="n">cluster_indices</span><span class="p">);</span>        <span class="c1">// 设置提取到的簇，将每个簇以索引的形式保存到cluster_indices;</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span><span class="o">::</span><span class="n">Ptr</span> <span class="n">viewer</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span><span class="p">(</span><span class="s">&quot;3D Viewer&quot;</span><span class="p">));</span>
+
+    <span class="c1">// 为了从点云索引向量中分割出每个簇，必须迭代访问点云索引，</span>
+    <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointIndices</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">it</span> <span class="o">=</span> <span class="n">cluster_indices</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+         <span class="n">it</span> <span class="o">!=</span> <span class="n">cluster_indices</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">it</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="c1">// 每次创建一个新的点云数据集，并且将所有当前簇的点写入到点云数据集中。</span>
+        <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_cluster</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+        <span class="k">const</span> <span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="o">&amp;</span><span class="n">indices</span> <span class="o">=</span> <span class="n">it</span><span class="o">-&gt;</span><span class="n">indices</span><span class="p">;</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;::</span><span class="n">const_iterator</span> <span class="n">pit</span> <span class="o">=</span> <span class="n">indices</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span> <span class="n">pit</span> <span class="o">!=</span> <span class="n">indices</span><span class="p">.</span><span class="n">end</span><span class="p">();</span> <span class="o">++</span><span class="n">pit</span><span class="p">)</span>
+            <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">cloud_filtered</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">[</span><span class="o">*</span><span class="n">pit</span><span class="p">]);</span>
+
+        <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">width</span> <span class="o">=</span> <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">();</span>
+        <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">height</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+        <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">is_dense</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;PointCloud representing the Cluster: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cloud_cluster</span><span class="o">-&gt;</span><span class="n">points</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="s">&quot; data points.&quot;</span>
+                  <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="cm">/*</span>
+<span class="cm">            std::stringstream ss;</span>
+<span class="cm">            ss &lt;&lt; &quot;cloud_cluster_&quot; &lt;&lt; j &lt;&lt; &quot;.pcd&quot;;</span>
+<span class="cm">            writer.write&lt;pcl::PointXYZ&gt;(ss.str(), *cloud_cluster, false); //</span>
+<span class="cm">        */</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+        <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;cloud_cluster_&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">j</span><span class="p">;</span>
+        <span class="c1">// Generate a random (bright) color</span>
+        <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerRandom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">single_color</span><span class="p">(</span><span class="n">cloud_cluster</span><span class="p">);</span>
+        <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">(</span><span class="n">cloud_cluster</span><span class="p">,</span> <span class="n">single_color</span><span class="p">,</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+        <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">());</span>
+
+        <span class="n">j</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;cloud size: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">cluster_indices</span><span class="p">.</span><span class="n">size</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">addCoordinateSystem</span><span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="o">-&gt;</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h3 id="_12">实现详解<a class="headerlink" href="#_12" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">pcl</span><span class="o">::</span><span class="n">EuclideanClusterExtraction</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">ec</span><span class="p">;</span>
+</code></pre></div>
+
+<p>因为点云是PointXYZ类型的，所以这里用PointXYZ创建一个欧氏聚类对象，并设置提取的参数和变量。</p>
+<div class="highlight"><pre><span></span><code><span class="n">ec</span><span class="p">.</span><span class="n">setClusterTolerance</span><span class="p">(</span><span class="mf">0.02</span><span class="p">);</span> <span class="c1">// 设置临近搜索的搜索半径（搜索容差）为2cm</span>
+</code></pre></div>
+
+<p>设置一个合适的聚类搜索半径 ClusterTolerance，如果搜索半径取一个非常小的值，那么一个实际独立的对象就会被分割为多个聚类；如果将值设置得太高，那么多个对象就会被分割为一个聚类，所以需要进行测试找出最合适的ClusterTolerance. </p>
+<div class="highlight"><pre><span></span><code><span class="n">ec</span><span class="p">.</span><span class="n">setMinClusterSize</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span>    <span class="c1">// 每个簇（集群）的最小大小</span>
+<span class="n">ec</span><span class="p">.</span><span class="n">setMaxClusterSize</span><span class="p">(</span><span class="mi">25000</span><span class="p">);</span>  <span class="c1">// 每个簇（集群）的最大大小</span>
+</code></pre></div>
+
+<p>本例用两个参数来限制找到的聚类 : </p>
+<ol>
+<li>用 set­MinClusterSize( )来限制一个聚类最少需要的点数目</li>
+<li>用 setMaXClusterSize( )来限制一个聚类最多需要的点数目</li>
+</ol>
+<h3 id="_13">输出结果<a class="headerlink" href="#_13" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>/home/ty/Lesson/PCL/Code/PCLDemo/build/Debug/bin/cluster_extraction
+PointCloud before filtering has: 202627 data points.
+PointCloud after filtering has: 55336 data points.
+PointCloud representing the planar component: 36390 data points.
+PointCloud representing the planar component: 12140 data points.
+PointCloud representing the Cluster: 2644 data points.
+PointCloud representing the Cluster: 983 data points.
+PointCloud representing the Cluster: 966 data points.
+PointCloud representing the Cluster: 714 data points.
+PointCloud representing the Cluster: 509 data points.
+PointCloud representing the Cluster: 367 data points.
+PointCloud representing the Cluster: 361 data points.
+PointCloud representing the Cluster: 240 data points.
+cloud size: 8
+
+Process finished with exit code 0
+</code></pre></div>
+
+<h3 id="_14">实现效果<a class="headerlink" href="#_14" title="Permanent link">&para;</a></h3>
+<p><img alt="" src="../assets/cluster_extraction.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../resampling/" title="02-点云曲面重建" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-点云曲面重建
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

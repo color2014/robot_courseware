@@ -1,0 +1,676 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 正则表达式">
+      
+      
+        <link rel="canonical" href="https://www.czxy.com/docs/01_sys_env/">
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01_系统搭建 - 黑马机器人—树莓派！</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="https://www.czxy.com/docs" title="黑马机器人—树莓派！" aria-label="黑马机器人—树莓派！" class="md-header-nav__button md-logo"> -->
+        <a href="/" title="黑马机器人—树莓派！" aria-label="黑马机器人—树莓派！" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="https://www.czxy.com/docs">黑马机器人—树莓派！</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01_系统搭建
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="https://www.czxy.com/docs" title="黑马机器人—树莓派！" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—树莓派！
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01_系统搭建
+      </label>
+    
+    <a href="./" title="01_系统搭建" class="md-nav__link md-nav__link--active">
+      01_系统搭建
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    系统安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tf" class="md-nav__link">
+    1. tf卡准备
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 系统写入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 插入鼠标，键盘，显示器，开始安装系统
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配置国内软件源
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ap" class="md-nav__link">
+    开启无线AP模式
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../02_dev_env/" title="02_开发环境搭建" class="md-nav__link">
+      02_开发环境搭建
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../03_quickstart/" title="03_快速入门" class="md-nav__link">
+      03_快速入门
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../04_advanced/" title="04_树莓派进阶" class="md-nav__link">
+      04_树莓派进阶
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../04_driver_car/" title="05_四驱小车" class="md-nav__link">
+      05_四驱小车
+    </a>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item">
+    <a href="../06_mecanum_car/" title="06_麦克娜姆轮" class="md-nav__link">
+      06_麦克娜姆轮
+    </a>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    系统安装
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-tf" class="md-nav__link">
+    1. tf卡准备
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 系统写入
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 插入鼠标，键盘，显示器，开始安装系统
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    配置国内软件源
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ap" class="md-nav__link">
+    开启无线AP模式
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">树莓派<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h1>
+<h2 id="_2">概述<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p><img alt="" src="../img/raspberry.jpg" /></p>
+<p>Raspberry Pi(中文名为“树莓派”,简写为RPi，(或者RasPi / RPI) [1]  是为学习计算机编程教育而设计)，<strong>只有信用卡大小的微型电脑，其系统基于Linux。 [2]  随着Windows 10 IoT的发布，我们也将可以用上运行Windows的树莓派。 [3]</strong> </p>
+<p>自问世以来，受众多计算机发烧友和创客的追捧，曾经一“派”难求。别看其外表“娇小”，内“心”却很强大，视频、音频等功能通通皆有，可谓是“麻雀虽小，五脏俱全”。 </p>
+<h2 id="_3">系统安装<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<h3 id="1-tf">1. tf卡准备<a class="headerlink" href="#1-tf" title="Permanent link">&para;</a></h3>
+<ol>
+<li>查找tf卡的设备号。默认已经自动挂载</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>mount
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>因为tf卡插上之后，系统自动挂载，所以先卸载</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>umount /dev/sdc1
+
+卸载完成之后，再查看一下mount查找tf卡，没有找到就卸载成功
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>查看所有磁盘列表</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>fdisk -l
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>找到tf卡对应的分区, 选中磁盘</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo fdisk /dev/sdc
+再输入m可以看到帮助手册
+删除分区：d
+添加分区：n
+查看分区：p
+保存操作：w
+注：修改后，需要用w保存修改。
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>删除原有的分区</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>d
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="2">2. 系统写入<a class="headerlink" href="#2" title="Permanent link">&para;</a></h3>
+<ol>
+<li>先将文件解压到tf卡中</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>unzip -p /home/kaijun/Documents/resource/raspberry/UbuntuMateSD.zip <span class="p">|</span> sudo dd <span class="nv">of</span><span class="o">=</span>/dev/sdc <span class="nv">conv</span><span class="o">=</span>fsync
+
+由于系统比较大，所以这一步会花很长的时间。大概花费了我20多分钟才完成。
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>请求系统重新加载分区表</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo partprobe /dev/sdc
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>为了便于远程连接，开启ssh.在设备的根目录下，创建一个空的ssh文件即可</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo mount /dev/sdc1 /mnt -o <span class="nv">umask</span><span class="o">=</span><span class="m">000</span>
+touch  /mnt/ssh
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="3">3. 插入鼠标，键盘，显示器，开始安装系统<a class="headerlink" href="#3" title="Permanent link">&para;</a></h3>
+<p>将上面烧写好的tf卡拔出来，插入树莓派中，连接鼠标，键盘，显示器，启动即可开始安装</p>
+<p>一路下一步下一步，即可安装完成。</p>
+<p>参考资料：https://linuxhandbook.com/raspberry-pi-headless-setup/</p>
+<h2 id="_4">配置国内软件源<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p>打开系统配置文件</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo gedit /etc/apt/sources.list
+</code></pre></div>
+</td></tr></table>
+
+<p>将下面的内容替换进去</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse
+
+deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-updates main restricted universe multiverse
+
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse
+
+deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-security main restricted universe multiverse
+
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse
+
+deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial-backports main restricted universe multiverse
+
+deb http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted 
+
+deb-src http://mirrors.tuna.tsinghua.edu.cn/ubuntu-ports/ xenial main universe restricted 
+</code></pre></div>
+</td></tr></table>
+
+<h2 id="ap">开启无线AP模式<a class="headerlink" href="#ap" title="Permanent link">&para;</a></h2>
+<ol>
+<li>将github上面的wifi热点开源项目安装到本地</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo git clone https://github.com/oblique/create_ap
+<span class="nb">cd</span> create_ap
+sudo make install
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>安装依赖库</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo apt-get install util-linux procps hostapd iproute2 iw haveged dnsmasq
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>输入ifconfig显示网络接口</li>
+<li>打开热点</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>sudo create_ap wlan0 网卡 热点名 密码
+
+执行完成之后，检查是否wifi创建成功
+</code></pre></div>
+</td></tr></table>
+
+<ol>
+<li>开机自动启动热点</li>
+</ol>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>在/etc/rc.local中<span class="sb">`</span><span class="nb">exit</span> <span class="m">0</span><span class="sb">`</span> 的前面添加如下代码
+
+sudo create_ap wlan0 网卡 热点名称 密码 <span class="p">&amp;</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>修改完成之后，即可<code>sudo reboot</code> 重启电脑，默认的ip地址是<code>192.168.12.1</code></p>
+<p>参考资料：https://www.jianshu.com/p/9852b60d9b34</p>
+<p>至此，树莓派的系统配置就完成啦！</p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+        
+          <a href="../02_dev_env/" title="02_开发环境搭建" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02_开发环境搭建
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
+      
+        <script src="../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../js/baidu-tongji.js"></script>
+      
+    
+  </body>
+</html>

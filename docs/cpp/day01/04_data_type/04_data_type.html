@@ -1,0 +1,1205 @@
+
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="Copy to clipboard">
+      
+        <meta name="lang:clipboard.copied" content="Copied to clipboard">
+      
+        <meta name="lang:search.language" content="en">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="No matching documents">
+      
+        <meta name="lang:search.result.one" content="1 matching document">
+      
+        <meta name="lang:search.result.other" content="# matching documents">
+      
+        <meta name="lang:search.tokenizer" content="[\s\-]+">
+      
+      <link rel="shortcut icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>四、数据类型和变量 - 黑马机器人—C++</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#_1" tabindex="0" class="md-skip">
+        Skip to content
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <a href="../.." title="黑马机器人—C++" aria-label="黑马机器人—C++" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              黑马机器人—C++
+            </span>
+            <span class="md-header-nav__topic">
+              
+                四、数据类型和变量
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            Type to start searching
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer">
+    <a href="../.." title="黑马机器人—C++" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人—C++
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+    
+    <label class="md-nav__link" for="nav-1">
+      day01-C++基础入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        day01-C++基础入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../01_intro/" title="一、C++ 介绍" class="md-nav__link">
+      一、C++ 介绍
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02_env/" title="二、环境准备" class="md-nav__link">
+      二、环境准备
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03_hello/" title="三、HelloWorld" class="md-nav__link">
+      三、HelloWorld
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        四、数据类型和变量
+      </label>
+    
+    <a href="./" title="四、数据类型和变量" class="md-nav__link md-nav__link--active">
+      四、数据类型和变量
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 数据类型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 变量
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 声明和初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    2. 变量命名规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 常量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 变量长度
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../05_input_output/" title="五、输入输出" class="md-nav__link">
+      五、输入输出
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../06_statement/" title="六、条件与循环" class="md-nav__link">
+      六、条件与循环
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../07_namespace_array/" title="七、命名空间和数组" class="md-nav__link">
+      七、命名空间和数组
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      day02-Vector&函数
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        day02-Vector&函数
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/01_string_vector/" title="一、 字符串" class="md-nav__link">
+      一、 字符串
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day02/02_function/" title="二、 函数" class="md-nav__link">
+      二、 函数
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      day03-指针
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        day03-指针
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/01_pointer/" title="一、 指针" class="md-nav__link">
+      一、 指针
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/02_pointer_function/" title="二、指针与函数" class="md-nav__link">
+      二、指针与函数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day03/03_reference/" title="三、引用" class="md-nav__link">
+      三、引用
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      day04-类和对象
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        day04-类和对象
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/01_class_object/" title="一、类和对象" class="md-nav__link">
+      一、类和对象
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/02_special_constructor/" title="二、特殊成员函数" class="md-nav__link">
+      二、特殊成员函数
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day04/03_access_des/" title="三、其他细节" class="md-nav__link">
+      三、其他细节
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      day05-运算符重载&继承
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        day05-运算符重载&继承
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/01_operator/" title="一、运算符重载" class="md-nav__link">
+      一、运算符重载
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/02_lambda/" title="二、lambda表达式" class="md-nav__link">
+      二、lambda表达式
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day05/03_inherit/" title="三、继承" class="md-nav__link">
+      三、继承
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      day06-多态&智能指针
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        day06-多态&智能指针
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day06/01_dynamic/" title="一、多态" class="md-nav__link">
+      一、多态
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day06/02_smart_pointer/" title="二、智能指针" class="md-nav__link">
+      二、智能指针
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day06/03_dynamic_memory/" title="三、动态内存" class="md-nav__link">
+      三、动态内存
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      day07-异常&io
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        day07-异常&io
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/01_macro/" title="一、宏" class="md-nav__link">
+      一、宏
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/02_enum/" title="二、枚举" class="md-nav__link">
+      二、枚举
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/03_exception/" title="三、异常处理" class="md-nav__link">
+      三、异常处理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day07/04_io/" title="四、I/O操作" class="md-nav__link">
+      四、I/O操作
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      day08-模板&容器
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        day08-模板&容器
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/01_template/" title="一、模板编程" class="md-nav__link">
+      一、模板编程
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/02_container/" title="二、容器" class="md-nav__link">
+      二、容器
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day08/03_function_object/" title="三、 函数对象" class="md-nav__link">
+      三、 函数对象
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-9" type="checkbox" id="nav-9">
+    
+    <label class="md-nav__link" for="nav-9">
+      day09-线程&设计模式
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-9">
+        day09-线程&设计模式
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day09/01_thread/" title="一、线程" class="md-nav__link">
+      一、线程
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day09/02_mode/" title="二、 设计模式" class="md-nav__link">
+      二、 设计模式
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-10" type="checkbox" id="nav-10">
+    
+    <label class="md-nav__link" for="nav-10">
+      day10-make&cmake
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-10">
+        day10-make&cmake
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../day10/01_make_cmake/" title="一、make和cmake" class="md-nav__link">
+      一、make和cmake
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">Table of contents</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1" class="md-nav__link">
+    1. 数据类型
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2" class="md-nav__link">
+    2. 变量
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1_1" class="md-nav__link">
+    1. 声明和初始化
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2_1" class="md-nav__link">
+    2. 变量命名规则
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3" class="md-nav__link">
+    3. 常量
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#4" class="md-nav__link">
+    4. 变量长度
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="_1">四、数据类型和变量<a class="headerlink" href="#_1" title="Permanent link">#</a></h1>
+<h2 id="1">1. 数据类型<a class="headerlink" href="#1" title="Permanent link">#</a></h2>
+<blockquote>
+<p>与其他静态类型语言一样，C++也具备大多数语言的数据类型。除下表给出的数据类型之外，其实还有 <code>short</code> | <code>long</code> | <code>long long</code>  等 。 关于数据类型占用的字节长度其实不用刻意的去背，c++提供<code>sizeof()函数</code>来获取某种数据类型占用的空间大小。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>声明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整数类型</td>
+<td>int</td>
+</tr>
+<tr>
+<td>单精度浮点数</td>
+<td>float</td>
+</tr>
+<tr>
+<td>双精度浮点数</td>
+<td>double</td>
+</tr>
+<tr>
+<td>字符</td>
+<td>char</td>
+</tr>
+<tr>
+<td>字符串</td>
+<td>string</td>
+</tr>
+<tr>
+<td>布尔</td>
+<td>bool</td>
+</tr>
+</tbody>
+</table>
+<h2 id="2">2. 变量<a class="headerlink" href="#2" title="Permanent link">#</a></h2>
+<h3 id="1_1">1. 声明和初始化<a class="headerlink" href="#1_1" title="Permanent link">#</a></h3>
+<blockquote>
+<p>c++ 是强类型语言，任何变量在使用前必须先声明，并且在声明的时候必须要指定该变量的数据类型，即该变量未来能够存储的数据类型。</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+    <span class="c1">//先声明</span>
+    <span class="kt">int</span> <span class="n">age</span> <span class="p">;</span>
+    <span class="kt">double</span> <span class="n">price</span><span class="p">;</span>
+
+    <span class="c1">//后初始化</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="mi">10</span> <span class="p">;</span>
+    <span class="n">price</span> <span class="o">=</span> <span class="mf">20.3</span><span class="p">;</span>
+
+    <span class="c1">//声明及初始化</span>
+    <span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">20</span> <span class="p">;</span>
+
+    <span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+
+<ul>
+<li>变量声明以及初始化常用手法：</li>
+</ul>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kt">int</span> <span class="n">age</span> <span class="p">;</span> <span class="c1">//未初始化</span>
+
+<span class="kt">int</span> <span class="n">age</span> <span class="o">=</span> <span class="mi">21</span> <span class="p">;</span> <span class="c1">// C 方式初始化</span>
+
+<span class="kt">int</span> <span class="nf">age</span> <span class="p">(</span><span class="mi">21</span><span class="p">);</span> <span class="c1">//构造方法初始化</span>
+
+<span class="kt">int</span> <span class="n">age</span> <span class="p">{</span><span class="mi">21</span><span class="p">}</span> <span class="p">;</span> <span class="c1">//c++ 11标准开始的方式</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="2_1">2. 变量命名规则<a class="headerlink" href="#2_1" title="Permanent link">#</a></h3>
+<blockquote>
+<ol>
+<li>可以包含字母 、 数字 和下划线</li>
+<li>必须以字母或者下划线开始</li>
+</ol>
+<p>注意：在C++中，大写字母和小写字母被认为是两个不同的字符。因此，sum和SUM是两个不同的变量名。一般地，变量名用小写字母表示，与人们日常习惯一致，以增加可读性。应注意变量名不能与C++的关键字、系统函数名和类名相同</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>有效命名</th>
+<th>无效命名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Age</td>
+<td>2020_Age</td>
+</tr>
+<tr>
+<td>age</td>
+<td>Age+1</td>
+</tr>
+<tr>
+<td>_age</td>
+<td>$age</td>
+</tr>
+<tr>
+<td>My_Age</td>
+<td>My Age</td>
+</tr>
+<tr>
+<td>Int</td>
+<td>return</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3">3. 常量<a class="headerlink" href="#3" title="Permanent link">#</a></h3>
+<blockquote>
+<p>常量其实和变量没有多大区别， 有名字， 占据存储空间，可以是任何的基本类型，但只有一点不同，常量的值不允许变更。C++中的常量的声明需要使用 <code>const</code> 关键字，而python中的常量默认约定是全大写表示。</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+    <span class="k">const</span> <span class="kt">double</span> <span class="n">pi</span> <span class="p">{</span><span class="mf">3.1415926</span><span class="p">};</span>
+    <span class="k">const</span> <span class="kt">int</span> <span class="n">months_in_year</span><span class="p">{</span><span class="mi">12</span><span class="p">};</span>
+
+    <span class="n">pi</span> <span class="o">=</span> <span class="mf">2.5</span> <span class="p">;</span> <span class="c1">//将会出现编译错误</span>
+
+    <span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+
+<h3 id="4">4. 变量长度<a class="headerlink" href="#4" title="Permanent link">#</a></h3>
+<blockquote>
+<p><code>sizeof</code> 除了可以作用于类型身上之外，也可以作用于变量身上。</p>
+</blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+
+    <span class="kt">double</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">20.0</span><span class="p">;</span>
+    <span class="k">sizeof</span><span class="p">(</span><span class="n">a</span><span class="p">);</span> <span class="c1">//8</span>
+
+    <span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span> <span class="c1">//4</span>
+
+    <span class="k">return</span> <span class="mi">0</span> <span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</td></tr></table>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../03_hello/" title="三、HelloWorld" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                三、HelloWorld
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../05_input_output/" title="五、输入输出" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                五、输入输出
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+        <a href="https://www.czxy.com" target="_blank" rel="noopener">传智专修学院</a>版权所有
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+    
+  </body>
+</html>

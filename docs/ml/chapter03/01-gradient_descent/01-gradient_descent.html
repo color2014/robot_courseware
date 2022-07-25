@@ -1,0 +1,1181 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 深度学习">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-梯度下降 - 黑马智能机器人—深度学习</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#01-" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马智能机器人—深度学习" aria-label="黑马智能机器人—深度学习" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马智能机器人—深度学习" aria-label="黑马智能机器人—深度学习" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马智能机器人—深度学习</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-梯度下降
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马智能机器人—深度学习" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马智能机器人—深度学习
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1">
+    
+    <label class="md-nav__link" for="nav-1">
+      一、机器学习入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、机器学习入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/01-primer/" title="01-机器学习概述" class="md-nav__link">
+      01-机器学习概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/02-plinko/" title="02-幸运投球" class="md-nav__link">
+      02-幸运投球
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/03-knn/" title="03-KNN算法" class="md-nav__link">
+      03-KNN算法
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/04-optimize/" title="04-优化预测结果" class="md-nav__link">
+      04-优化预测结果
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter01/05-exercise/" title="05-推荐系统案例&作业练习" class="md-nav__link">
+      05-推荐系统案例&作业练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、线性回归&梯度下降
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、线性回归&梯度下降
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/01-linear_regression/" title="01-线性回归" class="md-nav__link">
+      01-线性回归
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/02-MAE%26MSE/" title="02-MAE vs MSE" class="md-nav__link">
+      02-MAE vs MSE
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/03-gradient_descent/" title="03-还记得大明湖畔的导数吗" class="md-nav__link">
+      03-还记得大明湖畔的导数吗
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/04-exercise/" title="04-作业练习" class="md-nav__link">
+      04-作业练习
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3" checked>
+    
+    <label class="md-nav__link" for="nav-3">
+      三、学习速率&回归进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、学习速率&回归进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-梯度下降
+      </label>
+    
+    <a href="./" title="01-梯度下降" class="md-nav__link md-nav__link--active">
+      01-梯度下降
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    机器学习的几个关键步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    重新用矩阵进行梯度下降
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    矩阵运算梯度下降公式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    矩阵运算实现梯度下降
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../02-learning_rate/" title="02-学习速率" class="md-nav__link">
+      02-学习速率
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../03-linear_regression/" title="03-线性回归进阶" class="md-nav__link">
+      03-线性回归进阶
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、决策树&感知机
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、决策树&感知机
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/01-decision_tree/" title="01-分类和回归-决策树" class="md-nav__link">
+      01-分类和回归-决策树
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/02-perceptron/" title="02-分类和回归-感知机" class="md-nav__link">
+      02-分类和回归-感知机
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、分类与逻辑回归
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、分类与逻辑回归
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/01-logic_regression/" title="01-分类与逻辑回归" class="md-nav__link">
+      01-分类与逻辑回归
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/02-cross_entropy/" title="02-交叉熵" class="md-nav__link">
+      02-交叉熵
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/03-Multi-Class_Logistic_Regression/" title="03-多分类回归" class="md-nav__link">
+      03-多分类回归
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/04-image_recognition/" title="04-手写数字识别" class="md-nav__link">
+      04-手写数字识别
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      六、神经网络&模型评估
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        六、神经网络&模型评估
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/01-cnn_demo/" title="01-CNN案例" class="md-nav__link">
+      01-CNN案例
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/02-neural_network/" title="02-机器学习&神经网络" class="md-nav__link">
+      02-机器学习&神经网络
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter06/03-performance_confusion_matrix/" title="03-模型评估" class="md-nav__link">
+      03-模型评估
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-7" type="checkbox" id="nav-7">
+    
+    <label class="md-nav__link" for="nav-7">
+      七、卷积神经网络
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-7">
+        七、卷积神经网络
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/01-CNN/" title="01-CNN入门" class="md-nav__link">
+      01-CNN入门
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter07/02-CNN/" title="02-CNN网络识别和训练" class="md-nav__link">
+      02-CNN网络识别和训练
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-8" type="checkbox" id="nav-8">
+    
+    <label class="md-nav__link" for="nav-8">
+      八、深度学习框架-keras
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-8">
+        八、深度学习框架-keras
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/01-keras/" title="01-深度学习框架" class="md-nav__link">
+      01-深度学习框架
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter08/02-exercise/" title="02-手写数字识别实战" class="md-nav__link">
+      02-手写数字识别实战
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    机器学习的几个关键步骤
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    重新用矩阵进行梯度下降
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    矩阵运算梯度下降公式
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    矩阵运算实现梯度下降
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="01-">01-梯度下降<a class="headerlink" href="#01-" title="Permanent link">&para;</a></h1>
+<h2 id="_1">机器学习的几个关键步骤<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<ol>
+<li>梯度下降算法实现 （一次梯度下降，更新一次m和b）</li>
+<li>训练达到梯度最低点 （多次的更新m和b，直到达到最低点）</li>
+<li>测试训练结果准确性 （用测试集的数据，来测试m和b预测的准确性）</li>
+<li>进行新的预测 （来进行新的预测）</li>
+</ol>
+<h2 id="_2">重新用矩阵进行梯度下降<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>回顾：</p>
+<p>两个矩阵如何相乘</p>
+<p>矩阵相乘的结果是什么样的</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">80</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">95</span><span class="p">,</span><span class="mi">230</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">104</span><span class="p">,</span><span class="mi">245</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">112</span><span class="p">,</span><span class="mi">247</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">125</span><span class="p">,</span><span class="mi">259</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">135</span><span class="p">,</span><span class="mi">262</span><span class="p">]</span>
+<span class="p">])</span>
+</code></pre></div>
+</td></tr></table>
+
+<p>矩阵能不能乘。矩阵乘出来是什么结果。1.</p>
+<p>Feature矩阵</p>
+<div>
+<div class="MathJax_Preview">
+\begin{bmatrix} Area_1 \\ Area_2 \\ Area_3  \\ Area_4 \\ Area_5 \\ Area_6\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+\begin{bmatrix} Area_1 \\ Area_2 \\ Area_3  \\ Area_4 \\ Area_5 \\ Area_6\end{bmatrix}
+</script>
+</div>
+<p>矩阵的形状是 （6,1）Weight矩阵，权重矩阵</p>
+<p><span><span class="MathJax_Preview">\begin{bmatrix} m \\ b\end{bmatrix}</span><script type="math/tex">\begin{bmatrix} m \\ b\end{bmatrix}</script></span>矩阵的形状是 （2,1)</p>
+<p>两个矩阵形状不同，不能相乘</p>
+<p>形状不一样的原因是， 房屋面积是变量<span><span class="MathJax_Preview">x</span><script type="math/tex">x</script></span> 与<span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span> 相乘， b是偏移量， 应该与常量1相乘</p>
+<div>
+<div class="MathJax_Preview">
+\begin{bmatrix} Area_1 &amp; 1\\ Area_2 &amp; 1\\ Area_3  &amp; 1\\ Area_4 &amp; 1\\ Area_5 &amp; 1\\ Area_6&amp; 1\end{bmatrix}
+× 
+\begin{bmatrix} m \\ b\end{bmatrix} = 
+\begin{bmatrix} Area_1*m+b \\ Area_2*m+b \\ Area_3*m+b  \\ Area_4*m+b \\ Area_5*m+b \\ Area_6*m+b\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+\begin{bmatrix} Area_1 & 1\\ Area_2 & 1\\ Area_3  & 1\\ Area_4 & 1\\ Area_5 & 1\\ Area_6& 1\end{bmatrix}
+× 
+\begin{bmatrix} m \\ b\end{bmatrix} = 
+\begin{bmatrix} Area_1*m+b \\ Area_2*m+b \\ Area_3*m+b  \\ Area_4*m+b \\ Area_5*m+b \\ Area_6*m+b\end{bmatrix}
+</script>
+</div>
+<p>直接Feature x Weight 就是预测的房价。</p>
+<div>
+<div class="MathJax_Preview">
+Feature ×  Weight - Label =  
+\begin{bmatrix} Area_1*m+b - Actual_1 \\ Area_2*m+b - Actual_2\\ Area_3*m+b - Actual_3 \\ Area_4*m+b - Actual_4\\ Area_5*m+b - Actual_5\\ Area_6*m+b - Actual_6\end{bmatrix}
+=
+\begin{bmatrix} Guess_1 - Actual_1 \\ Guess_2 - Actual_2\\ Guess_3 - Actual_3 \\ Guess_4 - Actual_4\\ Guess_5 - Actual_5\\ Guess_6 - Actual_6\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+Feature ×  Weight - Label =  
+\begin{bmatrix} Area_1*m+b - Actual_1 \\ Area_2*m+b - Actual_2\\ Area_3*m+b - Actual_3 \\ Area_4*m+b - Actual_4\\ Area_5*m+b - Actual_5\\ Area_6*m+b - Actual_6\end{bmatrix}
+=
+\begin{bmatrix} Guess_1 - Actual_1 \\ Guess_2 - Actual_2\\ Guess_3 - Actual_3 \\ Guess_4 - Actual_4\\ Guess_5 - Actual_5\\ Guess_6 - Actual_6\end{bmatrix}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+Feature.T = \begin{bmatrix} Area_1 &amp; Area_2 &amp; Area_3  &amp; Area_4 &amp; Area_5 &amp; Area_6 \\1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp; 1 &amp;\end{bmatrix}
+</div>
+<script type="math/tex; mode=display">
+Feature.T = \begin{bmatrix} Area_1 & Area_2 & Area_3  & Area_4 & Area_5 & Area_6 \\1 & 1 & 1 & 1 & 1 & 1 &\end{bmatrix}
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+Feature.T * (Feature * Weight - Label) =  \begin {bmatrix}  \displaystyle \sum_{i=1}^{6} Area_i \left(  Guess_i - Actual_{i}\right) \\ \displaystyle \sum_{i=1}^{6} \left(Guess_i-  Actual_{i} \right) \end {bmatrix}
+</div>
+<script type="math/tex; mode=display">
+Feature.T * (Feature * Weight - Label) =  \begin {bmatrix}  \displaystyle \sum_{i=1}^{6} Area_i \left(  Guess_i - Actual_{i}\right) \\ \displaystyle \sum_{i=1}^{6} \left(Guess_i-  Actual_{i} \right) \end {bmatrix}
+</script>
+</div>
+<p>矩阵运算的前两行，分别是 <span><span class="MathJax_Preview">mse</span><script type="math/tex">mse</script></span> 对 <span><span class="MathJax_Preview">m</span><script type="math/tex">m</script></span> 和 <span><span class="MathJax_Preview">b</span><script type="math/tex">b</script></span> 的偏导数</p>
+<div>
+<div class="MathJax_Preview">
+\dfrac {MSE}{\Delta b} = \displaystyle \sum_{i=1}^{10} \left(- 2 Actual_{i} + 2 b + 2 m x\right)
+</div>
+<script type="math/tex; mode=display">
+\dfrac {MSE}{\Delta b} = \displaystyle \sum_{i=1}^{10} \left(- 2 Actual_{i} + 2 b + 2 m x\right)
+</script>
+</div>
+<div>
+<div class="MathJax_Preview">
+\dfrac {MSE}{\Delta m} = \displaystyle \sum_{i=1}^{10} 2 x \left(- Actual_{i} + b + m x\right)
+</div>
+<script type="math/tex; mode=display">
+\dfrac {MSE}{\Delta m} = \displaystyle \sum_{i=1}^{10} 2 x \left(- Actual_{i} + b + m x\right)
+</script>
+</div>
+<h2 id="_3">矩阵运算梯度下降公式<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h2>
+<div>
+<div class="MathJax_Preview">
+MSE对m和b的偏导数 = Feature.T * (Feature * Weight - Label)
+</div>
+<script type="math/tex; mode=display">
+MSE对m和b的偏导数 = Feature.T * (Feature * Weight - Label)
+</script>
+</div>
+<h2 id="_4">矩阵运算实现梯度下降<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
+    <span class="p">[</span><span class="mi">80</span><span class="p">,</span><span class="mi">200</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">95</span><span class="p">,</span><span class="mi">230</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">104</span><span class="p">,</span><span class="mi">245</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">112</span><span class="p">,</span><span class="mi">247</span><span class="p">],</span>
+    <span class="p">[</span><span class="mi">125</span><span class="p">,</span><span class="mi">259</span><span class="p">],</span>
+     <span class="p">[</span><span class="mi">135</span><span class="p">,</span><span class="mi">262</span><span class="p">]</span>
+<span class="p">])</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">feature</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">ones</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">feature</span><span class="p">),</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">Feature</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">feature</span> <span class="p">,</span><span class="n">ones</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">Label</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">:]</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">weight</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">weight</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Feature</span><span class="o">.</span><span class="n">T</span><span class="p">,(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span><span class="n">weight</span><span class="p">)</span><span class="o">-</span><span class="n">Label</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="n">learningrate</span> <span class="o">=</span> <span class="mf">0.00001</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">def</span> <span class="nf">gradentdecent</span><span class="p">():</span>
+    <span class="k">global</span> <span class="n">weight</span>
+    <span class="n">weight</span> <span class="o">=</span> <span class="n">weight</span> <span class="o">-</span> <span class="n">learningrate</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Feature</span><span class="o">.</span><span class="n">T</span><span class="p">,(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">Feature</span><span class="p">,</span><span class="n">weight</span><span class="p">)</span><span class="o">-</span><span class="n">Label</span><span class="p">))</span>
+</code></pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="o">%%</span><span class="n">time</span>
+<span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000000</span><span class="p">):</span>
+    <span class="n">gradentdecent</span><span class="p">()</span>
+    <span class="n">count</span> <span class="o">+=</span><span class="mi">1</span>
+    <span class="k">if</span> <span class="n">count</span> <span class="o">%</span> <span class="mi">1000000</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">weight</span><span class="p">)</span>
+</code></pre></div>
+</td></tr></table>
+
+<blockquote>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code>[  1.08593592]
+ [122.67595099]
+</code></pre></div>
+</td></tr></table>
+
+</blockquote>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="学习目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                学习目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../02-learning_rate/" title="02-学习速率" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-学习速率
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://lib.baomitu.com/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>

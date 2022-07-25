@@ -1,0 +1,1526 @@
+
+
+
+
+<!doctype html>
+<html lang="zh" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <meta http-equiv="x-ua-compatible" content="ie=edge">
+      
+        <meta name="description" content="传智专修学院 人工智能和机器人实验室 PCL 3D点云 点云配准 点云分割 点云融合 曲面重建">
+      
+      
+      
+      
+        <meta name="lang:clipboard.copy" content="复制">
+      
+        <meta name="lang:clipboard.copied" content="已复制">
+      
+        <meta name="lang:search.language" content="jp">
+      
+        <meta name="lang:search.pipeline.stopwords" content="True">
+      
+        <meta name="lang:search.pipeline.trimmer" content="True">
+      
+        <meta name="lang:search.result.none" content="没有找到符合条件的结果">
+      
+        <meta name="lang:search.result.one" content="找到 1 个符合条件的结果">
+      
+        <meta name="lang:search.result.other" content="# 个符合条件的结果">
+      
+        <meta name="lang:search.tokenizer" content="[\uff0c\u3002]+">
+      
+      <link rel="shortcut icon" href="../../assets/favicon.ico">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
+    
+    
+      
+        <title>01-点云及其可视化 - 黑马机器人 | PCL-3D点云</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/application.adb8469c.css">
+      
+      
+    
+    
+      <script src="../../assets/javascripts/modernizr.86422ebf.js"></script>
+    
+    
+      
+        <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+        <!--<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">-->
+        <link rel="stylesheet" href="https://fonts.geekzu.org/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>body,input{font-family:"Roboto","Helvetica Neue",Helvetica,Arial,sans-serif}code,kbd,pre{font-family:"Roboto Mono","Courier New",Courier,monospace}</style>
+      
+    
+    <link rel="stylesheet" href="../../assets/fonts/material-icons.css">
+    
+    
+    
+      
+    
+    
+  </head>
+  
+    <body dir="ltr">
+  
+    <svg class="md-svg">
+      <defs>
+        
+        
+      </defs>
+    </svg>
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
+    
+      <a href="#01-" tabindex="0" class="md-skip">
+        跳转至
+      </a>
+    
+    
+      <header class="md-header" data-md-component="header">
+  <nav class="md-header-nav md-grid">
+    <div class="md-flex">
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <!-- <a href="../.." title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo"> -->
+        <a href="/docs/" title="黑马机器人 | PCL-3D点云" aria-label="黑马机器人 | PCL-3D点云" class="md-header-nav__button md-logo">
+          
+            <i class="md-icon"></i>
+          
+        </a>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        <label class="md-icon md-icon--menu md-header-nav__button" for="__drawer"></label>
+      </div>
+      <div class="md-flex__cell md-flex__cell--stretch">
+        <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
+          
+            <span class="md-header-nav__topic">
+              <a href="../..">黑马机器人 | PCL-3D点云</a>
+            </span>
+            <span class="md-header-nav__topic">
+              
+                01-点云及其可视化
+              
+            </span>
+          
+        </div>
+      </div>
+      <div class="md-flex__cell md-flex__cell--shrink">
+        
+          <label class="md-icon md-icon--search md-header-nav__button" for="__search"></label>
+          
+<div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="搜索" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <label class="md-icon md-search__icon" for="__search"></label>
+      <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
+        &#xE5CD;
+      </button>
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="result">
+          <div class="md-search-result__meta">
+            键入以开始搜索
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+        
+      </div>
+      
+    </div>
+  </nav>
+</header>
+    
+    <div class="md-container">
+      
+        
+      
+      
+      <main class="md-main" role="main">
+        <div class="md-main__inner md-grid" data-md-component="container">
+          
+            
+              <div class="md-sidebar md-sidebar--primary" data-md-component="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    <nav class="md-nav md-nav--primary" data-md-level="0">
+  <label class="md-nav__title md-nav__title--site" for="__drawer" style="display: none;">
+    <a href="../.." title="黑马机器人 | PCL-3D点云" class="md-nav__button md-logo">
+      
+        <i class="md-icon"></i>
+      
+    </a>
+    黑马机器人 | PCL-3D点云
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-1" type="checkbox" id="nav-1" checked>
+    
+    <label class="md-nav__link" for="nav-1">
+      一、点云入门
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-1">
+        一、点云入门
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../" title="今日目标" class="md-nav__link">
+      今日目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+  
+
+
+  <li class="md-nav__item md-nav__item--active">
+    
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    
+      
+    
+    
+      <label class="md-nav__link md-nav__link--active" for="__toc">
+        01-点云及其可视化
+      </label>
+    
+    <a href="./" title="01-点云及其可视化" class="md-nav__link md-nav__link--active">
+      01-点云及其可视化
+    </a>
+    
+      
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcl" class="md-nav__link">
+    PCL的起源与发展
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcl-demo" class="md-nav__link">
+    PCL-Demo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    数据结构
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pointcloud" class="md-nav__link">
+    基本类型PointCloud
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    衍生类型
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    点云常见处理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualization" class="md-nav__link">
+    可视化Visualization
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pcl_viewer" class="md-nav__link">
+    pcl_viewer工具
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudviewer" class="md-nav__link">
+    CloudViewer *
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pclvisualizer" class="md-nav__link">
+    PCLVisualizer *
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    矩阵变换
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+    
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../io/" title="02-点云输入输出 *" class="md-nav__link">
+      02-点云输入输出 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../decomposition/" title="03-点云拓扑结构 *" class="md-nav__link">
+      03-点云拓扑结构 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-2" type="checkbox" id="nav-2">
+    
+    <label class="md-nav__link" for="nav-2">
+      二、点云进阶
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-2">
+        二、点云进阶
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filtering/" title="01-点云滤波Filtering *" class="md-nav__link">
+      01-点云滤波Filtering *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/filters/" title="02-滤波器及其原理" class="md-nav__link">
+      02-滤波器及其原理
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/range_image/" title="03-深度图RangeImage" class="md-nav__link">
+      03-深度图RangeImage
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/keypoints/" title="04-关键点Keypoints" class="md-nav__link">
+      04-关键点Keypoints
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/RANSAC/" title="05-随机采样一致性算法RANSAC *" class="md-nav__link">
+      05-随机采样一致性算法RANSAC *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/features/" title="06-特征描述与提取Features" class="md-nav__link">
+      06-特征描述与提取Features
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/normal_estimation/" title="07-点云表面法线估算 *" class="md-nav__link">
+      07-点云表面法线估算 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter02/descriptor/" title="08-特征检测与描述子 *" class="md-nav__link">
+      08-特征检测与描述子 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-3" type="checkbox" id="nav-3">
+    
+    <label class="md-nav__link" for="nav-3">
+      三、点云高级
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-3">
+        三、点云高级
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/point_cloud_math/" title="01-点云中的数学" class="md-nav__link">
+      01-点云中的数学
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_intro/" title="02-点云配准原理概述" class="md-nav__link">
+      02-点云配准原理概述
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration/" title="03-点云配准流程示例 *" class="md-nav__link">
+      03-点云配准流程示例 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_interactive_icp/" title="04-配准之交互式ICP" class="md-nav__link">
+      04-配准之交互式ICP
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter03/registration_theory/" title="05-点云配准数学原理" class="md-nav__link">
+      05-点云配准数学原理
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-4" type="checkbox" id="nav-4">
+    
+    <label class="md-nav__link" for="nav-4">
+      四、点云应用
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-4">
+        四、点云应用
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/segmentation/" title="01-点云分割" class="md-nav__link">
+      01-点云分割
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/resampling/" title="02-点云曲面重建" class="md-nav__link">
+      02-点云曲面重建
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/bounding_volumes/" title="03-3D包容盒子" class="md-nav__link">
+      03-3D包容盒子
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter04/template_alignment/" title="04-点云模板匹配 *" class="md-nav__link">
+      04-点云模板匹配 *
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-5" type="checkbox" id="nav-5">
+    
+    <label class="md-nav__link" for="nav-5">
+      五、2D与3D融合
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-5">
+        五、2D与3D融合
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/" title="学习目标" class="md-nav__link">
+      学习目标
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D/" title="01-2D与3D融合 *" class="md-nav__link">
+      01-2D与3D融合 *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/handeye/" title="02-手眼标定(外参标定) *" class="md-nav__link">
+      02-手眼标定(外参标定) *
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../chapter05/2D_3D_exercise/" title="03-2D与3D融合实践" class="md-nav__link">
+      03-2D与3D融合实践
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+      
+      
+      
+
+
+  <li class="md-nav__item md-nav__item--nested">
+    
+      <input class="md-toggle md-nav__toggle" data-md-toggle="nav-6" type="checkbox" id="nav-6">
+    
+    <label class="md-nav__link" for="nav-6">
+      附录：相关开发环境
+    </label>
+    <nav class="md-nav" data-md-component="collapsible" data-md-level="1">
+      <label class="md-nav__title" for="nav-6">
+        附录：相关开发环境
+      </label>
+      <ul class="md-nav__list" data-md-scrollfix>
+        
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/" title="前言" class="md-nav__link">
+      前言
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/pcl/" title="01-编译安装PCL点云库" class="md-nav__link">
+      01-编译安装PCL点云库
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/python_pcl/" title="02-python-pcl" class="md-nav__link">
+      02-python-pcl
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/kinect2/" title="03-编译安装Kinect2驱动" class="md-nav__link">
+      03-编译安装Kinect2驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/astra_camera/" title="04-编译安装Astra驱动" class="md-nav__link">
+      04-编译安装Astra驱动
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/rpath/" title="05-rpath解决so动态库依赖" class="md-nav__link">
+      05-rpath解决so动态库依赖
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/other/" title="06-编译及运行问题收集" class="md-nav__link">
+      06-编译及运行问题收集
+    </a>
+  </li>
+
+        
+          
+          
+          
+
+
+  <li class="md-nav__item">
+    <a href="../../env/robwork/" title="07-编译安装RobWork" class="md-nav__link">
+      07-编译安装RobWork
+    </a>
+  </li>
+
+        
+      </ul>
+    </nav>
+  </li>
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">目录</label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    概述
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcl" class="md-nav__link">
+    PCL的起源与发展
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pcl-demo" class="md-nav__link">
+    PCL-Demo
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    数据结构
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pointcloud" class="md-nav__link">
+    基本类型PointCloud
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    衍生类型
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    点云常见处理
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#visualization" class="md-nav__link">
+    可视化Visualization
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pcl_viewer" class="md-nav__link">
+    pcl_viewer工具
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cloudviewer" class="md-nav__link">
+    CloudViewer *
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pclvisualizer" class="md-nav__link">
+    PCLVisualizer *
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    矩阵变换
+  </a>
+  
+</li>
+      
+      
+      
+      
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content">
+            <article class="md-content__inner md-typeset">
+              
+                
+                
+                <h1 id="01-">01-点云及其可视化<a class="headerlink" href="#01-" title="Permanent link">&para;</a></h1>
+<h2 id="_1">概述<a class="headerlink" href="#_1" title="Permanent link">&para;</a></h2>
+<p>点云Point Cloud是三维空间中，表达目标空间分布和目标表面特性的点的集合，点云通常可以从深度相机中直接获取，也可以从CAD等软件中生成。点云是用于表示多维点集合的数据结构，通常用于表示三维数据。在3D点云中，这些点通常代表采样表面的X，Y和Z几何坐标。当存在颜色信息时（请参见下图），点云变为4D。</p>
+<p>三维图像有以下几种表现形式：深度图（描述物体与相机的距离信息），几何模型（由CAD等软件生成），点云模型（逆向工程设备采集生成）</p>
+<p>一些常见的点云图如下：</p>
+<ul>
+<li>人的侧脸3D</li>
+</ul>
+<p><img alt="man" src="../assets/man.png" /></p>
+<ul>
+<li>一只兔子3D</li>
+</ul>
+<p><img alt="pcl_bunny.png" src="../assets/pcl_bunny.png" /></p>
+<ul>
+<li>桌子及牛奶4D</li>
+</ul>
+<p><img alt="pcl_table.png" src="../assets/pcl_table.png" /></p>
+<p><strong>PCL（Point Cloud Library）</strong>是用于2D / 3D图像和点云处理的大型开源跨平台的C++编程库。 PCL框架实现了大量点云相关的通用算法和高效的数据结构。内容涉及了点云的获取、滤波、分割、配准、检索、特征提取、特征估计，表面重建、识别、模型拟合、追踪、曲面重建、可视化等等，这些算法可用于从嘈杂的数据中过滤出异常值，将3D点云缝合在一起，分割场景的部分区域，提取关键点并计算描述符，根据物体的几何外观识别实际物体，创建表面点云并将其可视化。支持多种操作系统，可以在Windows、Linux、MacOS X、Android、部分嵌入式实时系统上运行。</p>
+<p>如果说OpenCV是2D信息获取与处理的结晶，那么PCL就在3D信息获取与处理上也具有相同的地位。相比图像数据，点云数据多了一个维度，因此能够更全面的刻画三维场景中的对象。随着智能机器人，包括机械臂，无人汽车，无人机，服务机器人等快速普及和应用，点云处理及其背后的3D视觉，正在成为一个越来越重要且越来越活跃的领域。</p>
+<p>此外，PCL是BSD授权方式，可以进行完全免费的商业和学术应用。</p>
+<h2 id="pcl">PCL的起源与发展<a class="headerlink" href="#pcl" title="Permanent link">&para;</a></h2>
+<p>PCL 起初是 ROS(Robot Operating System )下由来自斯坦福大学的年轻博士Radu等人维护和开发的开源项目。主要应用于机器人研究应用领域，随着各个算法模块的积累，于 2011 年独立出来，正式与全球 3D信息获取处理的同行一起，组建了强大的开发维护团队，以多所知名大学、研究所和相关硬件、软件公司为主。截止目前 , 发展非常迅速,不断有新的研究机构等加入,在 Willow Garage，Nvidia, Google, Toyota, Trimble, Urban Robotics, Honda Research  Institute 等多个全球知名公司的资金支持下，不断提出新的开发计划,代码更新非常活跃 , 至今（2019年10月）从 1.0 版本已经发布到 <a href="https://github.com/PointCloudLibrary/pcl/releases/tag/pcl-1.9.1">1.9.1</a> 版本。</p>
+<p>该项目是由来自许多不同组织的众多工程师和科学家开发的，分布在世界各地，包括：</p>
+<p><img alt="pcl_developing.png" src="../assets/pcl_developing.png" /></p>
+<p><img alt="pcl_map.png" src="../assets/pcl_map.png" /></p>
+<ul>
+<li>相关链接：</li>
+</ul>
+<p><a href="http://pointclouds.org">官网链接</a></p>
+<p><a href="http://pointclouds.org/about/">PCL官网介绍</a></p>
+<p><a href="http://pointclouds.org/documentation/">官网文档</a></p>
+<p><a href="http://pointclouds.org/documentation/tutorials/">官方教程</a></p>
+<p><a href="http://docs.pointclouds.org/1.9.1/">PCL-API-1.9.1</a></p>
+<h2 id="pcl-demo">PCL-Demo<a class="headerlink" href="#pcl-demo" title="Permanent link">&para;</a></h2>
+<ul>
+<li>
+<p>配置根目录CMakeLists.txt</p>
+<div class="highlight"><pre><span></span><code><span class="nb">cmake_minimum_required</span><span class="p">(</span><span class="s">VERSION</span> <span class="s">3.14</span><span class="p">)</span>
+<span class="nb">project</span><span class="p">(</span><span class="s">PCLDemo</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_CXX_STANDARD</span> <span class="s">14</span><span class="p">)</span>
+
+<span class="c"># 设置输出根目录为build/Debug</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">OUTPUT_DIRECTORY_ROOT</span> <span class="o">${</span><span class="nv">CMAKE_CURRENT_SOURCE_DIR</span><span class="o">}</span><span class="s">/build/</span><span class="o">${</span><span class="nv">CMAKE_BUILD_TYPE</span><span class="o">}</span><span class="p">)</span>
+<span class="c"># 设置可执行程序输出到build/Debug/bin目录</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_RUNTIME_OUTPUT_DIRECTORY</span> <span class="s2">&quot;${OUTPUT_DIRECTORY_ROOT}/bin&quot;</span> <span class="s">CACHE</span> <span class="s">PATH</span> <span class="s2">&quot;Runtime directory&quot;</span> <span class="s">FORCE</span><span class="p">)</span>
+<span class="c"># 设置库文件输出到build/Debug/lib目录</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_LIBRARY_OUTPUT_DIRECTORY</span> <span class="s2">&quot;${OUTPUT_DIRECTORY_ROOT}/lib&quot;</span> <span class="s">CACHE</span> <span class="s">PATH</span> <span class="s2">&quot;Library directory&quot;</span> <span class="s">FORCE</span><span class="p">)</span>
+<span class="nb">set</span><span class="p">(</span><span class="s">CMAKE_ARCHIVE_OUTPUT_DIRECTORY</span> <span class="s2">&quot;${OUTPUT_DIRECTORY_ROOT}/lib&quot;</span> <span class="s">CACHE</span> <span class="s">PATH</span> <span class="s2">&quot;Archive directory&quot;</span> <span class="s">FORCE</span><span class="p">)</span>
+
+<span class="nb">find_package</span><span class="p">(</span><span class="s">PCL</span> <span class="s">REQUIRED</span><span class="p">)</span>
+<span class="c"># 包含头文件目录</span>
+<span class="nb">include_directories</span><span class="p">(</span><span class="o">${</span><span class="nv">PCL_INCLUDE_DIRS</span><span class="o">}</span><span class="p">)</span>
+<span class="c"># 设置依赖库链接目录</span>
+<span class="nb">link_directories</span><span class="p">(</span><span class="o">${</span><span class="nv">PCL_LIBRARY_DIRS</span><span class="o">}</span><span class="p">)</span>
+<span class="c"># 添加预处理器和编译器标记</span>
+<span class="nb">add_definitions</span><span class="p">(</span><span class="o">${</span><span class="nv">PCL_DEFINITIONS</span><span class="o">}</span><span class="p">)</span>
+
+<span class="nb">add_executable</span><span class="p">(</span><span class="s">PCLDemo</span> <span class="s">main.cpp</span><span class="p">)</span>
+<span class="nb">target_link_libraries</span><span class="p">(</span><span class="s">PCLDemo</span> <span class="o">${</span><span class="nv">PCL_LIBRARIES</span><span class="o">}</span><span class="p">)</span>
+</code></pre></div>
+
+</li>
+</ul>
+<ul>
+<li>
+<p>创建测试文件main.cpp</p>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/cloud_viewer.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// 创建PointCloud的智能指针</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGBA</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGBA</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="c1">// 加载pcd文件到cloud</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="s">&quot;./data/pcl_logo.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">CloudViewer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;Cloud Viewer&quot;</span><span class="p">);</span>
+    <span class="c1">//这里会一直阻塞直到点云被渲染</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">showCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+
+    <span class="c1">// 循环判断是否退出</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// 你可以在这里对点云做很多处理</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</li>
+</ul>
+<ul>
+<li>
+<p>拷贝文件到build/Debug/bin/data，目录结构如下</p>
+<div class="highlight"><pre><span></span><code>.
+├── build
+│   └── Debug
+│       └── bin
+│           ├── data
+│           │   └── pcl_logo.pcd
+│           └── PCLDemo
+├── cmake-build-debug
+├── CMakeLists.txt
+└── main.cpp
+</code></pre></div>
+
+</li>
+</ul>
+<ul>
+<li>编译运行程序，效果如下</li>
+</ul>
+<p><img alt="" src="../assets/pcl_cloud_viewer.png" /></p>
+<h2 id="_2">数据结构<a class="headerlink" href="#_2" title="Permanent link">&para;</a></h2>
+<p>根据激光测量原理得到的点云，包含三维坐标信息(xyz)和激光反射强度信息（intensity），激光反射强度与仪器的激光发射能量、波长，目标的表面材质、粗糙程度、入射角相关。根据摄影测量原理得到的点云，包括三维坐标（xyz）和颜色信息（rgb）。结合两个原理的多传感器融合技术（多见于手持式三维扫描仪），能够同时得到这三种信息。</p>
+<h3 id="pointcloud">基本类型PointCloud<a class="headerlink" href="#pointcloud" title="Permanent link">&para;</a></h3>
+<p>PCL的基本数据类型是<code>PointCloud</code>，一个<code>PointCloud</code>是一个C++的模板类，它包含了以下字段：</p>
+<ul>
+<li><code>width(int)</code>：指定点云数据集的宽度<ul>
+<li>对于无组织格式的数据集，width代表了所有点的总数</li>
+<li>对于有组织格式的数据集，width代表了一行中的总点数</li>
+</ul>
+</li>
+<li><code>height(int)</code>：制定点云数据集的高度<ul>
+<li>对于无组织格式的数据集，值为1</li>
+<li>对于有组织格式的数据集，表示总行数</li>
+</ul>
+</li>
+<li><code>points(std::vector&lt;PointT&gt;)</code>：包含所有PointT类型的点的数据列表</li>
+</ul>
+<h3 id="_3">衍生类型<a class="headerlink" href="#_3" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>PointXYZ</strong> - float x, y, z</li>
+<li><strong>PointXYZI</strong> - float x, y, z, intensity</li>
+<li><strong>PointXYZRGB</strong> - float x, y, z, rgb</li>
+<li><strong>PointXYZRGBA</strong> - float x, y, z, uint32_t rgba</li>
+<li><strong>Normal</strong> - float normal[3], curvature 法线方向，对应的曲率的测量值</li>
+<li><strong>PointNormal</strong> - float x, y, z, normal[3], curvature 采样点，法线和曲率</li>
+<li><strong>Histogram</strong> - float histogram[N] 用于存储一般用途的n维直方图</li>
+</ul>
+<p>具体类型及描述可参考<a href="http://pointclouds.org/documentation/tutorials/adding_custom_ptype.php#id2">PointT官方文档</a></p>
+<h2 id="_4">点云常见处理<a class="headerlink" href="#_4" title="Permanent link">&para;</a></h2>
+<p><img alt="img" src="../assets/pcl_dependency_graph2.png" /></p>
+<h2 id="visualization">可视化Visualization<a class="headerlink" href="#visualization" title="Permanent link">&para;</a></h2>
+<p>科学计算可视化（Visualization in Scientific Computing）能够把科学数据（包括测量获得的数值、图像或者计算中设计、产生的数字信息）变为直观的、可以用以图形图像信息表示的、随时间和空间变化的物理现象或物理量。进而呈现在研究者面前，使他们可以方便的观察、模拟和计算。</p>
+<h3 id="pcl_viewer">pcl_viewer工具<a class="headerlink" href="#pcl_viewer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p><strong>基本使用</strong></p>
+<p>进入：<code>pcl_viewer xxxxx.pcd</code></p>
+<p>帮助：在界面中输入h，可以在控制台看到帮助信息</p>
+<p>退出：界面中输入q</p>
+<p>放大缩小：鼠标滚轮 或 Alt + [+/-]</p>
+<p>平移：Shift+鼠标拖拽</p>
+<p>旋转：Ctrl+鼠标拖拽</p>
+</li>
+</ul>
+<ul>
+<li>
+<p><strong>其他技巧</strong></p>
+<p>修改点颜色：数字1,2,3,4,5....9，重复按1可切换不同颜色方便观察</p>
+<p>放大缩小点：放大Ctrl+Shift+加号，缩小 Ctrl+减号</p>
+<p>保存截图：<code>j</code></p>
+<p>显示颜色尺寸：<code>u</code></p>
+<p>显示比例尺寸：<code>g</code></p>
+<p>在控制列出所有几何和颜色信息：<code>l</code></p>
+</li>
+</ul>
+<ul>
+<li>
+<p><strong>鼠标选点打印坐标</strong></p>
+<p>选点模式进入：<code>pcl_viewer -use_point_picking bunny.pcd</code></p>
+<p>选择指定点：shift+鼠标左键</p>
+</li>
+</ul>
+<div class="admonition info">
+<p class="admonition-title">参考</p>
+<p>更多关于PCL自带工具使用的文档参见：<a href="http://pointclouds.org/documentation/tutorials/walkthrough.php#Binaries">http://pointclouds.org/documentation/tutorials/walkthrough.php#Binaries</a></p>
+</div>
+<h3 id="cloudviewer">CloudViewer *<a class="headerlink" href="#cloudviewer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>使用示例：<code>cloud_viewer.cpp</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/cloud_viewer.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="n">user_data</span><span class="p">;</span>
+
+<span class="kt">void</span>
+<span class="nf">viewerOneOff</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="o">&amp;</span><span class="n">viewer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 设置背景色为粉红色</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span> <span class="n">o</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">o</span><span class="p">.</span><span class="n">z</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="c1">//    添加一个圆心为o，半径为0.25m的球体</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addSphere</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="s">&quot;sphere&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;i only run once&quot;</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span>
+<span class="nf">viewerPsycho</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="o">&amp;</span><span class="n">viewer</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">static</span> <span class="kt">unsigned</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">stringstream</span> <span class="n">ss</span><span class="p">;</span>
+    <span class="n">ss</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Once per viewer loop: &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">count</span><span class="o">++</span><span class="p">;</span>
+    <span class="c1">// 每次刷新时，移除text，添加新的text</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">removeShape</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addText</span><span class="p">(</span><span class="n">ss</span><span class="p">.</span><span class="n">str</span><span class="p">(),</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">300</span><span class="p">,</span> <span class="s">&quot;text&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">//FIXME: possible race condition here:</span>
+    <span class="n">user_data</span><span class="o">++</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGBA</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGBA</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="s">&quot;./data/pcl_logo.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">CloudViewer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;Cloud Viewer&quot;</span><span class="p">);</span>
+
+    <span class="c1">//这里会一直阻塞直到点云被渲染</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">showCloud</span><span class="p">(</span><span class="n">cloud</span><span class="p">);</span>
+
+    <span class="c1">// 只会调用一次 (非必须)</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">runOnVisualizationThreadOnce</span> <span class="p">(</span><span class="n">viewerOneOff</span><span class="p">);</span>
+    <span class="c1">// 每次可视化迭代都会调用一次（频繁调用） (非必须)</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">runOnVisualizationThread</span> <span class="p">(</span><span class="n">viewerPsycho</span><span class="p">);</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">user_data</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>输出结果</li>
+</ul>
+<p><img alt="" src="../assets/cloud_viewer_demo.png" /></p>
+<h3 id="pclvisualizer">PCLVisualizer *<a class="headerlink" href="#pclvisualizer" title="Permanent link">&para;</a></h3>
+<ul>
+<li>使用示例：<code>pcl_visualizer.cpp</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pcl/io/io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="s">&quot;./data/bunny.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud</span><span class="p">);</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGB</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">cloud_milk</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGB</span><span class="o">&gt;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="s">&quot;./data/milk_color.pcd&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">cloud_milk</span><span class="p">);</span>
+
+    <span class="c1">// 创建PCLVisualizer</span>
+    <span class="n">boost</span><span class="o">::</span><span class="n">shared_ptr</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span><span class="o">&gt;</span> <span class="n">viewer</span> <span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="p">(</span><span class="s">&quot;3D Viewer&quot;</span><span class="p">));</span>
+
+    <span class="c1">// 设置背景色为灰色（非必须）</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">setBackgroundColor</span> <span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+
+    <span class="c1">// 添加一个普通点云 (可以设置指定颜色，也可以去掉single_color参数不设置)</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">single_color</span><span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">cloud</span><span class="p">,</span> <span class="n">single_color</span><span class="p">,</span> <span class="s">&quot;sample cloud&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">setPointCloudRenderingProperties</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;sample cloud&quot;</span><span class="p">);</span>
+
+    <span class="c1">// 再添加一个彩色点云及配置</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerRGBField</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGB</span><span class="o">&gt;</span> <span class="n">rgb</span><span class="p">(</span><span class="n">cloud_milk</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">addPointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZRGB</span><span class="o">&gt;</span> <span class="p">(</span><span class="n">cloud_milk</span><span class="p">,</span> <span class="n">rgb</span><span class="p">,</span> <span class="s">&quot;sample cloud milk&quot;</span><span class="p">);</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">setPointCloudRenderingProperties</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&quot;sample cloud milk&quot;</span><span class="p">);</span>
+
+    <span class="c1">// 添加一个0.5倍缩放的坐标系（非必须）</span>
+    <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">addCoordinateSystem</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">);</span>
+
+    <span class="c1">// 直到窗口关闭才结束循环</span>
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="o">-&gt;</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span>
+        <span class="c1">// 每次循环调用内部的重绘函数</span>
+        <span class="n">viewer</span><span class="o">-&gt;</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>输出结果</li>
+</ul>
+<p><img alt="" src="../assets/pcl_visualizer.png" /></p>
+<h2 id="_5">矩阵变换<a class="headerlink" href="#_5" title="Permanent link">&para;</a></h2>
+<ul>
+<li>核心函数：<code>pcl_transform.cpp</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="c1">// 创建仿射变换对象</span>
+<span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span> <span class="n">transform_2</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="o">::</span><span class="n">Identity</span><span class="p">();</span>
+<span class="c1">// 在x轴平移0.8m</span>
+<span class="n">transform_2</span><span class="p">.</span><span class="n">translation</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">;</span>
+<span class="c1">// 绕Z轴先转45度（逆时针）</span>
+<span class="n">transform_2</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">Eigen</span><span class="o">::</span><span class="n">AngleAxisf</span><span class="p">(</span><span class="n">M_PI</span> <span class="o">/</span> <span class="mi">4</span><span class="p">;,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="o">::</span><span class="n">UnitZ</span><span class="p">()));</span>
+<span class="c1">// 打印仿射变换矩阵</span>
+<span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Method #2: using an Affine3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">transform_2</span><span class="p">.</span><span class="n">matrix</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+<span class="c1">// 创建变换后的点云</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">transformed_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">());</span>
+
+<span class="c1">// 执行变换， source_cloud为变换前的点云</span>
+<span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span><span class="p">(</span><span class="o">*</span><span class="n">source_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">transformed_cloud</span><span class="p">,</span> <span class="n">transform_2</span><span class="p">);</span>
+</code></pre></div>
+
+<ul>
+<li>示例代码：<code>pcl_transform.cpp</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp"></span>
+
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/pcd_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/io/ply_io.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/point_cloud.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/console/parse.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/common/transforms.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;pcl/visualization/pcl_visualizer.h&gt;</span><span class="cp"></span>
+
+<span class="cm">/**</span>
+<span class="cm"> * 旋转并平移</span>
+<span class="cm"> * @param argc</span>
+<span class="cm"> * @param argv</span>
+<span class="cm"> * @return</span>
+<span class="cm"> */</span>
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">**</span><span class="n">argv</span><span class="p">)</span> <span class="p">{</span>
+
+
+    <span class="c1">// Load file | Works with PCD and PLY files</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">source_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">());</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">io</span><span class="o">::</span><span class="n">loadPCDFile</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">*</span><span class="n">source_cloud</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&quot;Error loading point cloud &quot;</span> <span class="o">&lt;&lt;</span> <span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Reminder: how transformation matrices work :</span>
+
+<span class="cm">             |-------&gt; This column is the translation</span>
+<span class="cm">      | 1 0 0 x |  \</span>
+<span class="cm">      | 0 1 0 y |   }-&gt; The identity 3x3 matrix (no rotation) on the left</span>
+<span class="cm">      | 0 0 1 z |  /</span>
+<span class="cm">      | 0 0 0 1 |    -&gt; We do not use this line (and it has to stay 0,0,0,1)</span>
+
+<span class="cm">      METHOD #1: Using a Matrix4f</span>
+<span class="cm">      This is the &quot;manual&quot; method, perfect to understand but error prone !</span>
+<span class="cm">    */</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span> <span class="n">transform_1</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Matrix4f</span><span class="o">::</span><span class="n">Identity</span><span class="p">();</span>
+
+    <span class="c1">// Define a rotation matrix (see https://en.wikipedia.org/wiki/Rotation_matrix)</span>
+    <span class="kt">float</span> <span class="n">theta</span> <span class="o">=</span> <span class="n">M_PI</span> <span class="o">/</span> <span class="mi">4</span><span class="p">;</span> <span class="c1">// The angle of rotation in radians</span>
+    <span class="n">transform_1</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transform_1</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="o">-</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transform_1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="n">transform_1</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">=</span> <span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">);</span>
+    <span class="c1">//    (row, column)</span>
+
+    <span class="c1">// Define a translation of 2.5 meters on the x axis.</span>
+    <span class="n">transform_1</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">=</span> <span class="mf">2.5</span><span class="p">;</span>
+
+    <span class="c1">// Print the transformation</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;Method #1: using a Matrix4f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">transform_1</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="cm">/*  METHOD #2: Using a Affine3f</span>
+<span class="cm">      This method is easier and less error prone</span>
+<span class="cm">    */</span>
+    <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span> <span class="n">transform_2</span> <span class="o">=</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Affine3f</span><span class="o">::</span><span class="n">Identity</span><span class="p">();</span>
+
+    <span class="c1">// Define a translation of 0.8 meters on the x axis.</span>
+    <span class="n">transform_2</span><span class="p">.</span><span class="n">translation</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">;</span>
+
+    <span class="c1">// The same rotation matrix as before; theta radians arround Z axis</span>
+    <span class="n">transform_2</span><span class="p">.</span><span class="n">rotate</span><span class="p">(</span><span class="n">Eigen</span><span class="o">::</span><span class="n">AngleAxisf</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span> <span class="n">Eigen</span><span class="o">::</span><span class="n">Vector3f</span><span class="o">::</span><span class="n">UnitZ</span><span class="p">()));</span>
+
+    <span class="c1">// Print the transformation</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Method #2: using an Affine3f</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">transform_2</span><span class="p">.</span><span class="n">matrix</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">std</span><span class="o">::</span><span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Executing the transformation</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;::</span><span class="n">Ptr</span> <span class="n">transformed_cloud</span><span class="p">(</span><span class="k">new</span> <span class="n">pcl</span><span class="o">::</span><span class="n">PointCloud</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span><span class="p">());</span>
+    <span class="c1">// You can either apply transform_1 or transform_2; they are the same</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">transformPointCloud</span><span class="p">(</span><span class="o">*</span><span class="n">source_cloud</span><span class="p">,</span> <span class="o">*</span><span class="n">transformed_cloud</span><span class="p">,</span> <span class="n">transform_2</span><span class="p">);</span>
+
+    <span class="c1">// Visualization</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">&quot;</span><span class="se">\n</span><span class="s">Point cloud colors :  white  = original point cloud</span><span class="se">\n</span><span class="s">&quot;</span>
+           <span class="s">&quot;                        red  = transformed point cloud</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">);</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCLVisualizer</span> <span class="n">viewer</span><span class="p">(</span><span class="s">&quot;Matrix transformation example&quot;</span><span class="p">);</span>
+
+    <span class="c1">// Define R,G,B colors for the point cloud</span>
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">source_cloud_color_handler</span><span class="p">(</span><span class="n">source_cloud</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span>
+                                                                                               <span class="mi">255</span><span class="p">);</span>
+    <span class="c1">// We add the point cloud to the viewer and pass the color handler</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="p">(</span><span class="n">source_cloud</span><span class="p">,</span> <span class="n">source_cloud_color_handler</span><span class="p">,</span> <span class="s">&quot;original_cloud&quot;</span><span class="p">);</span>
+
+    <span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PointCloudColorHandlerCustom</span><span class="o">&lt;</span><span class="n">pcl</span><span class="o">::</span><span class="n">PointXYZ</span><span class="o">&gt;</span> <span class="n">transformed_cloud_color_handler</span><span class="p">(</span><span class="n">transformed_cloud</span><span class="p">,</span>
+                                                                                                    <span class="mi">230</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">);</span> <span class="c1">// Red</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addPointCloud</span><span class="p">(</span><span class="n">transformed_cloud</span><span class="p">,</span> <span class="n">transformed_cloud_color_handler</span><span class="p">,</span> <span class="s">&quot;transformed_cloud&quot;</span><span class="p">);</span>
+
+    <span class="c1">// 设置坐标系系统</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">addCoordinateSystem</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="s">&quot;cloud&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="c1">// 设置背景色</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setBackgroundColor</span><span class="p">(</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span> <span class="c1">// Setting background to a dark grey</span>
+    <span class="c1">// 设置渲染属性（点大小）</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;original_cloud&quot;</span><span class="p">);</span>
+    <span class="c1">// 设置渲染属性（点大小）</span>
+    <span class="n">viewer</span><span class="p">.</span><span class="n">setPointCloudRenderingProperties</span><span class="p">(</span><span class="n">pcl</span><span class="o">::</span><span class="n">visualization</span><span class="o">::</span><span class="n">PCL_VISUALIZER_POINT_SIZE</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s">&quot;transformed_cloud&quot;</span><span class="p">);</span>
+    <span class="c1">//viewer.setPosition(800, 400); // Setting visualiser window position</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">viewer</span><span class="p">.</span><span class="n">wasStopped</span><span class="p">())</span> <span class="p">{</span> <span class="c1">// Display the visualiser until &#39;q&#39; key is pressed</span>
+        <span class="n">viewer</span><span class="p">.</span><span class="n">spinOnce</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<ul>
+<li>输出结果</li>
+</ul>
+<p><img alt="" src="../assets/affine3f.png" /></p>
+                
+                  
+                
+                
+              
+              
+                
+
+
+              
+            </article>
+          </div>
+        </div>
+      </main>
+      
+        
+<footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid">
+        
+          <a href="../" title="今日目标" class="md-flex md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-back md-footer-nav__button"></i>
+            </div>
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  上一页
+                </span>
+                今日目标
+              </span>
+            </div>
+          </a>
+        
+        
+          <a href="../io/" title="02-点云输入输出 *" class="md-flex md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
+              <span class="md-flex__ellipsis">
+                <span class="md-footer-nav__direction">
+                  下一页
+                </span>
+                02-点云输入输出 *
+              </span>
+            </div>
+            <div class="md-flex__cell md-flex__cell--shrink">
+              <i class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-footer-copyright">
+        
+          <div class="md-footer-copyright__highlight">
+            <a href="https://www.czxy.com/">传智专修学院</a> 版权所有 2006 - 2020 江苏传智播客教育科技股份有限公司  学校地址：江苏省宿迁市沭阳县北京南路6号  邮编：223600   <a href="http://www.beian.miit.gov.cn/">苏ICP备16007882号-4</a>
+          </div>
+        
+      </div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    
+      <script src="../../assets/javascripts/application.c33a9706.js"></script>
+      
+        
+        
+          
+          <script src="../../assets/javascripts/lunr/lunr.stemmer.support.js"></script>
+          
+            
+              
+              
+            
+          
+          
+        
+      
+      <script>app.initialize({version:"1.1",url:{base:"../.."}})</script>
+      
+        <script src="../../js/extra.js"></script>
+      
+        <script src="https://cdn.bootcdn.net/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+      
+        <script src="../../js/baidu-tongji.js"></script>
+      
+        <script src="../../js/baidu-tuisong.js"></script>
+      
+    
+  </body>
+</html>
